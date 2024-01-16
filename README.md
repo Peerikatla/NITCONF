@@ -5,7 +5,6 @@ NITCONF is a conference website designed to facilitate paper submissions for eva
 
 Table of Contents
 =================
-  * [Revision History](#revision-history)
   * [Introduction](#1-introduction)
     * 1.1 [Purpose](#11-purpose)
     * 1.2 [Document Conventions](#12-document-conventions)
@@ -14,11 +13,11 @@ Table of Contents
     * 1.5 [References](#15-references)
   * [Overall Description](#overall-description)
     * 2.1 [Product Overview](#21-product-overview)
-    * 2.2 [User Classes and Characteristics](#22-user-classes-and-characteristics)
-    * 2.3 [Operating Environment](#23-operating-environment)
-    * 2.4 [Design and Implementation Constraints](#24-design-and-implementation-constraints)
-    * 2.5 [User Documentation](#25-user-documentation)
-    * 2.6 [Assumptions and Dependencies](#26-assumptions-and-dependencies)
+    * 2.2 [User Classes and Characteristics](#23-user-classes-and-characteristics)
+    * 2.3 [Operating Environment](#24-operating-environment)
+    * 2.4 [Design and Implementation Constraints](#25-design-and-implementation-constraints)
+    * 2.5 [User Documentation](#26-user-documentation)
+    * 2.6 [Assumptions and Dependencies](#27-assumptions-and-dependencies)
   * [External Interface Requirements](#external-interface-requirements)
     * 3.1 [User Interfaces](#31-user-interfaces)
     * 3.2 [Hardware Interfaces](#32-hardware-interfaces)
@@ -60,7 +59,7 @@ The document is intended to serve several groups of audience members :
 * System Designer:
     * They are the primary audience. It provides crucial information guiding the design phase.
 * Program Committee:
-    * They are expected us to provide the reuired resources mentioned in the SRS Document.
+    * They are expected us to provide the required resources mentioned in the SRS Document.
 * Author:
     * They are expected to upload the Document/ Thesis in the specified format.
 * Tester:
@@ -84,21 +83,24 @@ Refer to the following links for additional resources:
 
 ## Overall Description
 ### 2.1 Product Overview
-The reviewers page in NITCONF will serve as an interface for the reviewers to mark their review, add comments, feedbacks and ratings to the papers assigned to them by the Programme CommitteeThe Reveiwers would be provided with a login page where they can login with their credentials. They will be 2 sections under it
-1. To Review
-All the papers that has to be reviewed and submitted to PC would be displayed here along with the deadline. After submission, these papers will go to the Reviewed session.
-2. Reviewed
-The papers submitted to PC would be displayed along with the deadlines. The reviewer has the option to edit it and resubmit before the deadline. After deadline these papers will go to history.
-3. History
-The history tab will show all the papers reviewed by that reviewer so far with the status and date.
+The reviewers page in NITCONF will serve as an interface for the reviewers to mark their review, add comments, feedbacks and ratings to the papers assigned to them by the Programme Committee. The Reveiwers would be provided with a login page where they can login with their credentials. There will be 3 sections under it
+1. To Review  - All the papers that has to be reviewed and submitted to PC would be displayed here along with the deadline. After submission, these papers will go to the Reviewed session.
+2. Reviewed - The papers submitted to PC would be displayed along with the deadlines. The reviewer has the option to edit it and resubmit before the deadline. After deadline these papers will go to history.
+3. History - The history tab will show all the papers reviewed by that reviewer so far with the status and date.
+4. Notifications - All notifications from the PC would be here.
 
-![WhatsApp Image 2024-01-14 at 19 12 50](https://github.com/afrasd/NITCONF/assets/103187343/a0237b0e-9210-4adf-a5b9-446fcbd41d2e)
+
+
+![diag1](https://github.com/afrasd/NITCONF/assets/103187343/e5eede35-4fd2-43b8-9ed8-cf68f1771bb0)
+
+
+
 
 ### 2.2 User Classes and Characteristics
 **User - Reviewer**
 - **Frequency of use**: Reviewers engage with the system intensively during the conference periods.
 - **Functions used**: 
-	- **paper review**: reviewers will be able to give the review based on some metrics such as originality, relevance, quality, readability, technical soundness etc, additionally they would be able to give a confidence rating. finally they can accept/reject the paper or click on another option called review. After finalizing the changes they can submit the review to the PC. 
+	- **paper review**: reviewers will be able to give the review based on some metrics such as originality, relevance, quality, readability, technical soundness etc, additionally they would be able to give a confidence rating. finally they can accept/reject the paper or click on another option called revise. After finalizing the changes they can submit the review to the PC. 
 	- **Commenting and Feedback**: They provide detailed comments and feedback for each paper, which may include critiques, suggestions for improvement, and overall assessments.
 - **Technical Expertise**: A simple understanding of basic computer based tasks is enough to navigate the system as it is user friendly.
 - ** Security Levels**: Reviewers require secure login credentials to login in to the system, this is done to ensure the integrity and confidentiality of the reviewing process.
@@ -110,6 +112,8 @@ The history tab will show all the papers reviewed by that reviewer so far with t
 - deadline tracking and submission status.
 	- a visible and clear display of the deadline for each paper to support timely reviews and submission along with reminders and notifications.
 	- real time status updation once the reviewer has submitted his review.
+- decline to review.
+ 	- this option would be provided to the reviewer if they wish to decline to give a review.
 - edit and resubmit capabilities available for reviewers.
 - confidentiality and anonymity between reviewers and the authors of the paper by enforcing a double blind situation.
 
@@ -133,13 +137,13 @@ The history tab will show all the papers reviewed by that reviewer so far with t
 -Security Protocols: Utilizes HTTPS for secure communication over the internet.
 
 **Software Dependencies**
--Spring Framework: The specific version of the Spring Framework used in development.
+-Spring Framework
 -Database: Compatible with relational databases like MySQL, MySQL workbench, PostgreSQL, or similar, depending on the application's data persistence requirements.
--Frontend Technologies: Might include HTML5, CSS3, JavaScript.
+-Frontend Technologies: Includes HTML5, CSS3, JavaScript.
 
 **Deployment Environment**
 Containerization: The application is containerized using Docker, Kubernetes.
-API testing tools: POstman, swagger.io, SoapUI.
+API testing tools: Postman, swagger.io, SoapUI.
 CI/CD Pipelines: Integration with continuous integration and continuous deployment tools.
 
 
@@ -157,7 +161,7 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
 #### Login and Dashboard Navigation
 - **Login**: Reviewers log in with their credentials and are directed to the reviewer dashboard.
 - **Profile**: The user's profile icon is displayed in the top right corner, linking to the profile page.
-- **Side Navigation Bar**: Features a collapsible navigation with the following options:
+- **homepage**: contains links/buttons to the following options:
   - **To Review**: A list of papers assigned for review.
   - **Reviewed**: Papers that have been reviewed by the user.
   - **View History**: A history of papers reviewed in the past 6 months.
@@ -166,26 +170,46 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
 ### 'To Review' Page
 - **Layout**: Displays assigned papers in a row-wise manner.
 - **Columns**:
-  1. **Thumbnail and Downloads**: Includes a paper thumbnail, 'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Actions**: Shows the paper's title with 'Review' and 'Display All' options. 'Review' opens a pop-up for rating, commenting, and final actions ('Accept', 'Reject', or 'Revise'). 'Display All' reveals all previous comments/reviews.
-  3. **Status**: Indicates the current status of the paper (Accept/Reject).
+  1. **Pdf id and Downloads**: Includes a pdf id, 'Abstract' and 'PDF Download' buttons.
+  2. **Paper Title and Actions**: Shows the paper's title with 'Review' and 'Display All Reviews' options. 'Review' opens a pop-up for rating, commenting, and final actions ('Accept', 'Reject', or 'Revise'). 'Display All Reviews' reveals all previous comments/reviews.
+  3. **Status**: Indicates the current status of the paper (Accept/Reject/Pending).
   4. **Revision**: Shows the revision round of the paper (e.g., first, second).
   5. **Deadline**: Lists the review deadline set by the Program Committee.
+  6. **Decline**: A button that can be pressed if the reviewer chooses not to review that paper.
+     
+ 
+     ![1](https://github.com/afrasd/NITCONF/assets/103187343/4a1f5693-12b0-46d3-b598-0eaae21ff74e)
+
 
 ### 'Reviewed' Page
 - **Content**: Lists all reviewed papers.
 - **Columns**:
-  1. **Thumbnail and Downloads**: Includes a paper thumbnail, 'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Edit Options**: Displays the paper's title with 'Edit' and 'Display All' buttons. 'Edit' allows modification of the most recent review. 'Display All' shows all past reviews.
+  1. **Pdf id and Downloads**: Includes a pdf id, 'Abstract' and 'PDF Download' buttons.
+  2. **Paper Title and Edit Options**: Displays the paper's title with 'Edit' and 'Display All Reviews' buttons. 'Edit' allows modification of the most recent review. 'Display All' shows all past reviews.
   3. **Status**: The final status of the paper (Accept/Reject).
-  4. **Deadline**: The review deadline, after which the paper is removed from this page.
+  4. **Revision**: Shows the revision round of the paper (e.g., first, second).
+  5. **Deadline**: The review deadline, after which the paper is removed from this page.
+ ![2](https://github.com/afrasd/NITCONF/assets/103187343/3c86a087-d8ae-4a67-85b0-adbc787777c6)
+
+  
   
 ### 'View History' Page
 - **Content**: Lists all reviewed papers in the last 6 months.
 - **Columns**:
-  1. **Thumbnail and Downloads**: Includes a paper thumbnail, 'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Edit Options**: Displays the paper's title with a 'Display All' button.
+  1. **Pdf id and Downloads**: Includes a paper pdf id, 'Abstract' and 'PDF Download' buttons.
+  2. **Paper Title and Edit Options**: Displays the paper's title with a 'Display All Reviews' button.
   3. **Status**: The final status of the paper (Accept/Reject).
+  4. **Revision**: Shows the revision round of the paper (e.g., first, second).
+  5. **Deadline**: The review deadline, after which the paper is removed from this page.
+
+     
+ ![3](https://github.com/afrasd/NITCONF/assets/103187343/6a0ac50c-11a8-41f3-9a9b-7fae0e3a2c41)
+
+     
+
+### 'Notifications' Page
+- **Content**: Lists all notifications from PC, like paper assignments and deadline reminders.
+  
   
 ### 2.6 Assumptions and Dependencies
 ## Assumptions:

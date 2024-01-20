@@ -5,22 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviewer Login</title>
     <style>
+        header {
+            background:linear-gradient(to right, black, skyblue);
+            color: skyblue;
+            text-align: left;
+            padding: 15px;
+            text-shadow: #333;
+           width:100%;
+            margin:0; 
+            padding-left:45px;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, black,skyblue);
+            background-color:white;
             margin: 0;
             padding: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
+           justify-content: center;
             flex-direction: column;
-            height: 100vh;
+          /* height: 100vh;*/
+            margin-top:0;
         }
 
-        h1, h2, p {
+        
+
+        h2, p {
             color: black;
             text-align: center;
             margin: 0; /* Added to remove default margin */
+
         }
 
         form {
@@ -28,10 +43,12 @@
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            height: 400px;
+            width: 290px;
+            height: 275px;
             position: relative;
             margin-top: 20px;
+            border:solid;
+            border-color:black;
         }
 
         label {
@@ -46,6 +63,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 16px;
         }
 
         button {
@@ -55,10 +73,13 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            width:100%;
+            font-size: 18px;
         }
 
         button:hover {
             background-color: #45a049;
+
         }
         
         h4 {
@@ -75,15 +96,21 @@
             color: blue;
             text-decoration: none;
         }
+
     </style>
 </head>
 <body>
-    <h1>NITCONF<br></h1>
-    <h2>For Reviewers<br></h2>
-    <p>Give comments and rating.</p>
+    <header>
+        <h1> 
+            NITCONF 
+        </h1>
+        <h5 style="color:white">Precision speaks:Comment , Rate and Critique></h5>
+    </header>
+    <br><h2>For Reviewers</h2>
+    
 
     <form id="loginForm">
-        <h4>Login</h4>
+        <h2>Login</h2><br>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
 
@@ -92,7 +119,7 @@
 
         <div class="forgot-password">
             <a href="#" onclick="forgotPassword()">Forgot Password?</a>
-        </div>
+        </div><br>
 
         <button type="button" onclick="login()">Login</button>
     </form>
@@ -103,7 +130,7 @@
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
 
-            // Perform authentication (replace this with your actual authentication logic)
+            // Authentication process
             if (username === 'your_username' && password === 'your_password') {
                 alert('Login successful!');
                 // Redirect to the reviewer dashboard or perform other actions
@@ -116,7 +143,7 @@
             var email = prompt('Please enter your email address:');
             if (email) {
                 alert('A password reset email has been sent to ' + email);
-                // In a real-world scenario, you would send a password reset email here
+                // Notifications will be sent to reviewers email regarding password reset
             }
         }
         

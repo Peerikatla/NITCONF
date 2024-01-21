@@ -1,0 +1,130 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Home Page</title> 
+    <style> 
+        body { 
+            font-family: Arial, sans-serif; 
+             /*font-size:24px;*/ 
+             text-align: center; 
+            margin:0; 
+            padding:0; 
+            background-color: white; 
+            box-sizing: border-box; 
+        } 
+         
+        header { 
+            background:linear-gradient(to right,black,skyblue); 
+            color:skyblue; 
+            text-align: left; 
+            padding: 15px; 
+            text-shadow: #333; 
+           width:auto; 
+            margin:0;  
+            border-radius:3px;
+            padding-left:15px; 
+        } 
+         
+        nav { 
+            width: 50%; 
+            height:auto; 
+            background-color:white; 
+            padding-right: 16px; 
+            float: right; 
+            /*box-shadow: 0 4px 8px rgba(4, 4, 15, 0.1);*/ 
+        } 
+         
+        nav a { 
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #25234f;
+            text-align: center;
+            font-size:24px;
+            border:solid;
+            border-width: 1.3px;
+            border-color: black;
+            border-radius:8px;
+            padding: 12px;
+            
+            transition: background-color 0.3s;
+            /*backface-visibility:;*/
+        } 
+         
+        nav a:hover { 
+            background-color:lightgrey; 
+        } 
+        .profile-bar h2{
+            font-size:24px;
+            color:black;
+            text-align:center;
+        }
+        .profile-bar { 
+            width:auto;
+            /*background:linear-gradient(to right,skyblue,rgb(0, 0, 0));*/
+            background-color:rgb(74, 144, 174);
+            padding:1px;
+         text-align:right;
+         border-radius: 3px;
+          
+        } 
+        .profile-bar a{ 
+            text-decoration: none; 
+            color:black;s
+        } 
+        
+        .left-half { 
+        width: 50%; 
+        float: left; 
+        } 
+ 
+        .left-image { 
+        width: 400px; /* Adjust as needed */ 
+        height: 340px; 
+        display: block; 
+        padding-left:20px; 
+        } 
+ 
+        .container { 
+            display: flex; 
+            align-items: center; /* Center vertically */ 
+            justify-content: center; /* Center horizontally */ 
+        } 
+ 
+    </style> 
+</head> 
+<body> 
+ 
+    <header> 
+        <h1>  
+            NITCONF  
+        </h1> 
+        <h5 style="color:white">Precision speaks: Comment, Rate and Critique</h5> 
+    </header> 
+     
+    <div class="profile-bar"> 
+        <h2>Dashboard</h2>
+        
+            <a href="#" title="Notifications"><span>&#128276;</span></a> 
+            <a href="#" title="View Profile"><img src="profile-icon.png" alt="Profile" width="20" height="20"></a> 
+        
+    </div> 
+ 
+ 
+<div class="container"> 
+    <div class="left-half"> 
+        <img src="IMG_1103.PNG" alt="Your Image" class="left-image"> 
+    </div> 
+     
+    <nav> 
+        <br><a href="#">To Review</a><br> 
+         
+        <a href="#">Reviewed</a><br> 
+        <a href="#">History</a> 
+    </nav> 
+</div> 
+ 
+</body> 
+</html>

@@ -1,125 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviewer Login</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, black,skyblue);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 100vh;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
 
-        h1, h2, p {
-            color: black;
-            text-align: center;
-            margin: 0; /* Added to remove default margin */
-        }
+      header {
+        background: linear-gradient(to right, black, skyblue);
+        color: skyblue;
+        text-align: left;
+        padding: 15px;
+        text-shadow: #333;
+      }
 
-        form {
-            background-color: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            height: 400px;
-            position: relative;
-            margin-top: 20px;
-        }
+      nav {
+        display: flex;
+        justify-content: space-around;
+        background-color: #ddd;
+        padding: 10px;
+      }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-        }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: box-shadow 0.5s ease-in-out;
+        padding: 05px;
+        border-radius: 10px;
+      }
 
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+      nav a:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
 
-        button {
-            background-color: #4caf50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+      nav a.profile {
+        background-color: black;
+        color: white;
+      }
 
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        h4 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+      nav a.profile:hover {
+        box-shadow: 0 0 15px white;
+      }
 
-        .forgot-password {
-            text-align: right;
-            margin-top: 5px;
-        }
-
-        .forgot-password a {
-            color: blue;
-            text-decoration: none;
-        }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 10px;
+        padding: 10px;
+        border: 2px solid #333;
+        border-radius: 10px;
+        background-color: white;
+      }
     </style>
-</head>
-<body>
-    <h1>NITCONF<br></h1>
-    <h2>For Reviewers<br></h2>
-    <p>Give comments and rating.</p>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="home.html" style="text-decoration: none; color: skyblue"
+          >NITCONF</a
+        >
+      </h1>
+      <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+    </header>
 
-    <form id="loginForm">
-        <h4>Login</h4>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+    <nav>
+      <a href="to-review.html">To Review</a>
+      <a href="reviewed.html">Reviewed</a>
+      <a href="history.html">History</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="profile.html" class="profile">Profile</a>
+    </nav>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-
-        <div class="forgot-password">
-            <a href="#" onclick="forgotPassword()">Forgot Password?</a>
-        </div>
-
-        <button type="button" onclick="login()">Login</button>
-    </form>
-
-    <script>
-        function login() {
-            // Fetch username and password from the form
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
-
-            // Perform authentication (replace this with your actual authentication logic)
-            if (username === 'your_username' && password === 'your_password') {
-                alert('Login successful!');
-                // Redirect to the reviewer dashboard or perform other actions
-            } else {
-                alert('Login failed. Please check your username and password.');
-            }
-        }
-
-        function forgotPassword() {
-            var email = prompt('Please enter your email address:');
-            if (email) {
-                alert('A password reset email has been sent to ' + email);
-                // In a real-world scenario, you would send a password reset email here
-            }
-        }
-        
-    </script>
-</body>
+    <div class="container"></div>
+  </body>
 </html>

@@ -56,24 +56,41 @@
         nav a:hover { 
             background-color:lightgrey; 
         } 
-        .profile-bar h2{
-            font-size:24px;
-            color:black;
-            text-align:center;
-        }
-        .profile-bar { 
-            width:auto;
-            /*background:linear-gradient(to right,skyblue,rgb(0, 0, 0));*/
-            background-color:rgb(74, 144, 174);
-            padding:1px;
-         text-align:right;
-         border-radius: 3px;
-          
-        } 
-        .profile-bar a{ 
-            text-decoration: none; 
-            color:black;s
-        } 
+        .profile-bar {
+    width: auto;
+    height: 70px;
+    background-color: rgb(74, 144, 174);
+    padding: 5px;
+    text-align: right;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align items to the right */
+}
+
+.profile-bar h2 {
+    font-size: 24px; /* Adjusted font size */
+    color: black;
+    text-align:center;
+    margin-right: 550px; /* Add some margin between the text and icons */
+}
+
+.profile-bar a {
+    text-decoration: none;
+    color: black;
+    font-size: 28px;
+    margin-right: 10px; /* Add some margin between the icons */
+}
+
+.profile-bar img {
+    vertical-align: middle;
+}
+
+.new {
+    font-size: 24px;
+}
+
+
         
         .left-half { 
         width: 50%; 
@@ -92,6 +109,10 @@
             align-items: center; /* Center vertically */ 
             justify-content: center; /* Center horizontally */ 
         } 
+
+        .new{
+            font-size:24px;
+        }
  
     </style> 
 </head> 
@@ -105,17 +126,17 @@
     </header> 
      
     <div class="profile-bar"> 
-        <h2>Dashboard</h2>
+        <h2 >Dashboard</h2>
         
-            <a href="#" title="Notifications"><span>&#128276;</span></a> 
-            <a href="#" title="View Profile"><img src="profile-icon.png" alt="Profile" width="20" height="20"></a> 
+            <a href="#" title="Notifications"><span class="new">&#128276;</span></a> 
+            <a href="#" title="View Profile"><img src="../static/profile_back.png" alt="Profile" width="40" height="40"></a> 
         
     </div> 
  
  
 <div class="container"> 
     <div class="left-half"> 
-        <img src="IMG_1103.PNG" alt="Your Image" class="left-image"> 
+        <img src="../static/IMG_1103.PNG" alt="Your Image" class="left-image"> 
     </div> 
      
     <nav> 

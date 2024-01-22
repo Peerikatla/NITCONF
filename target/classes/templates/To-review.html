@@ -1,83 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
+    <title>To Review</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-      header {
-        background: linear-gradient(to right, black, skyblue);
-        color: skyblue;
-        text-align: left;
-        padding: 15px;
-        text-shadow: #333;
-      }
+        header {
+            background: linear-gradient(to right, black, skyblue);
+            color: skyblue;
+            text-align: left;
+            padding: 15px;
+            text-shadow: #333;
+        }
 
-      nav {
-        display: flex;
-        justify-content: space-around;
-        background-color: #ddd;
-        padding: 10px;
-      }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #ddd;
+            padding: 10px;
+        }
 
-      nav a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        transition: box-shadow 0.5s ease-in-out;
-        padding: 05px;
-        border-radius: 10px;
-      }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: box-shadow 0.5s ease-in-out;
+            padding: 05px;
+            border-radius: 10px;
+        }
 
-      nav a:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
+        nav a:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
 
-      nav a.To-review {
-        background-color: black;
-        color: white;
-      }
+        nav a.To-review {
+            background-color: black;
+            color: white;
+        }
 
-      nav a.To-review:hover {
-        box-shadow: 0 0 15px white;
-      }
+        nav a.To-review:hover {
+            box-shadow: 0 0 15px white;
+        }
 
-      .container {
-        width: 100%;
-        max-width: 600px;
-        margin: 10px;
-        padding: 10px;
-        border: 2px solid #333;
-        border-radius: 10px;
-        background-color: white;
-      }
+        table {
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+            /* Prevent line breaks within cells */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            z-index: 1000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
     </style>
-  </head>
-  <body>
+
+</head>
+
+<body>
     <header>
-      <h1>
-        <a href="home.html" style="text-decoration: none; color: skyblue"
-          >NITCONF</a
-        >
-      </h1>
-      <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+        <h1>
+            <a href="home.html" style="text-decoration: none; color: skyblue">NITCONF</a>
+        </h1>
+        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
     </header>
 
     <nav>
-      <a href="to-review.html" class="To-review">To Review</a>
-      <a href="reviewed.html">Reviewed</a>
-      <a href="history.html">History</a>
-      <a href="notifications.html">Notifications</a>
-      <a href="profile.html">Profile</a>
+        <a href="to-review.html" class="To-review">To Review</a>
+        <a href="reviewed.html">Reviewed</a>
+        <a href="history.html">History</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="profile.html">Profile</a>
     </nav>
 
-    <!-- <div class="container"></div> -->
-  </body>
+    <table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>PDF File</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Revision Status</th>
+                <th>Deadline</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="pdfTableBody">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <!-- Review Popup -->
+    <!-- Review Popup -->
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="reviewPopup">
+        <h2>Review Popup</h2>
+        <!-- Existing content -->
+
+        <!-- Star Rating -->
+        <div>
+            <label for="rating">Rating:</label>
+            <div id="starRating">
+                <span onclick="rate(1)">★</span>
+                <span onclick="rate(2)">★</span>
+                <span onclick="rate(3)">★</span>
+                <span onclick="rate(4)">★</span>
+                <span onclick="rate(5)">★</span>
+            </div>
+            <input type="hidden" id="selectedRating" value="0">
+        </div>
+
+        <br>
+
+        <button onclick="saveComment('${pdfFile}')">Save Comment</button>
+        <br>
+        <button onclick="closePopup()">Close</button>
+    </div>
+
+
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Fetch data from your database (replace this with actual data fetching logic)
+        // Example data
+        var pdfData = [
+            { pdfFile: "file1.pdf", name: "Document 1", status: "Revise", revisionStatus: 2, deadline: "25/02/2024" },
+            { pdfFile: "file2.pdf", name: "Document 2", status: "null", revisionStatus: 0, deadline: "15/03/2024" },
+        ];
+
+        var tableBody = document.getElementById("pdfTableBody");
+
+        pdfData.forEach(function (item) {
+            var row = tableBody.insertRow();
+
+            // Insert cells
+            var fileCell = row.insertCell(0);
+            var nameCell = row.insertCell(1);
+            var statusCell = row.insertCell(2);
+            var revisionStatusCell = row.insertCell(3);
+            var deadlineCell = row.insertCell(4);
+            var actionCell = row.insertCell(5);
+
+            fileCell.textContent = item.pdfFile;
+            nameCell.textContent = item.name;
+            statusCell.textContent = item.status;
+            revisionStatusCell.textContent = item.revisionStatus;
+            deadlineCell.textContent = item.deadline;
+
+            // Download link
+            var downloadLink = document.createElement("a");
+            downloadLink.href = "path/to/download/" + item.pdfFile;
+            downloadLink.textContent = "Download";
+            downloadLink.setAttribute("download", "");
+
+            // View link
+            var viewLink = document.createElement("a");
+            viewLink.href = "path/to/view/" + item.pdfFile;
+            viewLink.textContent = "View";
+
+            // Review button
+            var reviewButton = document.createElement("button");
+            reviewButton.textContent = "Review";
+            reviewButton.onclick = function () {
+                openReviewPopup(item.pdfFile); // Pass the PDF file name to the openReviewPopup function
+            };
+
+            // Append links and button to the action cell
+            actionCell.appendChild(downloadLink);
+            actionCell.appendChild(document.createTextNode(" | "));
+            actionCell.appendChild(viewLink);
+            actionCell.appendChild(document.createTextNode(" | "));
+            actionCell.appendChild(reviewButton);
+        });
+    });
+
+    // Function to open the simplified review popup
+    function openReviewPopup(pdfFile) {
+        var overlay = document.getElementById("overlay");
+        var reviewPopup = document.getElementById("reviewPopup");
+
+        // Set up the content of the simplified popup
+        var popupContent = `
+            <h2>Review Popup</h2>
+            
+            <!-- Comment textbox -->
+            <label for="comment">Comment:</label>
+            <textarea id="comment" rows="4" cols="50"></textarea>
+            
+            <br>
+            
+            <!-- Save button -->
+            <button onclick="saveComment('${pdfFile}')">Save Comment</button>
+            
+            <br>
+            
+            <button onclick="closePopup()">Close</button>
+        `;
+
+        reviewPopup.innerHTML = popupContent;
+
+        // Show the overlay and popup
+        overlay.style.display = "block";
+        reviewPopup.style.display = "block";
+    }
+
+    // Function to save the comment (this can be sent to the server and stored in the database)
+    function saveComment(pdfFile) {
+        var comment = document.getElementById("comment").value;
+        var rating = document.getElementById("selectedRating").value;
+
+        // You can send 'comment', 'pdfFile', and 'rating' to the server for storage in the database
+        console.log("Comment for " + pdfFile + ": " + comment);
+        console.log("Rating for " + pdfFile + ": " + rating);
+
+        // Optionally, you can close the popup after saving the comment
+        closePopup();
+    }
+
+    // Function to close the popup
+    function closePopup() {
+        var overlay = document.getElementById("overlay");
+        var reviewPopup = document.getElementById("reviewPopup");
+
+        overlay.style.display = "none";
+        reviewPopup.style.display = "none";
+    }
+</script>
+
+
 </html>

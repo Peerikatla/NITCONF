@@ -1,85 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notifications</title>
+    <title>History</title>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
 
-      header {
-        background: linear-gradient(to right, black, skyblue);
-        color: skyblue;
-        text-align: left;
-        padding: 15px;
-        text-shadow: #333;
-      }
+        header {
+            background: linear-gradient(to right, black, skyblue);
+            color: skyblue;
+            text-align: left;
+            padding: 15px;
+            text-shadow: #333;
+        }
 
-      nav {
-        display: flex;
-        justify-content: space-around;
-        background-color: #ddd;
-        padding: 10px;
-      }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #ddd;
+            padding: 10px;
+        }
 
-      nav a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        transition: box-shadow 0.5s ease-in-out;
-        padding: 05px;
-        border-radius: 10px;
-      }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: box-shadow 0.5s ease-in-out;
+            padding: 05px;
+            border-radius: 10px;
+        }
 
-      nav a:hover {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
+        nav a:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        nav a.history{
+            color:white;
+            background-color:black;
+        }
+        nav a.profile {
+            
+            color: rgb(0, 0, 0);
+        }
 
-      nav a.History {
-        background-color: black;
-        color: white;
-      }
+        nav a.profile:hover {
+            box-shadow: 0 0 15px white;
+        }
 
-      nav a.History:hover {
-        box-shadow: 0 0 15px white;
-      }
+        .paper {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px;
+            background-color: #fff;
+        }
 
-      .container {
-        width: 100%;
-        max-width: 600px;
-        margin: 10px;
-        padding: 10px;
-        border: 2px solid #333;
-        border-radius: 10px;
-        background-color: white;
-      }
+        .options {
+            margin-top: 10px;
+            
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            max-width: 80%;
+            max-height: 80%;
+            overflow: auto;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <header>
-      <h1>
-        <a href="home.html" style="text-decoration: none; color: skyblue"
-          >NITCONF</a
-        >
-      </h1>
-      <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+        <h1>
+            <a href="home.html" style="text-decoration: none; color: skyblue">NITCONF</a>
+        </h1>
+        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
     </header>
 
     <nav>
-      <a href="to-review.html">To Review</a>
-      <a href="reviewed.html">Reviewed</a>
-      <a href="history.html" class="History">History</a>
-      <a href="notifications.html">Notifications</a>
-      <a href="profile.html">Profile</a>
+        <a href="to-review.html">To Review</a>
+        <a href="reviewed.html">Reviewed</a>
+        <a href="history.html" class="history">History</a>
+        <a href="notifications.html">Notifications</a>
+        <a href="profile.html" >Profile</a>
     </nav>
 
-    <!-- <div class="container">
-        
-    </div> -->
-  </body>
+    <div class="paper">
+        <h2>Paper Title 1</h2>
+        <div class="options">
+            <button onclick="showAbstract('abstract1.pdf')">View Abstract</button>
+            <a href="download1.pdf" download>Download PDF</a>
+            <button onclick="showPreviousReviews('paper1')">Display Previous Reviews</button>
+        </div>
+        <p>Deadline: January 31, 2024</p>
+        <p>Revision Status: First Submission</p>
+        <p>Status: Approve</p>
+    </div>
+
+    <!-- Abstract Popup -->
+    <div id="abstractPopup" class="popup">
+        <div class="popup-content">
+            <embed src="" type="application/pdf" width="100%" height="600px" />
+            <button onclick="closeAbstract()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showAbstract(pdfUrl) {
+            document.getElementById('abstractPopup').style.display = 'block';
+            document.querySelector('#abstractPopup embed').setAttribute('src', pdfUrl);
+        }
+
+        function closeAbstract() {
+            document.getElementById('abstractPopup').style.display = 'none';
+        }
+
+        function showPreviousReviews(paperId) {
+            // Add logic to display previous reviews based on paperId
+            alert('Displaying previous reviews for ' + paperId);
+        }
+    </script>
+
+</body>
+
 </html>

@@ -1,194 +1,200 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<head>
+<html lang="en">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
+    <!--<script src="https://cdn.tailwindcss.com"></script>-->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
 
-        header {
-            background: linear-gradient(to right, black, skyblue);
-            color: skyblue;
-            text-align: left;
-            padding: 15px;
-            text-shadow: #333;
-        }
+      header {
+        background: linear-gradient(to right, black, skyblue);
+        color: skyblue;
+        text-align: left;
+        padding: 15px;
+        text-shadow: #333;
+      }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #ddd;
-            padding: 10px;
-        }
+      nav {
+        display: flex;
+        justify-content: space-around;
+        background-color: #ddd;
+        padding: 10px;
+      }
 
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: box-shadow 0.5s ease-in-out;
-            padding: 05px;
-            border-radius: 10px;
-        }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: box-shadow 0.5s ease-in-out;
+        padding: 05px;
+        border-radius: 10px;
+      }
 
-        nav a:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
+      nav a:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
 
-        nav a.profile {
-            background-color: black;
-            color: white;
-        }
-
-        nav a.profile:hover {
-            box-shadow: 0 0 15px white;
-        }
-
-        form {
-            max-width: 400px;
-            margin: auto;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        #profileView {
-            display: none;
-            margin-top: 20px;
-            text-align:center ;
-        }
-        /* Add this to your existing style block */        
-        input#fullName {
-            border: 1.5px solid #333; 
-            border-radius:2px;
-            
-        }
-        input#username{
-            border: 1.5px solid #333;
-            border-radius:2px;
-        }
-        input#dob {
-            border: 1.5px solid #333;
-            border-radius:2px;
-        }
-        input#email {
-            border:1.5px solid #333;
-            border-radius:3px;
-        }
-        input#phone{
-            border: 1.5px solid #333;
-            border-radius:3px;
-        }
-        input#specialization {
-            border: 1.5px solid #333;
-            border-radius:2px;
-        }
-
+      #profileView {
+        display: none;
+        margin-top: 20px;
+      }
+      /* Add this to your existing style block */
     </style>
-</head>
+    <link rel="stylesheet" href="../Static/common.css" />
+  </head>
 
-<body>
+  <body>
     <header>
-        <h1>
-            <a href="home.html" style="text-decoration: none; color: skyblue">NITCONF</a>
-        </h1>
-        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+      <h1>
+        <a href="home.html" style="text-decoration: none; color: skyblue"
+          >NITCONF</a
+        >
+      </h1>
+      <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
     </header>
 
     <nav>
-        <a href="to-review.html">To Review</a>
-        <a href="reviewed.html">Reviewed</a>
-        <a href="history.html">History</a>
-        <a href="notifications.html">Notifications</a>
-        <a href="profile.html" class="profile">Profile</a>
+      <a href="to-review.html">To Review</a>
+      <a href="reviewed.html">Reviewed</a>
+      <a href="history.html">History</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="profile.html" class="active">Profile</a>
     </nav>
 
-    <h2>User Profile</h2>
-
-    <form id="profileForm" >
-        <label for="fullName">Full Name:</label>
-        <input type="text" id="fullName" name="fullName" required>
-
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-
-        <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" required>
-
-        <label for="email">Email ID:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone" required>
-
-        <label for="specialization">Specialization:</label>
-        <input type="text" id="specialization" name="specialization" required>
-            
-        <button type="button" onclick="submitForm()">Submit</button>
-    </form>
+    <div class="main-component">
+      <div class="image">
+        <img src="../Static/profile_image.png" alt="Dummy Profile Image" />
+        <div class="profile-img-heading">User Profile</div>
+      </div>
+      <form action="" id="profileForm2">
+        <div class="input-fields-div">
+          <div class="each-field">
+            <div class="label-name">Full Name</div>
+            <input type="text" id="fullName" name="fullName" required readonly/>
+          </div>
+          <div class="each-field">
+            <div class="label-name">UserName</div>
+            <input type="text" id="username" name="username" required readonly/>
+          </div>
+        </div>
+        <div class="input-fields-div">
+            <div class="each-field">
+                <div class="label-name">Email ID</div>
+                <input type="email" name="email" id="email" required readonly>
+            </div>
+            <div class="each-field">
+                <div class="label-name">Date of Birth</div>
+                <input type="date" name="dob" id="dob" required readonly>
+            </div>
+        </div>
+        <div class="input-fields-div">
+            <div class="each-field">
+              <div class="label-name">Phone Number</div>
+              <input type="tel" id="phone" name="phone" required  readonly/>
+            </div>
+            <div class="each-field">
+              <div class="label-name">Specialization</div>
+              <input type="text" id="specialization" name="specialization" required readonly/>
+            </div>
+          </div>
+        <div class="buttons-profile">
+            <div class="user-profile-submit cancel-button">
+                <button type="button" onclick="cancelChanges()">Cancel</button>
+            </div>
+            <div class="user-profile-submit submit-button">
+                <button type="button" onclick="submitForm()">Submit</button>
+            </div>
+            <div class="user-profile-submit edit-button">
+                <button type="button" onclick="changeEdit()">Edit</button>
+            </div>
+        </div>
+      </form>
+    </div>
 
     <div id="profileView">
-        <h3>Profile Preview</h3>
-        <p id="viewFullName"></p>
-        <p id="viewUsername"></p>
-        <p id="viewDOB"></p>
-        <p id="viewEmail"></p>
-        <p id="viewPhone"></p>
-        <p id="viewSpecialization"></p>
-        <button type="button" onclick="editProfile()">Edit Profile</button>
+      <h3>Profile Preview</h3>
+      <p id="viewFullName"></p>
+      <p id="viewUsername"></p>
+      <p id="viewDOB"></p>
+      <p id="viewEmail"></p>
+      <p id="viewPhone"></p>
+      <p id="viewSpecialization"></p>
+      <button type="button" onclick="editProfile()">Edit Profile</button>
     </div>
 
     <script>
+        var isEditable = false;
+        var initialProfileValues = {
+            "fullName":"Ian somerhalder",
+            "username":"ianpaul23",
+            "email":"iansomerhalder23.com",
+            "dob":"1978-12-08",
+            "phone":" 310 953 3314",
+            "specialization":"Human-Computer Interaction(HCI) Research",
+        }
+        function populateForm() {
+            for (var key in initialProfileValues) {
+                if (initialProfileValues.hasOwnProperty(key)) {
+                    var inputField = document.getElementById(key);
+                    if (inputField) {
+                        inputField.value = initialProfileValues[key];
+                    }
+                }
+            }
+        }
+        
+        function changeEdit(){
+            isEditable = true;
+            var editButton = document.querySelector('.edit-button');
+            var cancelButton = document.querySelector('.cancel-button');
+            var submitButton = document.querySelector('.submit-button');
+            editButton.style.display = "none";
+            cancelButton.style.display = "inline";
+            submitButton.style.display = "inline";
+            for (var key in initialProfileValues) {
+                var inputField = document.getElementById(key);
+                if (inputField) {
+                    inputField.removeAttribute('readonly');
+                }
+            }
+        }
+        function cancelChanges(){
+            populateForm();
+            var editButton = document.querySelector('.edit-button');
+            var cancelButton = document.querySelector('.cancel-button');
+            var submitButton = document.querySelector('.submit-button');
+            editButton.style.display = "inline";
+            cancelButton.style.display = "none";
+            submitButton.style.display = "none";
+        }
+    
+        // Call the function when the page loads
+        window.onload = populateForm;
         function submitForm() {
-            // Get form values
-            var fullName = document.getElementById('fullName').value;
-            var username = document.getElementById('username').value;
-            var dob = document.getElementById('dob').value;
-            var email = document.getElementById('email').value;
-            var phone = document.getElementById('phone').value;
-            var specialization = document.getElementById('specialization').value;
-
-            // Display values in the preview section
-            document.getElementById('viewFullName').innerText = 'Full Name: ' + fullName;
-            document.getElementById('viewUsername').innerText = 'Username: ' + username;
-            document.getElementById('viewDOB').innerText = 'Date of Birth: ' + dob;
-            document.getElementById('viewEmail').innerText = 'Email ID: ' + email;
-            document.getElementById('viewPhone').innerText = 'Phone Number: ' + phone;
-            document.getElementById('viewSpecialization').innerText = 'Specialization: ' + specialization;
-
-            // Hide form, show preview
-            document.getElementById('profileForm').style.display = 'none';
-            document.getElementById('profileView').style.display = 'block';
+            for (var key in initialProfileValues) {
+                var inputField = document.getElementById(key);
+                initialProfileValues[key] = inputField.value;
+                inputField.setAttribute('readonly', 'true');
+            }
+            var editButton = document.querySelector('.edit-button');
+            var cancelButton = document.querySelector('.cancel-button');
+            var submitButton = document.querySelector('.submit-button');
+            editButton.style.display = "inline";
+            cancelButton.style.display = "none";
+            submitButton.style.display = "none";
         }
 
         function editProfile() {
-            // Show form, hide preview
-            document.getElementById('profileForm').style.display = 'block';
-            document.getElementById('profileView').style.display = 'none';
+        // Show form, hide preview
+        document.getElementById("profileForm").style.display = "block";
+        document.getElementById("profileView").style.display = "none";
         }
     </script>
-
-</body>
-
+  </body>
 </html>

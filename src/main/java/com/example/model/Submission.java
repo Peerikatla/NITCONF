@@ -1,4 +1,4 @@
-package com.example.model;
+/* package com.example.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,3 +59,4 @@ public class Submission {
         this.rating = rating;
     }
 }
+*/

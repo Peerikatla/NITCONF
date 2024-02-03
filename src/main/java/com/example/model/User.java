@@ -1,4 +1,4 @@
-package reviewer.model;
+package com.example.model;
 import lombok.AllArgsConstructor; 
 import lombok.Builder;
 import lombok.Data;

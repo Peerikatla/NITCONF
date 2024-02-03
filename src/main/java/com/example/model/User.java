@@ -1,105 +1,118 @@
-package com.example.model;
+package reviewer.model;
+import lombok.AllArgsConstructor; 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import org.springframework.data.annotation.Id;
-import jakarta.persistence.Column;
+
+import java.util.List;
+
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
-import java.util.Date;
-
+@Builder
 @Entity
-@Table(name = "users")
-public class User {
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="User",
+schema ="nitconf",
+uniqueConstraints= {
+		@UniqueConstraint(
+		name="emailId_unique",
+		 columnNames = { "emailId" }
+)
+})
+public class User{
+	//check for identity type in java guides there is generated value
+	//for id sequence generator see video
+	//for no null constraint @Column(name ="string name",nullable=false)
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column(nullable = false, unique = true)
-	private String username;
-
-	@Column(nullable = false)
-	private String fullName;
-
-	@Column
-	private Date dateOfBirth;
-
-	@Column(nullable = false, unique = true)
-	private String emailId;
-
-	@Column
-	private String phoneNumber;
-
-	@Column
-	private String specialization;
-
-	// getters and setters
-	public Long getId() {
-		return id;
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long userid=null;
+	private String firstName=null;
+	private String lastName=null;
+	private String username=null;
+	private String number=null;
+	private String password=null;
+	private Long paperlimit=null;
+	public Long getUserid() {
+		return userid;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
-
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	public String getUsername() {
 		return username;
 	}
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public String getFullName() {
-		return fullName;
+	public String getNumber() {
+		return number;
 	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setNumber(String number) {
+		this.number = number;
 	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
+	public String getPassword() {
+		return password;
 	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public String getEmailId() {
-		return emailId;
+	public Long getPaperlimit() {
+		return paperlimit;
 	}
-
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setPaperlimit(Long paperlimit) {
+		this.paperlimit = paperlimit;
 	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public List<String> getTags() {
+		return tags;
 	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
-
-	public String getspecialization() {
-		return specialization;
+	private List<String> tags;
+	@Override
+	public String toString() {
+		return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
+				+ ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit + ", tags=" + tags
+				+ "]";
 	}
-
-	public void setspecialization(String specialization) {
-		this.specialization = specialization;
-	}
-
-	public User(Long id, String username, String fullName, Date dateOfBirth, String emailId, String phoneNumber,
-			String specialization) {
-		this.id = id;
+	public User(Long userid, String firstName, String lastName, String emailId, String number, String password,
+			Long paperlimit, List<String> tags) {
+		super();
+		this.userid = userid;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.username = username;
-		this.fullName = fullName;
-		this.dateOfBirth = dateOfBirth;
-		this.emailId = emailId;
-		this.phoneNumber = phoneNumber;
-		this.specialization = specialization;
+		this.number = number;
+		this.password = password;
+		this.paperlimit = paperlimit;
+		this.tags = tags;
 	}
+	public User() {
+		super();
+	}
+	
+	
+	
+	
 }

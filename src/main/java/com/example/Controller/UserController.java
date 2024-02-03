@@ -1,4 +1,4 @@
-package com.example.Controller;
+/*package com.example.Controller;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,3 +13,4 @@ public class UserController {
 	    return "redirect:/profile";
 	}
 }
+*/

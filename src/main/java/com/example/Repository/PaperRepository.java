@@ -1,5 +1,7 @@
 package com.example.Repository;
 
-public class PaperRepository {
+import com.example.model.Paper;
 
+public class PaperRepository {
+	
 }

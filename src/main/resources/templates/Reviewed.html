@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -102,11 +102,11 @@
         }
     </style>
 </head>
-<body>
+<body th:object="${paper}">
 
 <header>
     <h1>
-        <a href="home.html" style="text-decoration: none; color: skyblue"
+        <a href="@{/home}" style="text-decoration: none; color: skyblue"
         >NITCONF</a
         >
     </h1>
@@ -114,13 +114,14 @@
 </header>
 
 <nav>
-    <a href="to-review.html">To Review</a>
-    <a href="reviewed.html" class="Reviewed">Reviewed</a>
-    <a href="history.html">History</a>
-    <a href="notifications.html">Notifications</a>
-    <a href="profile.html">Profile</a>
+    <a th:href="@{/to-review}">To Review</a>
+    <a th:href="@{/reviewed}" class="Reviewed">Reviewed</a>
+    <a th:href="@{/history}">History</a>
+    <a th:href="@{/notifications}">Notifications</a>
+    <a th:href="@{/profile}">Profile</a>
 </nav>
 
+<!--
 <div class="container">
     <div class="paper">
         <h2>Paper Title</h2>
@@ -133,16 +134,37 @@
         <button class="btn" onclick="editReview()">Edit Review</button>
     </div>
 </div>
+-->
+<div class="container">
+    <div class="paper">
+        <h2 th:text="${paper.title}">Paper Title</h2>
+        <p th:text="'Paper ID: ' + ${paper.paperId}">Paper ID: 12345</p>
+        <p th:text="'Deadline: ' + ${#dates.format(paper.deadline, 'MMMM dd, yyyy')}">Deadline: January 31, 2024</p>
+        <p th:text="'Revision Status: ' + ${paper.revisionStatus}">Revision Status: Pending</p>
 
-<!-- Abstract Popup -->
+        <button class="btn" onclick="openAbstractPDF()">Abstract</button>
+        <button class="btn" onclick="downloadPDF()">PDF Download</button>
+        <button class="btn" onclick="editReview()">Edit Review</button>
+    </div>
+</div>
+
+<!-- Abstract Popup 
 <div id="abstractPopup" class="popup">
     <div class="popup-content">
         <span class="close" onclick="closePopup('abstractPopup')">&times;</span>
         <iframe src="path/to/your/pdf.pdf" style="width: 100%; height: 80vh;"></iframe>
     </div>
 </div>
+-->
 
-<!-- Edit Review Popup -->
+<div id="abstractPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('abstractPopup')">&times;</span>
+        <iframe th:src="${paper.submissions[0].linkOfPdf}" style="width: 100%; height: 80vh;"></iframe>
+    </div>
+</div>
+
+<!-- Edit Review Popup
 <div id="editReviewPopup" class="popup">
     <div class="popup-content">
         <span class="close" onclick="closePopup('editReviewPopup')">&times;</span>
@@ -157,6 +179,26 @@
 
         <label for="quality">Quality:</label>
         <input type="number" id="quality" name="quality" min="1" max="5">
+
+        <button onclick="submitReview()">Submit Review</button>
+    </div>
+</div>
+-->
+
+<div id="editReviewPopup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closePopup('editReviewPopup')">&times;</span>
+        <h3>Edit Review</h3>
+        <textarea id="reviewText" th:placeholder="Write your review here..." th:text="${paper.submissions[0].comment}"></textarea>
+
+        <label for="originality">Originality:</label>
+        <input type="number" id="originality" name="originality" min="1" max="5" th:value="${paper.submissions[0].rating.originality}">
+
+        <label for="relevance">Relevance:</label>
+        <input type="number" id="relevance" name="relevance" min="1" max="5" th:value="${paper.submissions[0].rating.relevance}">
+
+        <label for="quality">Quality:</label>
+        <input type="number" id="quality" name="quality" min="1" max="5" th:value="${paper.submissions[0].rating.quality}">
 
         <button onclick="submitReview()">Submit Review</button>
     </div>

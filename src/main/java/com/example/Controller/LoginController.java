@@ -28,7 +28,7 @@ public class LoginController
 		return "loginPage";
 	}
 	@PostMapping("/login111")
-	public String loginUser(@ModelAttribute("user") User user)
+	public String loginUser(@ModelAttribute("user") User user, Model model)
 	{
 	 System.out.println(user.getUsername());
 	 System.out.println(user.getPassword());
@@ -41,9 +41,10 @@ public class LoginController
 	 {
 		return "Home";
 	}
-	 
-	
-	return "error";
+	else{
+		model.addAttribute("loginError", true);
+		return "errorlogin";
+	}
 	}
 	
 }

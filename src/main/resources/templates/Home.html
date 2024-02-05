@@ -7,145 +7,121 @@
     <style> 
         body { 
             font-family: Arial, sans-serif; 
-             /*font-size:24px;*/ 
-             text-align: center; 
-            margin:0; 
-            padding:0; 
-            background-color: white; 
+            text-align: center; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f2f2f2; 
             box-sizing: border-box; 
         } 
-         
+
         header { 
-            background:linear-gradient(to right,black,skyblue); 
-            color:skyblue; 
+            background: linear-gradient(to right, black, skyblue); 
+            color: skyblue; 
             text-align: left; 
             padding: 15px; 
             text-shadow: #333; 
-           width:auto; 
-            margin:0;  
-            border-radius:3px;
-            padding-left:15px; 
+            width: auto; 
+            margin: 0;  
+            border-radius: 3px;
+            padding-left: 15px; 
         } 
-         
+
         nav { 
             width: 50%; 
-            height:auto; 
-            background-color:white; 
+            height: auto; 
+            /background-color: white;/ 
             padding-right: 16px; 
-            float: right; 
-            /*box-shadow: 0 4px 8px rgba(4, 4, 15, 0.1);*/ 
+            margin: 20px auto; /* Center the navigation and add a gap */
         } 
-         
+
         nav a { 
-            display: block;
-            margin-bottom: 10px;
+            display: block; /* Display buttons top-down */
+            margin: 10px auto; /* Center buttons horizontally and add spacing */
             text-decoration: none;
-            color: #25234f;
+            /color: #25234f;/
             text-align: center;
-            font-size:24px;
-            border:solid;
+            font-size: 16px; /* Decreased font size */
+            border: solid;
             border-width: 1.3px;
             border-color: black;
-            border-radius:8px;
-            padding: 12px;
-            
+            border-radius: 8px;
+            padding: 4px; /* Decreased padding */
+            width: 200px; /* Decreased width */
             transition: background-color 0.3s;
-            /*backface-visibility:;*/
         } 
-         
+
         nav a:hover { 
-            background-color:lightgrey; 
+            background-color: lightgrey; 
         } 
+
         .profile-bar {
-    width: auto;
-    height: 70px;
-    background-color: rgb(74, 144, 174);
-    padding: 5px;
-    text-align: right;
-    border-radius: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Align items to the right */
-}
-
-.profile-bar h2 {
-    font-size: 24px; /* Adjusted font size */
-    color: black;
-    text-align:center;
-    margin-right: 550px; /* Add some margin between the text and icons */
-}
-
-.profile-bar a {
-    text-decoration: none;
-    color: black;
-    font-size: 28px;
-    margin-right: 10px; /* Add some margin between the icons */
-}
-
-.profile-bar img {
-    vertical-align: middle;
-}
-
-.new {
-    font-size: 24px;
-}
-
-
-        
-        .left-half { 
-        width: 50%; 
-        float: left; 
-        } 
- 
-        .left-image { 
-        width: 400px; /* Adjust as needed */ 
-        height: 340px; 
-        display: block; 
-        padding-left:20px; 
-        } 
- 
-        .container { 
-            display: flex; 
-            align-items: center; /* Center vertically */ 
-            justify-content: center; /* Center horizontally */ 
-        } 
-
-        .new{
-            font-size:24px;
+            width: auto;
+            height: 70px;
+            background-color: rgb(74, 144, 174);
+            padding: 5px;
+            text-align: right;
+            border-radius: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
- 
+
+        .profile-bar h2 {
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            margin-right: 550px;
+        }
+
+        .profile-bar a {
+            text-decoration: none;
+            color: black;
+            font-size: 28px;
+            margin-right: 10px;
+        }
+
+        .profile-bar img {
+            vertical-align: middle;
+        }
+
+        .content {
+            text-align: left;
+            max-width: 600px; 
+            margin: 20px;
+            padding: 20px;
+            
+        }
     </style> 
 </head> 
 <body> 
- 
+
     <header> 
         <h1>  
             NITCONF  
         </h1> 
         <h5 style="color:white">Precision speaks: Comment, Rate and Critique</h5> 
     </header> 
-     
+
     <div class="profile-bar"> 
         <h2 >Dashboard</h2>
-        
-            <a href="Notifications.html" title="Notifications"><span class="new">&#128276;</span></a> 
-            <a href="Profile.html" title="View Profile"><img src="../static/profile_back.png" alt="Profile" width="40" height="40"></a> 
-        
+
+        <a href="Notifications.html" title="Notifications"><span class="new">&#128276;</span></a> 
+        <a href="Profile.html" title="View Profile"><img src="../static/profile_back.png" alt="Profile" width="40" height="40"></a> 
     </div> 
- 
- 
-<div class="container"> 
-    <div class="left-half"> 
-        <img src="../static/IMG_1103.PNG" alt="Your Image" class="left-image"> 
-    </div> 
+
      
+
+    <div class="content">
+        <h2>Welcome to NITCONF Dashboard</h2>
+        <p>This is your personalized dashboard. Explore the different sections and manage your reviews efficiently.</p>
+        <!-- Add more content as needed -->
+    </div>
+
     <nav> 
-        <br><a href="To-review.html">To Review</a><br> 
-         
-        <a href="Reviewed.html">Reviewed</a><br> 
+        <a href="To-review.html">To Review</a> 
+        <a href="Reviewed.html">Reviewed</a> 
         <a href="History.html">History</a> 
     </nav> 
-</div> 
- 
+
 </body> 
 </html>

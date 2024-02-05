@@ -171,7 +171,7 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
   - **View History**: A history of papers reviewed in the past 6 months.
 
 ## Pages and Functionalities
-### 'To Review' Page
+### To Review Page
 - **Layout**: Displays assigned papers in a row-wise manner.
 - **Columns**:
   1. **Pdf id and Downloads**: Includes a pdf id, 'Abstract' and 'PDF Download' buttons.
@@ -185,7 +185,7 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
 
 
 
-### 'Reviewed' Page
+### Reviewed Page
 - **Content**: Lists all reviewed papers.
 - **Columns**:
   1. **Paper id and Downloads**: Includes a paper id, 'Abstract' and 'PDF Download' buttons.
@@ -200,7 +200,7 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
 
   
   
-### 'View History' Page
+### View History Page
 - **Content**: Lists all reviewed papers in the last 6 months.
 - **Columns**:
   1. **Downloads**: Includes'Abstract' and 'PDF Download' buttons.

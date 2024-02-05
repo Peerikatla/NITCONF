@@ -1,4 +1,4 @@
-package com.example.Security;
+/*package com.example.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,4 +54,4 @@ public class SecurityConfig {
             )
             .build();
     }
-}
+}*/

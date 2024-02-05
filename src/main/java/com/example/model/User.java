@@ -1,8 +1,8 @@
 package com.example.model;
-// import lombok.AllArgsConstructor; 
+import lombok.AllArgsConstructor; 
 import lombok.Builder;
 import lombok.Data;
-// import lombok.NoArgsConstructor;
+import lombok.NoArgsConstructor;
 
 
 import java.util.List;
@@ -18,8 +18,8 @@ import jakarta.persistence.UniqueConstraint;
 @Builder
 @Entity
 @Data
-// @AllArgsConstructor
-// @NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="User",
 schema ="nitconf",
 uniqueConstraints= {
@@ -96,8 +96,7 @@ public class User{
 				+ ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit + ", tags=" + tags
 				+ "]";
 	}
-	
-	public User(Long userid, String firstName, String lastName, String username, String number, String password,
+	public User(Long userid, String firstName, String lastName, String emailId, String number, String password,
 			Long paperlimit, List<String> tags) {
 		super();
 		this.userid = userid;

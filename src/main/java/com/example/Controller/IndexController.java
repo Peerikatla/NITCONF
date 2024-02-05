@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * The HomeController class handles requests related to the home page.
  */
 @Controller
-public class HomeController {
+public class IndexController {
 
     /**
      * Handles the request to the home page.

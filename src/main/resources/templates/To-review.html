@@ -99,33 +99,23 @@
     </style>
 
 
-    <script th:inline="javascript">
-        /*<![CDATA[*/
+    <script>
         function openReviewPopup(pdfFile) {
             var overlay = document.getElementById("overlay");
             var reviewPopup = document.getElementById("reviewPopup");
 
-            // Set up the content of the simplified popup
             var popupContent = `
                 <h2>Review Popup</h2>
-                
-                <!-- Comment textbox -->
                 <label for="comment">Comment:</label>
                 <textarea id="comment" rows="4" cols="50"></textarea>
-                
                 <br>
-                
-                <!-- Save button -->
                 <button onclick="saveComment('${pdfFile}')">Save Comment</button>
-                
                 <br>
-                
                 <button onclick="closePopup()">Close</button>
             `;
 
             reviewPopup.innerHTML = popupContent;
 
-            // Show the overlay and popup
             overlay.style.display = "block";
             reviewPopup.style.display = "block";
         }
@@ -134,11 +124,9 @@
             var comment = document.getElementById("comment").value;
             var rating = document.getElementById("selectedRating").value;
 
-            // You can send 'comment', 'pdfFile', and 'rating' to the server for storage in the database
             console.log("Comment for " + pdfFile + ": " + comment);
             console.log("Rating for " + pdfFile + ": " + rating);
 
-            // Optionally, you can close the popup after saving the comment
             closePopup();
         }
 
@@ -149,34 +137,24 @@
             overlay.style.display = "none";
             reviewPopup.style.display = "none";
         }
-        /*]]>*/
     </script>
 
 </head>
 
 <body>
-    <!--
     <header>
         <h1>
-            <a href="home.html" style="text-decoration: none; color: skyblue">NITCONF</a>
-        </h1>
-        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
-    </header>
-    -->
-
-    <header>
-        <h1>
-            <a th:href="@{/home}" style="text-decoration: none; color: skyblue">NITCONF</a>
+            <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
         </h1>
         <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
     </header>
 
     <nav>
-        <a th:href="@{/to-review}" class="To-review">To Review</a>
-        <a th:href="@{/reviewed}">Reviewed</a>
-        <a th:href="@{/history}">History</a>
-        <a th:href="@{/notifications}">Notifications</a>
-        <a th:href="@{/profile}">Profile</a>
+        <a href="/To-review" class="To-review">To Review</a>
+        <a href="/Reviewed">Reviewed</a>
+        <a href="/History">History</a>
+        <a href="/Notifications">Notifications</a>
+        <a href="/Profile">Profile</a>
     </nav>
 
     <table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
@@ -191,135 +169,26 @@
             </tr>
         </thead>
         <tbody id="pdfTableBody">
-            <!-- Iterate over Paper submissions and render table rows -->
-            <tr th:each="paper : ${papers}">
-                <td th:text="${paper.submissions.get(0).pdfFile}">File</td>
-                <td th:text="${paper.submissions.get(0).name}">Name</td>
-                <td th:text="${paper.status}">Status</td>
-                <td th:text="${paper.revisionstatus}">Revision Status</td>
-                <td th:text="${#dates.format(paper.submissions.get(0).deadline, 'dd/MM/yyyy')}">Deadline</td>
+            <tr>
+                <td>File</td>
+                <td>Name</td>
+                <td>Status</td>
+                <td>Revision Status</td>
+                <td>Deadline</td>
                 <td>
-                    <!-- Add Thymeleaf expressions for dynamic links and button click -->
-                    <a th:href="${paper.submissions.get(0).pdfLink}" target="_blank">Download</a>
+                    <a href="#" target="_blank">Download</a>
                     |
-                    <a th:href="@{/path/to/view/{pdfFile}(pdfFile=${paper.submissions.get(0).pdfFile})}"target="_blank">View</a>
+                    <a href="#" target="_blank">View</a>
                     |
-                    <!-- Pass the PDF link to the openReviewPopup function -->
-                    <button th:onclick="|openReviewPopup('${paper.submissions.get(0).pdfLink}')|">Review</button>
+                    <button onclick="openReviewPopup('pdfLink')">Review</button>
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <div th:include="popcomment:: popcomment"></div>
-
+    <div class="popup" id="reviewPopup"></div>
+    <div class="overlay" id="overlay"></div>
 
 </body>
-
-<!-- <script>
-	    document.addEventListener("DOMContentLoaded", function () {
-	        // Fetch data from your database (replace this with actual data fetching logic)
-	        // Example data
-	        var pdfData = [
-	            { pdfFile: "file1.pdf", name: "Document 1", status: "Revise", revisionStatus: 2, deadline: "25/02/2024" },
-	            { pdfFile: "file2.pdf", name: "Document 2", status: "null", revisionStatus: 0, deadline: "15/03/2024" },
-	        ];
-	
-	        var tableBody = document.getElementById("pdfTableBody");
-	
-	        pdfData.forEach(function (item) {
-	            var row = tableBody.insertRow();
-	
-	            // Insert cells
-	            var fileCell = row.insertCell(0);
-	            var nameCell = row.insertCell(1);
-	            var statusCell = row.insertCell(2);
-	            var revisionStatusCell = row.insertCell(3);
-	            var deadlineCell = row.insertCell(4);
-	            var actionCell = row.insertCell(5);
-	
-	            fileCell.textContent = item.pdfFile;
-	            nameCell.textContent = item.name;
-	            statusCell.textContent = item.status;
-	            revisionStatusCell.textContent = item.revisionStatus;
-	            deadlineCell.textContent = item.deadline;
-	
-	            // Download link
-	            var downloadLink = document.createElement("a");
-	            downloadLink.href = "path/to/download/" + item.pdfFile;
-	            downloadLink.textContent = "Download";
-	            downloadLink.setAttribute("download", "");
-	
-	            // View link
-	            var viewLink = document.createElement("a");
-	            viewLink.href = "path/to/view/" + item.pdfFile;
-	            viewLink.textContent = "View";
-	
-	            // Review button
-	            var reviewButton = document.createElement("button");
-	            reviewButton.textContent = "Review";
-	            reviewButton.onclick = function () {
-	                openReviewPopup(item.pdfFile); // Pass the PDF file name to the openReviewPopup function
-	            };
-	
-	            // Append links and button to the action cell
-	            actionCell.appendChild(downloadLink);
-	            actionCell.appendChild(document.createTextNode(" | "));
-	            actionCell.appendChild(viewLink);
-	            actionCell.appendChild(document.createTextNode(" | "));
-	            actionCell.appendChild(reviewButton);
-	        });
-	    });
-	
-	    // Function to open the simplified review popup
-	    function openReviewPopup(pdfFile) {
-	        var overlay = document.getElementById("overlay");
-	        var reviewPopup = document.getElementById("reviewPopup");
-	
-	        // Set up the content of the simplified popup
-	        var popupContent = `
-	            <h2>Review Popup</h2>
-	            
-	            <label for="comment">Comment:</label>
-	            <textarea id="comment" rows="4" cols="50"></textarea>
-	            
-	            <br>
-	            
-	            <button onclick="saveComment('${pdfFile}')">Save Comment</button>
-	            
-	            <br>
-	            
-	            <button onclick="closePopup()">Close</button>
-	        `;
-	
-	        reviewPopup.innerHTML = popupContent;
-	
-	        // Show the overlay and popup
-	        overlay.style.display = "block";
-	        reviewPopup.style.display = "block";
-	    }
-	
-	    // Function to save the comment (this can be sent to the server and stored in the database)
-	    function saveComment(pdfFile) {
-	        var comment = document.getElementById("comment").value;
-	        var rating = document.getElementById("selectedRating").value;
-	
-	        // You can send 'comment', 'pdfFile', and 'rating' to the server for storage in the database
-	        console.log("Comment for " + pdfFile + ": " + comment);
-	        console.log("Rating for " + pdfFile + ": " + rating);
-	
-	        // Optionally, you can close the popup after saving the comment
-	        closePopup();
-	    }
-	
-	    // Function to close the popup
-	    function closePopup() {
-	        var overlay = document.getElementById("overlay");
-	        var reviewPopup = document.getElementById("reviewPopup");
-	
-	        overlay.style.display = "none";
-	        reviewPopup.style.display = "none";
-	    }
-	</script> -->
 
 </html>

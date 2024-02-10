@@ -21,6 +21,7 @@ public class UserServiceimpl implements UserService {
      *
      * @param user The User object containing registration information.
      */
+    @SuppressWarnings("null")
     @Override
     public void registerUser(User user) {
         repo.save(user);

@@ -2,7 +2,7 @@ package com.example.model;
 import lombok.AllArgsConstructor; 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+// import lombok.NoArgsConstructor;
 
 
 import java.util.List;
@@ -24,7 +24,7 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+// @NoArgsConstructor
 @Table(name = "User",
         schema = "nitconf",
         uniqueConstraints = {

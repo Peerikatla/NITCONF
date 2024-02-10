@@ -1,4 +1,4 @@
-/*package com.example.model;
+package com.example.model;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class Paper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paperId;
+    private int paperId;
 
     @Column(nullable = false)
     private int status;
@@ -31,11 +31,11 @@ public class Paper {
 
     // getters and setters
 
-    public Long getPaperId() {
+    public int getPaperId() {
         return paperId;
     }
 
-    public void setPaperId(Long paperId) {
+    public void setPaperId(int paperId) {
         this.paperId = paperId;
     }
 
@@ -63,5 +63,3 @@ public class Paper {
         this.submissions = submissions;
     }
 }
-
-*/

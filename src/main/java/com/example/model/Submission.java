@@ -1,10 +1,13 @@
-/* package com.example.model;
+package com.example.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.util.Date;
@@ -15,7 +18,7 @@ public class Submission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long submissionId;
+    private int submissionId;
 
     @Column(nullable = false)
     private Date deadline;
@@ -28,12 +31,33 @@ public class Submission {
     
     @Column
     private String Link;
+    
+    @ManyToOne(targetEntity = Paper.class, optional=false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Paper paper;
 
-	public Long getSubmissionId() {
+	public Submission(int submissionId, Date deadline, String comment, int rating, String link, Paper paper) {
+		super();
+		this.submissionId = submissionId;
+		this.deadline = deadline;
+		this.comment = comment;
+		this.rating = rating;
+		Link = link;
+		this.paper = paper;
+	}
+
+	public Paper getPaper() {
+		return paper;
+	}
+
+	public void setPaper(Paper paper) {
+		this.paper = paper;
+	}
+
+	public int getSubmissionId() {
 		return submissionId;
 	}
 
-	public void setSubmissionId(Long submissionId) {
+	public void setSubmissionId(int submissionId) {
 		this.submissionId = submissionId;
 	}
 
@@ -69,19 +93,8 @@ public class Submission {
 		Link = link;
 	}
 
-	public Submission(Long submissionId, Date deadline, String comment, int rating, String link) {
-		super();
-		this.submissionId = submissionId;
-		this.deadline = deadline;
-		this.comment = comment;
-		this.rating = rating;
-		Link = link;
-	}
-
 	public Submission() {
 		super();
 	}
     
 }
-
-*/

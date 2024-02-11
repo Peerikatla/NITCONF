@@ -22,26 +22,26 @@ public interface SubmissionRepository extends CrudRepository<Submission, Integer
      */
     Optional<Submission> findBysubmissionId(int submissionId);
 
-    /**
-     * Retrieves a list of all unreviewed submissions.
-     *
-     * @return a list of unreviewed submissions
-     */
-    List<Submission> findAllUnreviewedSubmissions();
+//    /**
+//     * Retrieves a list of all unreviewed submissions.
+//     *
+//     * @return a list of unreviewed submissions
+//     */
+//    List<Submission> findAllUnreviewedSubmissions();
 
-    /**
-     * Retrieves a list of all reviewed submissions.
-     *
-     * @return a list of reviewed submissions
-     */
-    List<Submission> findAllReviewedSubmissions();
+//    /**
+//     * Retrieves a list of all reviewed submissions.
+//     *
+//     * @return a list of reviewed submissions
+//     */
+//    List<Submission> findAllReviewedSubmissions();
 
-    /**
-     * Retrieves a list of submissions for a given paper ID.
-     *
-     * @param paperId the ID of the paper
-     * @return a list of submissions for the paper
-     */
-    List<Submission> findSubmissionsForPaper(int paperId);
+//    /**
+//     * Retrieves a list of submissions for a given paper ID.
+//     *
+//     * @param paperId the ID of the paper
+//     * @return a list of submissions for the paper
+//     */
+//    List<Submission> findSubmissionsForPaper(int paperId);
 
 }

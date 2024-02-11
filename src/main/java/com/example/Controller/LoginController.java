@@ -31,8 +31,10 @@ public class LoginController {
      */
     @GetMapping("/loginPage")
     public String login(Model model) {
-        User user = new User(null, null, null, null, null, null, null, null);
+        User user = new User(null, null, null, null, null, null, null, null, null);
         model.addAttribute("user", user);
+        // Inside your controller method
+        model.addAttribute("isEditable", true);
         return "loginPage";
     }
 
@@ -57,7 +59,7 @@ public class LoginController {
 
         // If the passwords match, redirect to the home page; otherwise, show an error page.
         if (passwordMatch) {
-            return "Home";
+            return "/Home";
         }
 
         return "error";

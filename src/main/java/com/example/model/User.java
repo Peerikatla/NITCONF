@@ -1,17 +1,16 @@
 package com.example.model;
-import lombok.AllArgsConstructor; 
+// import lombok.AllArgsConstructor; 
 import lombok.Builder;
 import lombok.Data;
 // import lombok.NoArgsConstructor;
 
-
 import java.util.List;
-
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -23,7 +22,7 @@ import jakarta.persistence.UniqueConstraint;
 @Builder
 @Entity
 @Data
-@AllArgsConstructor
+// @AllArgsConstructor
 // @NoArgsConstructor
 @Table(name = "User",
         schema = "nitconf",
@@ -73,9 +72,14 @@ public class User {
     private Long paperlimit;
 
     /**
-     * The list of tags for the user.
+     * The Specialization for the user.
      */
-    private List<String> tags;
+    private String Specialization;
+
+    @OneToMany(mappedBy = "user")
+    private List<Paper> papers;
+
+    
 
     /**
      * Gets the unique identifier for the user.
@@ -185,7 +189,15 @@ public class User {
         this.password = password;
     }
 
-    /**
+    public String getSpecialization() {
+		return Specialization;
+	}
+
+	public void setSpecialization(String specialization) {
+		Specialization = specialization;
+	}
+
+	/**
      * Gets the limit of papers for the user.
      *
      * @return the paperlimit
@@ -204,59 +216,16 @@ public class User {
     }
 
     /**
-     * Gets the list of tags for the user.
-     *
-     * @return the tags
-     */
-    public List<String> getTags() {
-        return tags;
-    }
-
-    /**
-     * Sets the list of tags for the user.
-     *
-     * @param tags the tags to set
-     */
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    /**
      * Returns a string representation of the user.
      *
      * @return the string representation
      */
-    @Override
-    public String toString() {
-        return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
-                + ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit + ", tags=" + tags
-                + "]";
-    }
-
-    /**
-     * Instantiates a new user.
-     *
-     * @param userid the userid
-     * @param firstName the first name
-     * @param lastName the last name
-     * @param emailId the email id
-     * @param number the number
-     * @param password the password
-     * @param paperlimit the paperlimit
-     * @param tags the tags
-     */
-    public User(Long userid, String firstName, String lastName, String emailId, String number, String password,
-            Long paperlimit, List<String> tags, String username) {
-        super();
-        this.userid = userid;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.number = number;
-        this.password = password;
-        this.paperlimit = paperlimit;
-        this.tags = tags;
-    }
+	@Override
+	public String toString() {
+		return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
+				+ username + ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit
+				+ ", Specialization=" + Specialization + "]";
+	}
 
     /**
      * Instantiates a new user.
@@ -264,5 +233,19 @@ public class User {
     public User() {
         super();
     }
+
+	public User(Long userid, String firstName, String lastName, String username, String number, String password,
+			Long paperlimit, String specialization, List<Paper> papers) {
+		super();
+		this.userid = userid;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.number = number;
+		this.password = password;
+		this.paperlimit = paperlimit;
+		this.Specialization = specialization;
+		this.papers = papers;
+	}
 
 }

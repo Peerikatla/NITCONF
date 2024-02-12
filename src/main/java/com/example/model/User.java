@@ -24,7 +24,7 @@ import jakarta.persistence.UniqueConstraint;
 @Data
 // @AllArgsConstructor
 // @NoArgsConstructor
-@Table(name = "User",
+@Table(name = "user",
         schema = "nitconf",
         uniqueConstraints = {
                 @UniqueConstraint(

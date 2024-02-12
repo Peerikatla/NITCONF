@@ -1,22 +1,27 @@
-// package com.example.Controller;
+package com.example.Controller;
 
-// // import com.example.Service.PaperService;
-// import com.example.Service.Toreviewservice;
+import com.example.Service.Toreviewservice;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.Map;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.stereotype.Controller;
-// import org.springframework.ui.Model;
-// import org.springframework.web.bind.annotation.GetMapping;
+@RestController
+public class ToReviewController {
 
+    @Autowired
+    private Toreviewservice toreviewservice;
 
-// @Controller
-// public class ToReviewController {
+    @GetMapping("/api/to-review-submissions")
+    public List<Map<String, Object>> getAllSubmissionInfo(@RequestParam("userId") Long userId) {
+        return toreviewservice.getAllSubmissionInfo(userId);
+    }
 
-    
-
-//     // private PaperService paperService;
-
-    
-    
-// }
-
+    @PatchMapping("/api/save-comment")
+    public void saveComment(@RequestParam("paperId") int paperId, @RequestParam("submissionId") int submissionId, @RequestParam("comment") String comment, @RequestParam("rating") int rating) {
+        toreviewservice.saveComment(paperId, submissionId, comment, rating);
+    }
+}

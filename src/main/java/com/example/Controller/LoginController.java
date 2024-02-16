@@ -47,7 +47,7 @@ public class LoginController {
      * @param user The User object containing login credentials.
      * @return The view name based on the login success or failure.
      */
-    @PostMapping("/login111")
+    @PostMapping("/login23")
     public String loginUser(@ModelAttribute("user") User user, HttpSession session) {
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
@@ -63,7 +63,8 @@ public class LoginController {
         // If the passwords match, redirect to the home page; otherwise, show an error page.
         if (passwordMatch) {
             session.setAttribute("userId", userdata.getUserid());
-            return "/Home";
+            System.out.println("done");
+            return "redirect:/Home";
         }
 
         return "error";

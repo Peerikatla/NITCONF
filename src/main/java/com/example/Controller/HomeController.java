@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpSession;
 
 import com.example.Service.Reviewedservice;
 import com.example.Service.Toreviewservice;
+import com.example.Service.UserService;
+import com.example.model.User;
 
 /**
  * This class represents the controller for the home page and related functionalities.
@@ -28,6 +30,9 @@ public class HomeController {
     
     @Autowired
     private Reviewedservice reviewedservice;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * Displays the home page.
@@ -54,6 +59,7 @@ public class HomeController {
     @GetMapping("/To-review")
     public String getMethodName(Model model, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
+        System.out.println(userId);
 
         model.addAttribute("submissionInfos", toreviewservice.getAllSubmissionInfo(userId));
         return "To-review";
@@ -110,7 +116,14 @@ public class HomeController {
      */
     @Operation(summary = "Display profile page")
     @GetMapping("/Profile")
-    public String ProfilePage() {
+    public String ProfilePage(Model model, HttpSession session) {
+        System.out.println("Inside UserController - /profile");
+        Long userId = (Long) session.getAttribute("userId");
+        User user = userService.getUserById(userId);
+        model.addAttribute("user", user);
+        System.out.println(session.getAttribute("userId"));
+        System.out.println("added");
+        System.out.println(user.getSpecialization());
         return "Profile";
     }
 }

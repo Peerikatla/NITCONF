@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 // import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -70,6 +71,8 @@ public class User {
      * The limit of papers for the user.
      */
     private Long paperlimit;
+
+    private Date dateOfBirth;
 
     /**
      * The Specialization for the user.
@@ -214,28 +217,11 @@ public class User {
     public void setPaperlimit(Long paperlimit) {
         this.paperlimit = paperlimit;
     }
+    
+    
 
-    /**
-     * Returns a string representation of the user.
-     *
-     * @return the string representation
-     */
-	@Override
-	public String toString() {
-		return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
-				+ username + ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit
-				+ ", Specialization=" + Specialization + "]";
-	}
-
-    /**
-     * Instantiates a new user.
-     */
-    public User() {
-        super();
-    }
-
-	public User(Long userid, String firstName, String lastName, String username, String number, String password,
-			Long paperlimit, String specialization, List<Paper> papers) {
+    public User(Long userid, String firstName, String lastName, String username, String number, String password,
+			Long paperlimit, Date dateOfBirth, String specialization, List<Paper> papers) {
 		super();
 		this.userid = userid;
 		this.firstName = firstName;
@@ -244,8 +230,39 @@ public class User {
 		this.number = number;
 		this.password = password;
 		this.paperlimit = paperlimit;
-		this.Specialization = specialization;
+		this.dateOfBirth = dateOfBirth;
+		Specialization = specialization;
 		this.papers = papers;
 	}
+
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public List<Paper> getPapers() {
+		return papers;
+	}
+
+	public void setPapers(List<Paper> papers) {
+		this.papers = papers;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
+				+ username + ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit
+				+ ", dateOfBirth=" + dateOfBirth + ", Specialization=" + Specialization + ", papers=" + papers + "]";
+	}
+
+    /**
+     * Instantiates a new user.
+     */
+    public User() {
+        super();
+    }
 
 }

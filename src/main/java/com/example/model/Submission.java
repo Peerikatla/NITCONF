@@ -18,7 +18,7 @@ public class Submission {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int submissionId;
+	private Integer submissionId;
 
 	@Column(nullable = false)
 	private Date deadline;
@@ -30,7 +30,7 @@ public class Submission {
 	private String comment; //initially null and then updated by the reviewer to a message about what was wrong with the paper
 
 	@Column
-	private int rating; //initially null and then updated by the reviewer to a number between 1 and 5
+	private Integer rating; //initially null and then updated by the reviewer to a number between 1 and 5
 	
 	@Column
 	private String Link; //link of the pdf file submitted by the user

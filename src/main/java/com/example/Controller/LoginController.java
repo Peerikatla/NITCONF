@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.model.User;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.example.Repository.UserRepository;
 
 /**
@@ -31,8 +34,10 @@ public class LoginController {
      */
     @GetMapping("/loginPage")
     public String login(Model model) {
-        User user = new User(null, null, null, null, null, null, null, null);
+        User user = new User();
         model.addAttribute("user", user);
+        // Inside your controller method
+        model.addAttribute("isEditable", true);
         return "loginPage";
     }
 
@@ -42,8 +47,8 @@ public class LoginController {
      * @param user The User object containing login credentials.
      * @return The view name based on the login success or failure.
      */
-    @PostMapping("/login111")
-    public String loginUser(@ModelAttribute("user") User user) {
+    @PostMapping("/login23")
+    public String loginUser(@ModelAttribute("user") User user, HttpSession session) {
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
 
@@ -57,7 +62,9 @@ public class LoginController {
 
         // If the passwords match, redirect to the home page; otherwise, show an error page.
         if (passwordMatch) {
-            return "Home";
+            session.setAttribute("userId", userdata.getUserid());
+            System.out.println("done");
+            return "redirect:/Home";
         }
 
         return "error";

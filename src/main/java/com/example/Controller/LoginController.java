@@ -32,7 +32,7 @@ public class LoginController {
      * @param model The Spring Model to add attributes.
      * @return The view name for the login page.
      */
-    @GetMapping("/loginPage")
+    @GetMapping("/login")
     public String login(Model model) {
         User user = new User();
         model.addAttribute("user", user);
@@ -47,7 +47,7 @@ public class LoginController {
      * @param user The User object containing login credentials.
      * @return The view name based on the login success or failure.
      */
-    @PostMapping("/login23")
+    @PostMapping("/login")
     public String loginUser(@ModelAttribute("user") User user, HttpSession session) {
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());

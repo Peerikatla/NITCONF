@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,23 +50,27 @@
             box-shadow: 0 0 15px white;
         }
 
-        .container {
-            width: auto;
-            margin: 10px;
-            padding: 10px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            background-color: white;
+        table {
+            width: 100%;
         }
 
-        .btn {
-            background-color: #333;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 5px;
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+            /* Prevent line breaks within cells */
+        }
+
+        th {
+            background-color: #f2f2f2;
         }
 
         .popup {
@@ -74,108 +79,195 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px;
             background-color: white;
+            padding: 20px;
             border: 2px solid #333;
             border-radius: 10px;
-            z-index: 1;
-        }
-
-        .popup-content {
+            z-index: 1000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 80%;
             text-align: center;
         }
 
-        .close {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            cursor: pointer;
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
         }
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin-bottom: 10px;
+        .popup-content {
+            margin-bottom: 15px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .popup-buttons button {
+            margin: 0 10px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .popup-buttons button.save {
+            background-color:rgb(0, 0, 0);
+            color: white;
+        }
+
+        .popup-buttons button.save:hover {
+            background-color:rgb(0, 0, 0);
+        }
+
+        .popup-buttons button.close {
+            background-color:rgb(128, 128, 128);
+            color: white;
+        }
+
+        .popup-buttons button.close:hover {
+            background-color:rgb(128, 128, 128);
         }
     </style>
+
+   <script>
+    function openEditReviewPopup(paperId) {
+        var overlay = document.getElementById("overlay");
+        var editReviewPopup = document.getElementById("editReviewPopup");
+
+        var popupContent = `
+            <div class="popup-content">
+                <h2>Edit Review Popup</h2>
+                <textarea id="reviewText" rows="4" cols="50">This is the previous review text...</textarea>
+                <br>
+                <label for="originality">Originality:</label>
+                <input type="number" id="originality" name="originality" min="1" max="5">
+                <br>
+                <label for="relevance">Relevance:</label>
+                <input type="number" id="relevance" name="relevance" min="1" max="5">
+                <br>
+                <label for="quality">Quality:</label>
+                <input type="number" id="quality" name="quality" min="1" max="5">
+            </div>
+            <div class="popup-buttons">
+                <button class="save" onclick="saveEditedReview(${paperId})">Save Changes</button>
+                <button class="close" onclick="closePopup()">Close</button>
+            </div>
+        `;
+
+        editReviewPopup.innerHTML = popupContent;
+
+        overlay.style.display = "block";
+        editReviewPopup.style.display = "block";
+    }
+
+    function submitReview() {
+        const reviewData = {
+            paperId: 12345,
+            reviewText: document.getElementById('reviewText').value,
+            originality: parseInt(document.getElementById('originality').value),
+            relevance: parseInt(document.getElementById('relevance').value),
+            quality: parseInt(document.getElementById('quality').value)
+        };
+
+        fetch('/api/reviews', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            console.log('Review submitted successfully');
+        })
+        .catch(error => {
+            console.error('Error submitting review:', error);
+        });
+    }
+
+    function saveEditedReview(paperId) {
+        var reviewText = document.getElementById("reviewText").value;
+        var originality = document.getElementById("originality").value;
+        var relevance = document.getElementById("relevance").value;
+        var quality = document.getElementById("quality").value;
+
+        console.log("Edited Review for Paper ID " + paperId + ": " + reviewText);
+        console.log("Originality for Paper ID " + paperId + ": " + originality);
+        console.log("Relevance for Paper ID " + paperId + ": " + relevance);
+        console.log("Quality for Paper ID " + paperId + ": " + quality);
+
+        // Add your logic to save the edited review here
+
+        closePopup();
+    }
+
+    function closePopup() {
+        var overlay = document.getElementById("overlay");
+        var editReviewPopup = document.getElementById("editReviewPopup");
+
+        overlay.style.display = "none";
+        editReviewPopup.style.display = "none";
+    }
+</script>
+
 </head>
+
 <body>
+    <header>
+        <h1>
+            <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
+        </h1>
+        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+    </header>
 
-<header>
-    <h1>
-        <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
-    </h1>
-    <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
-</header>
-
-<nav>
-    <a href="/To-review" >To Review</a>
+    <nav>
+        <a href="/To-review">To Review</a>
         <a href="/Reviewed" class="Reviewed">Reviewed</a>
         <a href="/History">History</a>
         <a href="/Notifications">Notifications</a>
         <a href="/Profile">Profile</a>
-</nav>
+    </nav>
 
-<div class="container">
-    <div class="paper">
-        <h2>Paper Title</h2>
-        <p>Paper ID: 12345</p>
-        <p>Deadline: January 31, 2024</p>
-        <p>Revision Status: Pending</p>
+    <table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>paperId</th>
+                <th>Status</th>
+                <th>Revision Status</th>
+                <th>Deadline</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="pdfTableBody">
+            <tr>
+                <td>12345</td>
+                <td>Status</td>
+                <td>Revision Status</td>
+                <td>Deadline</td>
+                <td>
+					<a href="#" target="_blank">Abstract</a>
+                    <button onclick="openEditReviewPopup('12345')">Edit Review</button>
+                    <a href="#" target="_blank">Download</a>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        <button class="btn" onclick="openAbstractPDF()">Abstract</button>
-        <button class="btn" onclick="downloadPDF()">PDF Download</button>
-        <button class="btn" onclick="editReview()">Edit Review</button>
-    </div>
-</div>
-
-<div id="abstractPopup" class="popup">
-    <div class="popup-content">
-        <span class="close" onclick="closePopup('abstractPopup')">&times;</span>
-        <iframe src="path/to/your/pdf.pdf" style="width: 100%; height: 80vh;"></iframe>
-    </div>
-</div>
-
-<div id="editReviewPopup" class="popup">
-    <div class="popup-content">
-        <span class="close" onclick="closePopup('editReviewPopup')">&times;</span>
-        <h3>Edit Review</h3>
-        <textarea id="reviewText" placeholder="Write your review here..."></textarea>
-
-        <label for="originality">Originality:</label>
-        <input type="number" id="originality" name="originality" min="1" max="5">
-
-        <label for="relevance">Relevance:</label>
-        <input type="number" id="relevance" name="relevance" min="1" max="5">
-
-        <label for="quality">Quality:</label>
-        <input type="number" id="quality" name="quality" min="1" max="5">
-
-        <button onclick="submitReview()">Submit Review</button>
-    </div>
-</div>
-
-<script>
-    function openAbstractPDF() {
-        document.getElementById("abstractPopup").style.display = "block";
-    }
-
-    function downloadPDF() {
-        // Implement download logic here
-    }
-
-    function editReview() {
-        document.getElementById("editReviewPopup").style.display = "block";
-    }
-
-    function closePopup(popupId) {
-        document.getElementById(popupId).style.display = "none";
-    }
-
-    function submitReview() {
-        // Implement review submission logic here
-        // You may need to send data to the server for processing
-    }
-</script>
+    <div class="popup" id="editReviewPopup"></div>
+    <div class="overlay" id="overlay"></div>
 </body>
+
 </html>

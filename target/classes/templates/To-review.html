@@ -74,20 +74,23 @@
         }
 
         .popup {
-            display: none;
+            width: 60%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 10px;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border: 2px solid #333;
-            border-radius: 10px;
             z-index: 1000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            display: none;
         }
 
         .overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -95,23 +98,70 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
+            display: none;
+        }
+
+        .popup-content {
+            margin-bottom: 15px;
+        }
+
+        .popup-buttons {
+            text-align: center;
+        }
+
+        .popup-buttons button {
+            margin: 0 10px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .popup-buttons button.save {
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+
+        .popup-buttons button.save:hover {
+            background-color: rgb(0, 0, 0);
+        }
+
+        .popup-buttons button.close {
+            background-color: rgb(128, 128, 128);
+            color: white;
+        }
+
+        .popup-buttons button.close:hover {
+            background-color: rgb(128, 128, 128);
         }
     </style>
 
-
     <script>
-        function openReviewPopup(pdfFile) {
+        function openReviewPopup(paperId) {
             var overlay = document.getElementById("overlay");
             var reviewPopup = document.getElementById("reviewPopup");
 
             var popupContent = `
-                <h2>Review Popup</h2>
-                <label for="comment">Comment:</label>
-                <textarea id="comment" rows="4" cols="50"></textarea>
-                <br>
-                <button onclick="saveComment('${pdfFile}')">Save Comment</button>
-                <br>
-                <button onclick="closePopup()">Close</button>
+                <div class="popup-content">
+                    <h2>Review Paper</h2>
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" rows="4" cols="50"></textarea>
+                    <br>
+                    <label for="originality">Originality:</label>
+                    <input type="number" id="originality" name="originality" min="1" max="5">
+                    <br>
+                    <label for="relevance">Relevance:</label>
+                    <input type="number" id="relevance" name="relevance" min="1" max="5">
+                    <br>
+                    <label for="quality">Quality:</label>
+                    <input type="number" id="quality" name="quality" min="1" max="5">
+                </div>
+                <div class="popup-buttons">
+                    <button class="save" onclick="saveComment(${paperId})">Save Comment</button>
+                    <button class="close" onclick="closePopup()">Close</button>
+                </div>
             `;
 
             reviewPopup.innerHTML = popupContent;
@@ -120,12 +170,16 @@
             reviewPopup.style.display = "block";
         }
 
-        function saveComment(pdfFile) {
+        function saveComment(paperId) {
             var comment = document.getElementById("comment").value;
-            var rating = document.getElementById("selectedRating").value;
+            var originality = document.getElementById("originality").value;
+            var relevance = document.getElementById("relevance").value;
+            var quality = document.getElementById("quality").value;
 
-            console.log("Comment for " + pdfFile + ": " + comment);
-            console.log("Rating for " + pdfFile + ": " + rating);
+            console.log("Comment for Paper ID " + paperId + ": " + comment);
+            console.log("Originality for Paper ID " + paperId + ": " + originality);
+            console.log("Relevance for Paper ID " + paperId + ": " + relevance);
+            console.log("Quality for Paper ID " + paperId + ": " + quality);
 
             closePopup();
         }
@@ -138,7 +192,6 @@
             reviewPopup.style.display = "none";
         }
     </script>
-
 </head>
 
 <body>
@@ -160,8 +213,7 @@
     <table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
         <thead>
             <tr>
-                <th>PDF File</th>
-                <th>Name</th>
+                <th>paperId</th>
                 <th>Status</th>
                 <th>Revision Status</th>
                 <th>Deadline</th>
@@ -170,17 +222,15 @@
         </thead>
         <tbody id="pdfTableBody">
             <tr>
-                <td>File</td>
-                <td>Name</td>
-                <td>Status</td>
-                <td>Revision Status</td>
-                <td>Deadline</td>
+                <td>12345</td>
+                <td>NULL</td>
+                <td>0</td>
+                <td>24-02-2024</td>
                 <td>
+                    <a href="#" target="_blank">Abstract</a>
+                    <button onclick="openReviewPopup('12345')">Review</button>
                     <a href="#" target="_blank">Download</a>
-                    |
-                    <a href="#" target="_blank">View</a>
-                    |
-                    <button onclick="openReviewPopup('pdfLink')">Review</button>
+                    
                 </td>
             </tr>
         </tbody>
@@ -188,7 +238,6 @@
 
     <div class="popup" id="reviewPopup"></div>
     <div class="overlay" id="overlay"></div>
-
 </body>
 
 </html>

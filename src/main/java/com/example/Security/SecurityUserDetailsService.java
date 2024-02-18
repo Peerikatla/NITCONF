@@ -13,7 +13,6 @@ import com.example.model.User;
 @Service
 public class SecurityUserDetailsService implements UserDetailsService{
 	
-	
 	@Autowired
 	private UserRepository userRepository; 
 

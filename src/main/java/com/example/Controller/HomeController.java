@@ -126,4 +126,12 @@ public class HomeController {
         System.out.println(user.getSpecialization());
         return "Profile";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        // Invalidate the session
+        session.invalidate();
+        // Redirect to the login page
+        return "redirect:/loginPage";
+    }
 }

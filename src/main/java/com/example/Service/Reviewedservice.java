@@ -25,7 +25,7 @@ public class Reviewedservice {
         return (List<Paper>) paperRepository.findAll();
     }
 
-    public List<Map<String, Object>> getPapersWithReviews(Long userId) {
+    public List<Map<String, Object>> getPapersWithReviews(Integer userId) {
         List<Map<String, Object>> result = new ArrayList<>();
 
         List<Paper> papers = paperRepository.findPapersByUserUserid(userId);

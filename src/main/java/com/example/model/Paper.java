@@ -19,7 +19,7 @@ public class Paper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paperId;
+    private Integer paperId;
 
     @Column
     private String title;
@@ -35,11 +35,11 @@ public class Paper {
     @JoinColumn(name = "userid")
     private User user;
 
-	public int getPaperId() {
+	public Integer getPaperId() {
 		return paperId;
 	}
 
-	public void setPaperId(int paperId) {
+	public void setPaperId(Integer paperId) {
 		this.paperId = paperId;
 	}
 
@@ -81,7 +81,7 @@ public class Paper {
 				+ ", submissions=" + submissions + ", user=" + user + "]";
 	}
 
-	public Paper(int paperId, String title, int revisionStatus, List<Submission> submissions, User user) {
+	public Paper(Integer paperId, String title, int revisionStatus, List<Submission> submissions, User user) {
 		super();
 		this.paperId = paperId;
         this.title = title;

@@ -1,6 +1,9 @@
 package com.example.Repository;
 
 import com.example.model.User;
+
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByUsername(String username);
+
+    Optional<User> findByuserid(Integer userId);
 
     //User findByEmailId(String emailId);
 

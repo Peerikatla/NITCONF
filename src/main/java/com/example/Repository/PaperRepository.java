@@ -9,5 +9,5 @@ import com.example.model.Paper;
 public interface PaperRepository extends CrudRepository<Paper, Integer> {
 	Paper findByPaperId(int paperId);
 
-    List<Paper> findPapersByUserUserid(Long userId);
+    List<Paper> findPapersByUserUserid(Integer userId);
 }

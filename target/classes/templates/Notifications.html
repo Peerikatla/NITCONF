@@ -59,6 +59,22 @@
             border-radius: 10px;
             background-color: white;
         }
+
+        /* Additional styles for notification message */
+        .notification {
+            margin-top: 20px;
+            padding: 15px;
+            /*background-color: #ffeaa7;*/
+            border-left: 5px solid;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification p {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -77,9 +93,11 @@
     <a href="/Profile">Profile</a>
 </nav>
 
-
-<!--div class="container">
-
-</div> -->
+<div class="container">
+    <!-- Notification message with clickable "Click here" option -->
+    <div class="notification">
+        <p>You have been assigned to review paper 12345. Please <a href="/To-review" style="text-decoration: underline; color: blue;">click here</a> to start reviewing.</p>
+    </div>
+</div>
 </body>
 </html>

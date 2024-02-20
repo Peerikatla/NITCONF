@@ -28,7 +28,7 @@ public class Toreviewservice {
         return (List<Paper>) paperRepository.findAll();
     }
 
-    public List<Map<String, Object>> getAllSubmissionInfo(Long userId) {
+    public List<Map<String, Object>> getAllSubmissionInfo(Integer userId) {
         List<Map<String, Object>> submissionInfos = new ArrayList<>();
         List<Paper> papers = (List<Paper>) paperRepository.findPapersByUserUserid(userId);
 
@@ -55,7 +55,7 @@ public class Toreviewservice {
         return submissionInfos;
     }
 
-    public void saveComment(int paperId, int submissionId, String comment, int rating) {
+    public void saveComment(Integer paperId, Integer submissionId, String comment, int rating) {
         findPaperById(paperId).getSubmissions().stream()
                 .filter(submission -> submission.getSubmissionId() == submissionId)
                 .findFirst()
@@ -65,7 +65,7 @@ public class Toreviewservice {
                 });
     }
 
-    private Paper findPaperById(int paperId) {
+    private Paper findPaperById(Integer paperId) {
         return papers.stream()
                 .filter(paper -> paper.getPaperId() == paperId)
                 .findFirst()

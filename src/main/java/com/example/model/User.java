@@ -33,7 +33,7 @@ public class User {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userid;
+    private Integer userid;
 
     /**
      * The first name of the user.
@@ -82,7 +82,7 @@ public class User {
      *
      * @return the userid
      */
-    public Long getUserid() {
+    public Integer getUserid() {
         return userid;
     }
 
@@ -91,7 +91,7 @@ public class User {
      *
      * @param userid the userid to set
      */
-    public void setUserid(Long userid) {
+    public void setUserid(Integer userid) {
         this.userid = userid;
     }
 
@@ -213,7 +213,7 @@ public class User {
     
     
 
-    public User(Long userid, String firstName, String lastName, String username, String number, String password,
+    public User(Integer userid, String firstName, String lastName, String username, String number, String password,
 			Long paperlimit, Date dateOfBirth, String specialization, List<Paper> papers) {
 		super();
 		this.userid = userid;

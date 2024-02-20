@@ -18,9 +18,8 @@ public class UserService {
     @Autowired
 	private UserRepository userRepository;
 
-    @SuppressWarnings("null")
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+    public User getUserById(Integer userId) {
+        return userRepository.findByuserid(userId).orElse(null);
     }
 
     @SuppressWarnings("null")

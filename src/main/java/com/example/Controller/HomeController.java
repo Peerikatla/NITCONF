@@ -58,7 +58,7 @@ public class HomeController {
     })
     @GetMapping("/To-review")
     public String getMethodName(Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId");
         System.out.println(userId);
 
         model.addAttribute("submissionInfos", toreviewservice.getAllSubmissionInfo(userId));
@@ -77,7 +77,7 @@ public class HomeController {
     })
     @GetMapping("/Reviewed")
     public String ReviewedPage(Model model, HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId");
         List<Map<String, Object>> reviewedPapers = reviewedservice.getPapersWithReviews(userId);
         model.addAttribute("reviewedPapers", reviewedPapers);
         return "Reviewed";
@@ -118,7 +118,7 @@ public class HomeController {
     @GetMapping("/Profile")
     public String ProfilePage(Model model, HttpSession session) {
         System.out.println("Inside UserController - /profile");
-        Long userId = (Long) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId");
         User user = userService.getUserById(userId);
         model.addAttribute("user", user);
         System.out.println(session.getAttribute("userId"));

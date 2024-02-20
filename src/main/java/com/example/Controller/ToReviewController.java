@@ -24,12 +24,12 @@ public class ToReviewController {
     }
 
     @GetMapping("/submissions/{userId}")
-    public List<Map<String, Object>> getAllSubmissionInfo(@RequestParam("userId") Long userId) {
+    public List<Map<String, Object>> getAllSubmissionInfo(@RequestParam("userId") Integer userId) {
         return toreviewservice.getAllSubmissionInfo(userId);
     }
 
     @PatchMapping("/papers/{paperId}/submissions/{submissionId}/comment")
-    public void saveComment(@PathVariable int paperId, @PathVariable int submissionId, @RequestParam String comment,
+    public void saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId, @RequestParam String comment,
             @RequestParam int rating) {
         toreviewservice.saveComment(paperId, submissionId, comment, rating);
     }

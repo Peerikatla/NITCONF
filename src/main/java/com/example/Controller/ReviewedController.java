@@ -22,7 +22,7 @@ public class ReviewedController {
     }
 
     @GetMapping("/papers/{userId}/reviews")
-    public List<Map<String, Object>> getPapersWithReviews(@PathVariable Long userId) {
+    public List<Map<String, Object>> getPapersWithReviews(@PathVariable Integer userId) {
         return reviewedservice.getPapersWithReviews(userId);
     }
 

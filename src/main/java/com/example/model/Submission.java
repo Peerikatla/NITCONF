@@ -43,7 +43,7 @@ public class Submission {
 		super();
 	}
 
-	public Submission(int submissionId, Date deadline, String status, String comment, int rating, String link, Paper paper) {
+	public Submission(Integer submissionId, Date deadline, String status, String comment, int rating, String link, Paper paper) {
 		super();
 		this.submissionId = submissionId;
 		this.deadline = deadline;
@@ -54,11 +54,11 @@ public class Submission {
 		this.paper = paper;
 	}
 
-	public int getSubmissionId() {
+	public Integer getSubmissionId() {
 		return submissionId;
 	}
 
-	public void setSubmissionId(int submissionId) {
+	public void setSubmissionId(Integer submissionId) {
 		this.submissionId = submissionId;
 	}
 

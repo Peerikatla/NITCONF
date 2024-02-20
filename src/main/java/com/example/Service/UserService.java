@@ -27,9 +27,8 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
-    public void updateUserProfileFields(Long userId, String firstName, String lastName, String username, String number, String specialization, Date dateOfBirth) {
-        @SuppressWarnings("null")
-        User user = userRepository.findById(userId).orElse(null);
+    public void updateUserProfileFields(Integer userId, String firstName, String lastName, String username, String number, String specialization, Date dateOfBirth) {
+        User user = userRepository.findByuserid(userId).orElse(null);
         if (user != null) {
             user.setFirstName(firstName);
             user.setLastName(lastName);

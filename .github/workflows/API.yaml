@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  title: NITCONF Reviewers API
+  description: API documentation for the reviewers module of the NITCONF project.
+  version: 1.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/PEERIKATLAB210558CS/CONF/1.0.0
+  - url: http://localhost:8080  # Update with your server URL
+paths:
+  /papers/to-review:
+    get:
+      summary: Retrieve Papers to Review
+      description: Get a list of papers assigned to the current user for review.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToReviewPaper'
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+  /papers/{paperId}/review:
+    put:
+      summary: Submit Review
+      description: Submit a review for a specific paper.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: paperId
+          in: path
+          description: ID of the paper to review
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: Review submitted successfully
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+  /papers/reviewed:
+    get:
+      summary: Retrieve Reviewed Papers
+      description: Get a list of papers reviewed by the current user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewedPaper'
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+  /papers/history:
+    get:
+      summary: Retrieve History Papers
+      description: Get a list of papers from history.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistoryPaper'
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+  /papers/{paperId}:
+    get:
+      summary: Get Paper Details
+      description: Get details of a specific paper by ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: paperId
+          in: path
+          description: ID of the paper
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Paper'
+                  - $ref: '#/components/schemas/HistoryPaper'
+        '404':
+          description: Paper not found
+  /notifications:
+    get:
+      summary: Get Notifications
+      description: Get notifications for the current user.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+  /profile:
+    get:
+      summary: Get User Profile
+      description: Retrieve user profile details.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+    put:
+      summary: Update User Profile
+      description: Update user profile details.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          description: Profile updated successfully
+        '401':
+          description: Unauthorized - Missing or invalid authentication token
+
+components:
+  schemas:
+    Paper:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        abstract:
+          type: string
+        deadline:
+          type: string
+          format: date-time
+        revisionStatus:
+          type: integer
+          enum: [0,1,2,3,4]
+        status:
+          type: string
+          enum: [Accept, Reject,Pending, Revise]
+        pdfDownload:
+          type: string
+    Review:
+      type: object
+      properties:
+        comment:
+          type: string
+        rating:
+          $ref: '#/components/schemas/Rating'
+    Rating:
+      type: object
+      properties:
+        relevance:
+          type: number
+        originality:
+          type: number
+        quality:
+          type: number
+    ReviewedPaper:
+      allOf:
+        - $ref: '#/components/schemas/Paper'
+        - type: object
+          properties:
+            review:
+              $ref: '#/components/schemas/Review'
+            editReviewSection:
+              type: object
+              properties:
+                comment:
+                  type: string
+                rating:
+                  $ref: '#/components/schemas/Rating'
+    ToReviewPaper:
+      allOf:
+        - $ref: '#/components/schemas/Paper'
+        - type: object
+          properties: 
+            review:
+              $ref: '#/components/schemas/Review'
+            reviewSection:
+              type: object
+              properties:
+                comment:
+                  type: string
+                rating:
+                  $ref: '#/components/schemas/Rating'
+    HistoryPaper:
+      allOf:
+        - $ref: '#/components/schemas/Paper'
+        - type: object
+          properties: 
+            readOnlySection:
+              type: object
+              properties:
+                comment:
+                  type: string
+                rating:
+                  $ref: '#/components/schemas/Rating'
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    UserProfile:
+      type: object
+      properties:
+        fullName:
+          type: string
+        emailId:
+          type: string
+          format: email
+        username:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        phoneNumber:
+          type: string
+        specialization:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

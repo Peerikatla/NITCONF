@@ -62,7 +62,7 @@ public class Reviewedservice {
                 .orElse(null);
     }
 
-    public void updatecomment(int paperId, int submissionId, String comment, int rating) {
+    public void updatecomment(Integer paperId, Integer submissionId, String comment, int  rating) {
         findPaperById(paperId).getSubmissions().stream()
                 .filter(submission -> submission.getSubmissionId() == submissionId)
                 .findFirst()
@@ -72,3 +72,6 @@ public class Reviewedservice {
                 });
     }
 }
+
+
+

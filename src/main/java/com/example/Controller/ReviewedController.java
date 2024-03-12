@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * This class represents the controller for handling requests related to reviewed papers.
@@ -24,7 +25,7 @@ public class ReviewedController {
      *
      * @return a list of papers with submissions
      */
-    @GetMapping("/papers")
+    @GetMapping("/submittedpapers")
     public List<Paper> getAllPapersWithSubmissions() {
         return reviewedservice.getAllPapersWithSubmissions();
     }
@@ -48,11 +49,11 @@ public class ReviewedController {
      * @param comment      the new comment
      * @param rating       the new rating
      */
-    @PatchMapping("/papers/{paperId}/submissions/{submissionId}/comment")
-    public void updateComment(@PathVariable int paperId,
-                              @PathVariable int submissionId,
-                              @RequestParam String comment,
-                              @RequestParam int rating) {
+    @PatchMapping("/reviewed/papers/{paperId}/submissions/{submissionId}/comment")
+    public void updateCommentAndRating(@PathVariable Integer paperId,
+                                       @PathVariable Integer submissionId,
+                                       @RequestParam String comment,
+                                       @RequestParam int rating) {
         reviewedservice.updatecomment(paperId, submissionId, comment, rating);
     }
 }

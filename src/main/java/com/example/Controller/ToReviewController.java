@@ -1,3 +1,4 @@
+
 package com.example.Controller;
 
 import com.example.Service.Toreviewservice;
@@ -52,7 +53,7 @@ public class ToReviewController {
      * @param comment      The comment to be saved.
      * @param rating       The rating to be saved.
      */
-    @PatchMapping("/papers/{paperId}/submissions/{submissionId}/comment")
+    @PatchMapping("/to-review/papers/{paperId}/submissions/{submissionId}/comment")
     public void saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId, @RequestParam String comment,
                             @RequestParam int rating) {
         toreviewservice.saveComment(paperId, submissionId, comment, rating);

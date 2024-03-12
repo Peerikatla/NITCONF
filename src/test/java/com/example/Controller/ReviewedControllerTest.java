@@ -8,18 +8,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ReviewedController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ReviewedControllerTest {
 
     @Autowired
@@ -37,6 +43,7 @@ public class ReviewedControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
+    @SuppressWarnings("null")
     @Test
     public void testGetAllPapersWithSubmissions() throws Exception {
         // Mock data
@@ -44,14 +51,18 @@ public class ReviewedControllerTest {
         // Mock service behavior
         when(reviewedservice.getAllPapersWithSubmissions()).thenReturn(Collections.singletonList(paper));
 
-        // Perform GET request
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/papers"))
-                // Validate response status
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                // Validate response body
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(paper.getPaperId()));
+        // Perform GET request to API endpoint
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/submittedpapers"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(paper.getPaperId()))
+                .andExpect(jsonPath("$[0].title").value(paper.getTitle()));
+
+        // Verify service method is called
+        verify(reviewedservice, times(1)).getAllPapersWithSubmissions();
     }
 
+    @SuppressWarnings("null")
     @Test
     public void testGetPapersWithReviews() throws Exception {
         // Mock data
@@ -60,30 +71,67 @@ public class ReviewedControllerTest {
         // Mock service behavior
         when(reviewedservice.getPapersWithReviews(userId)).thenReturn(papersWithReviews);
 
-        // Perform GET request
+        // Perform GET request to API endpoint
         mockMvc.perform(MockMvcRequestBuilders.get("/api/papers/{userId}/reviews", userId))
-                // Validate response status
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                // Validate response body
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0]").exists());
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0]").value(Collections.emptyMap()));
+
+        // Verify service method is called
+        verify(reviewedservice, times(1)).getPapersWithReviews(userId);
     }
 
     @Test
-    public void testUpdateComment() throws Exception {
+    public void testUpdateCommentAndRating() throws Exception {
         // Mock data
         int paperId = 1;
         int submissionId = 1;
-        String comment = "Test comment";
-        int rating = 5;
+        String comment = "Updated comment";
+        int rating = 4;
 
-        // Perform PATCH request
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
-                        .param("comment", comment)
-                        .param("rating", String.valueOf(rating)))
-                // Validate response status
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        // Perform PATCH request to API endpoint
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
+                .param("comment", comment)
+                .param("rating", String.valueOf(rating)))
+                .andExpect(status().isOk());
 
         // Verify service method is called with correct arguments
         verify(reviewedservice, times(1)).updatecomment(paperId, submissionId, comment, rating);
+    }
+
+    @Test
+    public void testUpdateCommentAndRatingWithInvalidRating() throws Exception {
+        // Mock data
+        int paperId = 1;
+        int submissionId = 1;
+        String comment = "Updated comment";
+        int rating = 6; // Invalid rating
+
+        // Perform PATCH request to API endpoint with invalid rating
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
+                .param("comment", comment)
+                .param("rating", String.valueOf(rating)))
+                .andExpect(status().isBadRequest());
+
+        // Verify service method is not called
+        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, rating);
+    }
+
+    @Test
+    public void testUpdateCommentAndRatingWithEmptyComment() throws Exception {
+        // Mock data
+        int paperId = 1;
+        int submissionId = 2;
+        String comment = ""; // Empty comment
+        int rating = 4;
+
+        // Perform PATCH request to API endpoint with empty comment
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
+                .param("comment", comment)
+                .param("rating", String.valueOf(rating)))
+                .andExpect(status().isBadRequest());
+
+        // Verify service method is not called
+        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, rating);
     }
 }

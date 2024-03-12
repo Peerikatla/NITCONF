@@ -2,96 +2,85 @@ package com.example.Controller;
 
 import com.example.Service.UserService;
 import com.example.model.User;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+// import org.junit.jupiter.api.extension.ExtendWith;
+// import org.mockito.Mock;
+// import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+// import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+// @ExtendWith({SpringExtension.class, MockitoExtension.class})
+@WebMvcTest(UserController.class)
+@AutoConfigureMockMvc
 public class UserControllerTest {
 
-    @Mock
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
     private UserService userService;
 
-    @InjectMocks
-    private UserController userController;
-
-    @SuppressWarnings("deprecation")
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-
+    @SuppressWarnings("null")
     @Test
-    public void testGetUserProfile() {
-        // Mock data
+    public void testGetUserProfile() throws Exception {
         int userId = 1;
         User user = new User();
         user.setUserid(userId);
-        // Mock service behavior
         when(userService.getUserById(userId)).thenReturn(user);
 
-        // Call controller method
-        ResponseEntity<User> response = userController.getUserProfile(userId);
-
-        // Verify service method is called
-        verify(userService, times(1)).getUserById(userId);
-
-        // Assert response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(user, response.getBody());
+        mockMvc.perform(get("/api/profiles/{userId}", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userid").value(userId));
     }
 
+    @SuppressWarnings("null")
     @Test
-    public void testUpdateUserProfile() {
-        // Mock data
+    public void testUpdateUserProfile() throws Exception {
         int userId = 1;
-        User existingUser = new User();
-        existingUser.setUserid(userId);
         User updatedUser = new User();
         updatedUser.setUserid(userId);
-        // Mock service behavior
-        when(userService.getUserById(userId)).thenReturn(existingUser);
         when(userService.updateUserProfile(updatedUser)).thenReturn(updatedUser);
 
-        // Call controller method
-        ResponseEntity<User> response = userController.updateUserProfile(userId, updatedUser);
-
-        // Verify service methods are called
-        verify(userService, times(1)).getUserById(userId);
-        verify(userService, times(1)).updateUserProfile(updatedUser);
-
-        // Assert response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(updatedUser, response.getBody());
+        mockMvc.perform(put("/api/profiles/{userId}", userId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"userid\":1}"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.userid").value(userId));
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("null")
     @Test
-    public void testUpdateProfileFields() {
-        // Mock data
+    public void testUpdateProfileFields() throws Exception {
         int userId = 1;
-        String firstName = "John";
-        String lastName = "Doe";
-        String username = "johndoe";
-        String number = "1234567890";
-        String specialization = "Software Engineering";
-        Date dateOfBirth = new Date(2000, 1, 1);
+        String firstName = "Naveen";
+        String lastName = "Kavuru";
+        String username = "TheNaveen";
+        String number = "9182514197";
+        String specialization = "DSA";
+        @SuppressWarnings("deprecation")
+        Date dateOfBirth = new Date(2004, 9, 20);
 
-        // Call controller method
-        ResponseEntity<User> response = userController.updateProfileFields(userId, firstName, lastName, username, number, specialization, dateOfBirth);
-
-        // Verify service method is called
-        verify(userService, times(1)).updateUserProfileFields(userId, firstName, lastName, username, number, specialization, dateOfBirth);
-
-        // Assert response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        mockMvc.perform(patch("/api/profiles/{userId}", userId)
+                .param("firstName", firstName)
+                .param("lastName", lastName)
+                .param("username", username)
+                .param("number", number)
+                .param("specialization", specialization)
+                .param("dateOfBirth", dateOfBirth.toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }

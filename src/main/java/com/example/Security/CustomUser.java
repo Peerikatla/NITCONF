@@ -57,4 +57,8 @@ public class CustomUser implements UserDetails{
 		return true;
 	}
 
+	public Integer getUserId() {
+		return user.getUserid();
+	}
+
 }

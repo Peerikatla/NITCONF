@@ -27,11 +27,10 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
-    public void updateUserProfileFields(Integer userId, String firstName, String lastName, String username, String number, String specialization, Date dateOfBirth) {
+    public void updateUserProfileFields(Integer userId, String fullName, String username, String number, String specialization, Date dateOfBirth) {
         User user = userRepository.findByuserid(userId).orElse(null);
         if (user != null) {
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
+            user.setFullName(fullName);
             user.setUsername(username);
             user.setNumber(number);
             user.setSpecialization(specialization);

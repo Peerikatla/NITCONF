@@ -30,7 +30,7 @@ public class Toreviewservice {
 
     public List<Map<String, Object>> getAllSubmissionInfo(Integer userId) {
         List<Map<String, Object>> submissionInfos = new ArrayList<>();
-        List<Paper> papers = (List<Paper>) paperRepository.findPapersByUserUserid(userId);
+        List<Paper> papers = (List<Paper>) paperRepository.findPapersByUserId(userId);
 
         if (papers == null) {
             return submissionInfos;

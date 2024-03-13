@@ -19,7 +19,8 @@ import com.example.Service.UserService;
 import com.example.model.User;
 
 /**
- * This class represents the controller for the home page and related functionalities.
+ * This class represents the controller for the home page and related
+ * functionalities.
  */
 @Controller
 @RequestMapping("/")
@@ -27,12 +28,16 @@ public class HomeController {
 
     @Autowired
     private Toreviewservice toreviewservice;
-    
+
     @Autowired
     private Reviewedservice reviewedservice;
 
     @Autowired
     private UserService userService;
+
+    private Integer GetUserId(HttpSession session) {
+        return (Integer) session.getAttribute("userid");
+    }
 
     /**
      * Displays the home page.
@@ -41,7 +46,16 @@ public class HomeController {
      */
     @Operation(summary = "Display home page")
     @GetMapping("/Home")
-    public String showHomePage() {
+    public String showHomePage(HttpSession session) {
+        // System.out.println("Session ID in HomeController.showHomePage: " +
+        // session.getAttribute("userid")); // Print session ID for debugging
+        Integer userId = GetUserId(session);
+        if (userId != null) {
+            System.out.println("User ID in HomeController.showHomePage: " + userId); // Print retrieved userId for
+                                                                                     // debugging
+            // Use userId for further logic (e.g., model.addAttribute("userInformation",
+            // userService.getUserById(userId));)
+        }
         return "Home";
     }
 
@@ -53,15 +67,30 @@ public class HomeController {
      */
     @Operation(summary = "Retrieve submission information for review")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
-        @ApiResponse(responseCode = "404", description = "Submission information not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
+            @ApiResponse(responseCode = "404", description = "Submission information not found")
     })
     @GetMapping("/To-review")
-    public String getMethodName(Model model, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
-        System.out.println(userId);
+    public String Toreviewpage(Model model, HttpSession session) {
+        Integer userId = GetUserId(session);
+        System.out.println("User ID in Toreviewpage: " + userId); // Print retrieved userId for debugging
 
-        model.addAttribute("submissionInfos", toreviewservice.getAllSubmissionInfo(userId));
+        List<Map<String, Object>> submissionInfos = toreviewservice.getAllSubmissionInfo(userId);
+
+        System.out.println("Retrieved Submission Information:");
+        if (submissionInfos != null) {
+            System.out.println("Number of submissions: " + submissionInfos.size());
+            for (Map<String, Object> submissionInfo : submissionInfos) {
+                System.out.println("  - Title: " + submissionInfo.get("title"));
+                System.out.println("  - Submission Status: " + submissionInfo.get("submissionStatus"));
+                System.out.println("  - Revision Status: " + submissionInfo.get("revisionStatus"));
+                System.out.println("  - Deadline: " + submissionInfo.get("deadline"));
+            }
+        } else {
+            System.out.println("No submissions found for user.");
+        }
+
+        model.addAttribute("submissionInfos", submissionInfos);
         return "To-review";
     }
 
@@ -72,12 +101,12 @@ public class HomeController {
      */
     @Operation(summary = "Display reviewed page")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
-        @ApiResponse(responseCode = "404", description = "Submission information not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
+            @ApiResponse(responseCode = "404", description = "Submission information not found")
     })
     @GetMapping("/Reviewed")
     public String ReviewedPage(Model model, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = GetUserId(session);
         List<Map<String, Object>> reviewedPapers = reviewedservice.getPapersWithReviews(userId);
         model.addAttribute("reviewedPapers", reviewedPapers);
         return "Reviewed";
@@ -90,11 +119,11 @@ public class HomeController {
      */
     @Operation(summary = "Display history page")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
-        @ApiResponse(responseCode = "404", description = "Submission information not found")
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved submission information"),
+            @ApiResponse(responseCode = "404", description = "Submission information not found")
     })
     @GetMapping("/History")
-    public String HistoryPage( Model model, HttpSession session) {
+    public String HistoryPage(Model model, HttpSession session) {
         return "History";
     }
 
@@ -116,8 +145,10 @@ public class HomeController {
      */
     @GetMapping("/Profile")
     public String ProfilePage(Model model, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = GetUserId(session);
+        System.out.println("User ID in ProfilePage: " + userId);
         User user = userService.getUserById(userId);
+        System.out.println(user.toString());
         model.addAttribute("user", user);
         return "Profile";
     }

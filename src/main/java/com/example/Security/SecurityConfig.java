@@ -45,6 +45,7 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("SecurityConfig.filterChain()");
         return http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/Home").permitAll()
@@ -52,7 +53,19 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .permitAll()
-                        .defaultSuccessUrl("/Home", true))
+                        .defaultSuccessUrl("/Home", true)
+                        .successHandler((request, response, authentication) -> {
+                            // Get the authenticated user (CustomUser)
+                            CustomUser customUser = (CustomUser) authentication.getPrincipal();
+
+                            // Extract userid from CustomUser
+                            Integer userId = customUser.getUserId();
+
+                            // Store userid in session
+                            request.getSession().setAttribute("userid", userId);
+                            System.out.println("Userid: " + userId);
+                            response.sendRedirect("/Home");
+                        }))
                 .logout(logout -> logout
                         .permitAll())
                 .build();

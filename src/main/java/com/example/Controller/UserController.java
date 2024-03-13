@@ -71,13 +71,12 @@ public class UserController {
      */
     @PatchMapping("/{userId}")
     public ResponseEntity<User> updateProfileFields(@PathVariable Integer userId,
-                                                    @RequestParam String firstName,
-                                                    @RequestParam String lastName,
+                                                    @RequestParam String fullName,
                                                     @RequestParam String username,
                                                     @RequestParam String number,
                                                     @RequestParam String specialization,
                                                     @RequestParam Date dateOfBirth) {
-        userService.updateUserProfileFields(userId, firstName, lastName, username, number, specialization, dateOfBirth);
+        userService.updateUserProfileFields(userId, fullName, username, number, specialization, dateOfBirth);
         User updatedUser = userService.getUserById(userId);
         if (updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

@@ -28,6 +28,8 @@ public class LoginController {
         User userdata = repo.findByUsername(user.getUsername());
         if (userdata != null && userdata.getPassword().equals(user.getPassword())) {
             session.setAttribute("userId", userdata.getUserid());
+            // System.out.println(user.getUserid());
+            // System.out.println(userdata.getUserid());
             return "redirect:/Home";
         }
         return "error";

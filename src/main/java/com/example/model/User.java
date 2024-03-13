@@ -36,14 +36,9 @@ public class User {
     private Integer userid;
 
     /**
-     * The first name of the user.
+     * The full name of the user.
      */
-    private String firstName;
-
-    /**
-     * The last name of the user.
-     */
-    private String lastName;
+    private String fullName;
 
     /**
      * The username of the user.
@@ -66,6 +61,8 @@ public class User {
     private Long paperlimit;
 
     private Date dateOfBirth;
+
+    private String email;
 
     /**
      * The Specialization for the user.
@@ -96,39 +93,21 @@ public class User {
     }
 
     /**
-     * Gets the first name of the user.
+     * Gets the full name of the user.
      *
-     * @return the firstName
+     * @return the fullName
      */
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
     /**
-     * Sets the first name of the user.
+     * Sets the full name of the user.
      *
-     * @param firstName the firstName to set
+     * @param fullName the fullName to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets the last name of the user.
-     *
-     * @return the lastName
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets the last name of the user.
-     *
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     /**
@@ -145,7 +124,7 @@ public class User {
      *
      * @param username the username to set
      */
-    public void setUsername(String username) {
+    public void     setUsername(String username) {
         this.username = username;
     }
 
@@ -213,17 +192,17 @@ public class User {
     
     
 
-    public User(Integer userid, String firstName, String lastName, String username, String number, String password,
-			Long paperlimit, Date dateOfBirth, String specialization, List<Paper> papers) {
+    public User(Integer userid, String fullName, String username, String number, String password,
+			Long paperlimit, Date dateOfBirth, String email, String specialization, List<Paper> papers) {
 		super();
 		this.userid = userid;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.fullName = fullName;
 		this.username = username;
 		this.number = number;
 		this.password = password;
 		this.paperlimit = paperlimit;
 		this.dateOfBirth = dateOfBirth;
+        this.email = email;
 		Specialization = specialization;
 		this.papers = papers;
 	}
@@ -236,6 +215,14 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String setEmail(String email) {
+        return this.email = email;
+    }
+
 	public List<Paper> getPapers() {
 		return papers;
 	}
@@ -246,9 +233,9 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userid=" + userid + ", firstName=" + firstName + ", lastName=" + lastName + ", username="
+		return "User [userid=" + userid + ", fullName=" + fullName + ", username="
 				+ username + ", number=" + number + ", password=" + password + ", paperlimit=" + paperlimit
-				+ ", dateOfBirth=" + dateOfBirth + ", Specialization=" + Specialization + ", papers=" + papers + "]";
+				+ ", dateOfBirth=" + dateOfBirth + ", email=" + email + ", Specialization=" + Specialization + "]";
 	}
 
     /**

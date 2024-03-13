@@ -28,7 +28,7 @@ public class Reviewedservice {
     public List<Map<String, Object>> getPapersWithReviews(Integer userId) {
         List<Map<String, Object>> result = new ArrayList<>();
 
-        List<Paper> papers = paperRepository.findPapersByUserUserid(userId);
+        List<Paper> papers = paperRepository.findPapersByUserId(userId);
 
         for (Paper paper : papers) {
             boolean hasReview = paper.getSubmissions().stream()

@@ -114,24 +114,18 @@ public class HomeController {
      *
      * @return The name of the profile page view.
      */
-    @Operation(summary = "Display profile page")
     @GetMapping("/Profile")
     public String ProfilePage(Model model, HttpSession session) {
-        System.out.println("Inside UserController - /profile");
         Integer userId = (Integer) session.getAttribute("userId");
         User user = userService.getUserById(userId);
         model.addAttribute("user", user);
-        System.out.println(session.getAttribute("userId"));
-        System.out.println("added");
-        System.out.println(user.getSpecialization());
         return "Profile";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        // Invalidate the session
         session.invalidate();
-        // Redirect to the login page
-        return "redirect:/loginPage";
+        return "redirect:/login";
     }
+
 }

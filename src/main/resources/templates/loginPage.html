@@ -6,37 +6,34 @@
     <title>Reviewer Login</title> 
     <style> 
         header { 
-            background:linear-gradient(to right, black, skyblue); 
+            background: linear-gradient(to right, black, skyblue); 
             color: skyblue; 
             text-align: left; 
             padding: 15px; 
             text-shadow: #333; 
-           width:100%; 
-            margin:0;  
-            padding-left:45px; 
+            width: 100%; 
+            margin: 0;  
+            padding-left: 45px; 
         } 
- 
+
         body { 
             font-family: Arial, sans-serif; 
-            background-color:white; 
+            background-color: white; 
             margin: 0; 
             padding: 0; 
             display: flex; 
             align-items: center; 
-           justify-content: center; 
+            justify-content: center; 
             flex-direction: column; 
-          /* height: 100vh;*/ 
-            margin-top:0; 
+            margin-top: 0; 
         } 
-         
- 
+
         h2, p { 
             color: black; 
             text-align: center; 
-            margin: 0; /* Added to remove default margin */ 
- 
+            margin: 0; 
         } 
- 
+
         form { 
             background-color: white; 
             padding: 40px; 
@@ -46,17 +43,15 @@
             height: 275px; 
             position: relative; 
             margin-top: 20px; 
-            border:solid; 
-            border-color:black; 
+            border: solid; 
+            border-color: black; 
         } 
- 
-         
- 
+
         label { 
             display: block; 
             margin-bottom: 8px; 
         } 
- 
+
         input { 
             width: 100%; 
             padding: 10px; 
@@ -66,7 +61,7 @@
             box-sizing: border-box; 
             font-size: 16px; 
         } 
- 
+
         button { 
             background-color: #4caf50; 
             color: white; 
@@ -74,62 +69,49 @@
             border: none; 
             border-radius: 4px; 
             cursor: pointer; 
-            width:100%; 
+            width: 100%; 
             font-size: 18px; 
         } 
-         
-         
+
         button:hover { 
             background-color: #45a049; 
- 
         } 
-         
-        h4 { 
-            text-align: center; 
-            margin-bottom: 10px; 
-        } 
- 
+
         .forgot-password { 
             text-align: right; 
             margin-top: 5px; 
         } 
- 
+
         .forgot-password a { 
             color: blue; 
             text-decoration: none; 
         } 
- 
     </style> 
 </head> 
 <body> 
     <header> 
-        <h1>  
-            NITCONF  
-        </h1> 
+        <h1>NITCONF</h1> 
         <h5 style="color:white">Precision speaks: Comment, Rate and Critique></h5> 
     </header> 
-    <br><h2>For Reviewers</h2> 
-     
- 
-    <form th:action="@{/login}" th:object="${user}"method="post"> 
-        <h2>Login</h2><br> 
+    <br>
+    <h2>Login</h2>
+    <form th:action="@{/login}" th:object="${user}" method="post"> 
         <label for="username">Username:</label> 
         <input type="text" id="username" name="username" required> 
- 
+
         <label for="password">Password:</label> 
         <input type="password" id="password" name="password" required> 
- 
+        
         <div class="forgot-password"> 
             <a href="#" onclick="forgotPassword()">Forgot Password?</a> 
         </div><br> 
+
+        <button type="submit">Login</button> 
+    </form>
+
  
-        <button type="submit" onclick="login()" >Login</button> 
-    </form> 
- 
-     
- 
-    <script> 
-        function login() { 
+   <!-- <script> 
+       function login() { 
             // Fetch username and password from the form 
             var username = document.getElementById('username').value; 
             var password = document.getElementById('password').value; 
@@ -142,7 +124,7 @@
             /* else { 
                alert('Login failed. @@Please check your username and password.'); 
             } */
-        } 
+        }
  
      
  
@@ -154,7 +136,6 @@
             } 
         } 
          
-    </script> 
+    </script> -->
 </body> 
 </html>
-                

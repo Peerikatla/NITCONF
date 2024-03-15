@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpSession;
 
 import com.example.Service.Reviewedservice;
 import com.example.Service.Toreviewservice;
-import com.example.Service.UserService;
-import com.example.model.User;
+// import com.example.Service.UserService;
+// import com.example.model.User;
 
 /**
  * This class represents the controller for the home page and related
@@ -32,8 +32,8 @@ public class HomeController {
     @Autowired
     private Reviewedservice reviewedservice;
 
-    @Autowired
-    private UserService userService;
+    // @Autowired
+    // private UserService userService;
 
     private Integer GetUserId(HttpSession session) {
         return (Integer) session.getAttribute("userid");
@@ -147,9 +147,12 @@ public class HomeController {
     public String ProfilePage(Model model, HttpSession session) {
         Integer userId = GetUserId(session);
         System.out.println("User ID in ProfilePage: " + userId);
-        User user = userService.getUserById(userId);
-        System.out.println(user.toString());
-        model.addAttribute("user", user);
+
+        // User user = userService.getUserById(userId);
+        // System.out.println(user.toString());
+        // model.addAttribute("user", user);
+
+        model.addAttribute("userid", userId);
         return "Profile";
     }
 

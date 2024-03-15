@@ -27,11 +27,11 @@ public class Paper {
     @Column
     private int revisionStatus;
 
-    @OneToMany(mappedBy = "paper")
+    @OneToMany(mappedBy = "paper", fetch = FetchType.EAGER)
 //    @Size(max = 5)
     private List<Submission> submissions;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
     private User user;
 

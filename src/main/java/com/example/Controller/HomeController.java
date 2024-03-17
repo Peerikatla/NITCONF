@@ -13,10 +13,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpSession;
 
+import com.example.Service.NotificationService;
 import com.example.Service.Reviewedservice;
 import com.example.Service.Toreviewservice;
-// import com.example.Service.UserService;
-// import com.example.model.User;
+import com.example.Service.UserService;
+import com.example.model.User;
 
 /**
  * This class represents the controller for the home page and related
@@ -32,8 +33,11 @@ public class HomeController {
     @Autowired
     private Reviewedservice reviewedservice;
 
-    // @Autowired
-    // private UserService userService;
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     private Integer GetUserId(HttpSession session) {
         return (Integer) session.getAttribute("userid");
@@ -110,7 +114,8 @@ public class HomeController {
         List<Map<String, Object>> reviewedPapers = reviewedservice.getPapersWithReviews(userId);
 
         System.out.println("Retrieved Reviewed Papers:");
-        if( reviewedPapers.size() != 0){    
+        if( reviewedPapers.size() != 0){   
+            System.out.println("Number of reviewed papers: " + reviewedPapers.size()); 
             for (Map<String, Object> reviewedPaper : reviewedPapers) {
                 System.out.println("  - Title: " + reviewedPaper.get("title"));
                 System.out.println("  - Submission Status: " + reviewedPaper.get("submissionStatus"));
@@ -151,7 +156,25 @@ public class HomeController {
      */
     @Operation(summary = "Display notifications page")
     @GetMapping("/Notifications")
-    public String NotificationsPage() {
+    public String NotificationsPage(Model model, HttpSession session) {
+
+        Integer userId = GetUserId(session);
+        System.out.println("User ID in NotificationsPage: " + userId); // Print retrieved userId for debugging
+        List<Map<String, Object>> notifications = notificationService.getAllNotification(userId);
+
+        System.out.println("Retrieved Notifications:");
+
+        if (notifications.size() != 0) {
+            System.out.println("Number of notifications: " + notifications.size());
+            for (Map<String, Object> notification : notifications) {
+                System.out.print("  - Notification ID: " + notification.get("notificationId"));
+                System.out.print("  - Message: " + notification.get("message"));
+                System.out.println("  - Type: " + notification.get("type"));
+            }
+        } else {
+            System.out.println("No notifications found for user.");
+        }
+
         return "Notifications";
     }
 
@@ -165,9 +188,9 @@ public class HomeController {
         Integer userId = GetUserId(session);
         System.out.println("User ID in ProfilePage: " + userId);
 
-        // User user = userService.getUserById(userId);
-        // System.out.println(user.toString());
-        // model.addAttribute("user", user);
+        User user = userService.getUserById(userId);
+        System.out.println(user.toString());
+        model.addAttribute("user", user);
 
         model.addAttribute("userid", userId);
         return "Profile";

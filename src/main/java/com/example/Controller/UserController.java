@@ -2,9 +2,6 @@ package com.example.Controller;
 
 import com.example.Service.UserService;
 import com.example.model.User;
-
-// import java.sql.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,6 +4,8 @@ import com.example.Service.Reviewedservice;
 import com.example.model.Paper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +29,9 @@ public class ReviewedController {
      * @return a list of papers with submissions
      */
     @GetMapping("/submittedpapers")
-    public List<Paper> getAllPapersWithSubmissions() {
-        return reviewedservice.getAllPapersWithSubmissions();
+    public ResponseEntity<List<Paper>> getAllPapersWithSubmissions() {
+        List<Paper> papers = reviewedservice.getAllPapersWithSubmissions();
+        return new ResponseEntity<>(papers, HttpStatus.OK);
     }
 
     /**
@@ -38,8 +41,9 @@ public class ReviewedController {
      * @return a list of papers with reviews
      */
     @GetMapping("/papers/{userId}/reviews")
-    public List<Map<String, Object>> getPapersWithReviews(@PathVariable Integer userId) {
-        return reviewedservice.getPapersWithReviews(userId);
+    public ResponseEntity<List<Map<String, Object>>> getPapersWithReviews(@PathVariable Integer userId) {
+        List<Map<String, Object>> papersWithReviews = reviewedservice.getPapersWithReviews(userId);
+        return new ResponseEntity<>(papersWithReviews, HttpStatus.OK);
     }
 
     /**
@@ -49,12 +53,14 @@ public class ReviewedController {
      * @param submissionId the ID of the submission
      * @param comment      the new comment
      * @param rating       the new rating
+     * @return a success message
      */
     @PatchMapping("/reviewed/papers/{paperId}/submissions/{submissionId}/comment")
-    public void updateCommentAndRating(@PathVariable Integer paperId,
+    public ResponseEntity<String> updateCommentAndRating(@PathVariable Integer paperId,
             @PathVariable Integer submissionId,
             @RequestParam String comment,
             @RequestParam int rating) {
         reviewedservice.updatecomment(paperId, submissionId, comment, rating);
+        return new ResponseEntity<>("Comment and rating updated successfully", HttpStatus.OK);
     }
 }

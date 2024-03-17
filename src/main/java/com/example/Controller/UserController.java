@@ -3,7 +3,7 @@ package com.example.Controller;
 import com.example.Service.UserService;
 import com.example.model.User;
 
-import java.sql.Date;
+// import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,8 +31,10 @@ public class UserController {
     public ResponseEntity<User> getUserProfile(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
+            System.out.println(user.toString());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
+            System.out.println("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -46,7 +48,7 @@ public class UserController {
      */
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUserProfile(@PathVariable Integer userId,
-                                                  @RequestBody User updatedUser) {
+            @RequestBody User updatedUser) {
         User existingUser = userService.getUserById(userId);
         if (existingUser != null) {
             updatedUser.setUserid(userId);
@@ -71,17 +73,18 @@ public class UserController {
      */
     @PatchMapping("/{userId}")
     public ResponseEntity<User> updateProfileFields(@PathVariable Integer userId,
-                                                    @RequestParam String fullName,
-                                                    @RequestParam String username,
-                                                    @RequestParam String number,
-                                                    @RequestParam String specialization,
-                                                    @RequestParam Date dateOfBirth) {
-        userService.updateUserProfileFields(userId, fullName, username, number, specialization, dateOfBirth);
-        User updatedUser = userService.getUserById(userId);
-        if (updatedUser != null) {
+            @RequestBody User updatedUser) {
+        userService.updateUserProfileFields(userId, updatedUser.getFullName(),
+                updatedUser.getUsername(),
+                updatedUser.getNumber(),
+                updatedUser.getSpecialization(),
+                updatedUser.getDateOfBirth());
+        User updateduser = userService.getUserById(userId);
+        if (updateduser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }

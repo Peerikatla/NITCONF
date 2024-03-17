@@ -1,365 +1,380 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile</title>
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
-        header {
-            background: linear-gradient(to right, black, skyblue);
-            color: skyblue;
-            text-align: left;
-            padding: 15px;
-            text-shadow: #333;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Profile</title>
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            background-color: #ddd;
-            padding: 10px;
-        }
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
 
-        nav a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            transition: box-shadow 0.5s ease-in-out;
-            padding: 05px;
-            border-radius: 10px;
-        }
+            header {
+                background: linear-gradient(to right, black, skyblue);
+                color: skyblue;
+                text-align: left;
+                padding: 15px;
+                text-shadow: #333;
+            }
 
-        nav a:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
+            nav {
+                display: flex;
+                justify-content: space-around;
+                background-color: #ddd;
+                padding: 10px;
+            }
 
-        #profileView {
-            display: none;
-            margin-top: 20px;
-        }
+            nav a {
+                text-decoration: none;
+                color: #333;
+                font-weight: bold;
+                transition: box-shadow 0.5s ease-in-out;
+                padding: 05px;
+                border-radius: 10px;
+            }
 
-        .logout-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #333;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+            nav a:hover {
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
 
-        .logout-container a {
-            color: whitesmoke;
-            text-decoration: none;
-        }
+            #profileView {
+                display: none;
+                margin-top: 20px;
+            }
 
-        .Profile {
-            padding: 4px 18px;
-            background-color: black;
-            color: white;
-            border-radius: 25px;
-        }
+            .logout-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: #333;
+                color: #fff;
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-        .Profile:hover {
-            box-shadow: 15px white;
-        }
+            .logout-container a {
+                color: whitesmoke;
+                text-decoration: none;
+            }
 
-        .main-component {
-            margin: 2rem 4rem;
-        }
+            .Profile {
+                padding: 4px 18px;
+                background-color: black;
+                color: white;
+                border-radius: 25px;
+            }
 
-        .image {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
+            .Profile:hover {
+                box-shadow: 15px white;
+            }
 
-        .profile-img-heading {
-            padding: 1rem 0;
-            text-align: center;
-            font-size: x-large;
-            font-weight: 700;
-        }
+            .main-component {
+                margin: 2rem 4rem;
+            }
 
-        #profileForm2 {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+            .image {
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                align-items: center;
+            }
 
-        #profileForm2 input,
-        #profileForm2 select {
-            padding: 4px 4px 4px 10px;
-            height: 30px; /* Decreased height for the input fields */
-        }
+            .profile-img-heading {
+                padding: 1rem 0;
+                text-align: center;
+                font-size: x-large;
+                font-weight: 700;
+            }
 
-        .input-fields-div {
-            display: flex;
-            flex-direction: row;
-            gap: 2.5rem;
-        }
+            #profileForm2 {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
 
-        .each-field {
-            margin: 20px 2rem;
-            max-width: 300px;
-        }
+            #profileForm2 input,
+            #profileForm2 select {
+                padding: 4px 4px 4px 10px;
+                height: 30px;
+                /* Decreased height for the input fields */
+            }
 
-        .label-name {
-            padding-bottom: 4px;
-            font-weight: 550;
-        }
+            .input-fields-div {
+                display: flex;
+                flex-direction: row;
+                gap: 2.5rem;
+            }
 
-        .input-div {
-            border: 1px solid #ccc;
-            border-radius: 20px;
-        }
+            .each-field {
+                margin: 20px 2rem;
+                max-width: 300px;
+            }
 
-        .each-field input,
-        .each-field select {
-            border-radius: 14px;
-            width: 250px;
-            border: 2px solid grey;
-        }
+            .label-name {
+                padding-bottom: 4px;
+                font-weight: 550;
+            }
 
-        .each-field input::placeholder {
-            color: grey;
-        }
+            .input-div {
+                border: 1px solid #ccc;
+                border-radius: 20px;
+            }
 
-        .each-field #email2,
-        .each-field #dob2 {
-            height: 70%;
-        }
+            .each-field input,
+            .each-field select {
+                border-radius: 14px;
+                width: 250px;
+                border: 2px solid grey;
+            }
 
-        .user-profile-submit {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 1.5rem 0px;
-        }
+            .each-field input::placeholder {
+                color: grey;
+            }
 
-        .buttons-profile {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 2rem;
-        }
+            .each-field #email2,
+            .each-field #dob2 {
+                height: 70%;
+            }
 
-        .user-profile-submit button {
-            padding: 5px 25px;
-            border-radius: 0.375rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: large;
-            color: white;
-        }
+            .user-profile-submit {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 1.5rem 0px;
+            }
 
-        .submit-button,
-        .cancel-button {
-            display: none;
-        }
+            .buttons-profile {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2rem;
+            }
 
-        .submit-button button,
-        .edit-button button {
-            --tw-bg-opacity: 1;
-            background-color: rgb(29 78 216 / var(--tw-bg-opacity));
-            --tw-border-opacity: 1;
-            border-color: rgb(29 78 216 / var(--tw-border-opacity));
-        }
+            .user-profile-submit button {
+                padding: 5px 25px;
+                border-radius: 0.375rem;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: large;
+                color: white;
+            }
 
-        .cancel-button button {
-            --tw-bg-opacity: 1;
-            background-color: rgb(169 169 169 / var(--tw-bg-opacity));
-        }
-    </style>
-</head>
+            .submit-button,
+            .cancel-button {
+                display: none;
+            }
 
-<body>
-    <header>
-        <h1>
-            <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
-        </h1>
-        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
-    </header>
+            .submit-button button,
+            .edit-button button {
+                --tw-bg-opacity: 1;
+                background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+                --tw-border-opacity: 1;
+                border-color: rgb(29 78 216 / var(--tw-border-opacity));
+            }
 
-    <nav>
-        <a href="/To-review">To Review</a>
-        <a href="/Reviewed">Reviewed</a>
-        <a href="/History">History</a>
-        <a href="/Notifications">Notifications</a>
-        <a href="/Profile" class="Profile">Profile</a>
-    </nav>
+            .cancel-button button {
+                --tw-bg-opacity: 1;
+                background-color: rgb(169 169 169 / var(--tw-bg-opacity));
+            }
+        </style>
+    </head>
 
-    <div class="main-component">
-        <div class="image">
-            <!-- <img src="../Static/profile_image.png" alt="Dummy Profile Image" /> -->
-            <div class="profile-img-heading">User Profile</div>
+    <body>
+        <header>
+            <h1>
+                <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
+            </h1>
+            <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+        </header>
+
+        <nav>
+            <a href="/To-review">To Review</a>
+            <a href="/Reviewed">Reviewed</a>
+            <a href="/History">History</a>
+            <a href="/Notifications">Notifications</a>
+            <a href="/Profile" class="Profile">Profile</a>
+        </nav>
+
+        <div class="main-component">
+            <div class="image">
+                <!-- <img src="../Static/profile_image.png" alt="Dummy Profile Image" /> -->
+                <div class="profile-img-heading">User Profile</div>
+            </div>
+            <form th:action="@{/Profile}" id="profileForm2">
+                <div class="input-fields-div">
+                    <div class="each-field">
+                        <div class="label-name">Full Name</div>
+                        <input type="text" id="fullName" name="fullName" required readonly />
+                    </div>
+                    <div class="each-field">
+                        <div class="label-name">UserName</div>
+                        <input type="text" id="username" name="username" required readonly />
+                    </div>
+                </div>
+                <div class="input-fields-div">
+                    <div class="each-field">
+                        <div class="label-name">Email ID</div>
+                        <input type="email" name="email" id="email" required readonly>
+                    </div>
+                    <div class="each-field">
+                        <div class="label-name">Phone Number</div>
+                        <input type="tel" id="phone" name="phone" required readonly />
+                    </div>
+                </div>
+                <div class="input-fields-div">
+                    <div class="each-field">
+                        <div class="label-name">Date of Birth</div>
+                        <input type="date" name="dob" id="dob" required readonly>
+                    </div>
+                    <div class="each-field">
+                        <div class="label-name">Specialization</div>
+                        <select id="specialization" name="specialization" required onchange="checkSpecialization()">
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Data Science">Data Science</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="text" id="other-specialization" name="other-specialization"
+                            placeholder="Enter your specialization" style="display: none;">
+                    </div>
+                </div>
+                <div class="buttons-profile">
+                    <div class="user-profile-submit cancel-button">
+                        <button type="button" onclick="cancelChanges()">Cancel</button>
+                    </div>
+                    <div class="user-profile-submit submit-button">
+                        <button type="button" onclick="submitForm()">Submit</button>
+                    </div>
+                    <div class="user-profile-submit edit-button">
+                        <button type="button" onclick="changeEdit()">Edit</button>
+                    </div>
+                </div>
+                <div class="logout-container" onclick="logout()">
+                    <a href="/logout">Logout</a>
+                </div>
+
+            </form>
         </div>
-        <form th:action="@{/Profile}" id="profileForm2">
-            <div class="input-fields-div">
-                <div class="each-field">
-                    <div class="label-name">Full Name</div>
-                    <input type="text" id="fullName" name="fullName" required readonly />
-                </div>
-                <div class="each-field">
-                    <div class="label-name">UserName</div>
-                    <input type="text" id="username" name="username" required readonly />
-                </div>
-            </div>
-            <div class="input-fields-div">
-                <div class="each-field">
-                    <div class="label-name">Email ID</div>
-                    <input type="email" name="email" id="email" required readonly>
-                </div>
-                <div class="each-field">
-                    <div class="label-name">Phone Number</div>
-                    <input type="tel" id="phone" name="phone" required readonly />
-                </div>
-            </div>
-            <div class="input-fields-div">
-                <div class="each-field">
-                    <div class="label-name">Date of Birth</div>
-                    <input type="date" name="dob" id="dob" required readonly>
-                </div>
-                <div class="each-field">
-                    <div class="label-name">Specialization</div>
-                    <select id="specialization" name="specialization" required onchange="checkSpecialization()">
-                        <option value="Machine Learning" >Machine Learning</option>
-                        <option value="Web Development">Web Development</option>
-                        <option value="Data Science">Data Science</option>
-                        <option value="UI/UX Design">UI/UX Design</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <input type="text" id="other-specialization" name="other-specialization" placeholder="Enter your specialization" style="display: none;" >
-                </div>
-            </div>
-            <div class="buttons-profile">
-                <div class="user-profile-submit cancel-button">
-                    <button type="button" onclick="cancelChanges()">Cancel</button>
-                </div>
-                <div class="user-profile-submit submit-button">
-                    <button type="button" onclick="submitForm()">Submit</button>
-                </div>
-                <div class="user-profile-submit edit-button">
-                    <button type="button" onclick="changeEdit()">Edit</button>
-                </div>
-            </div>
-            <div class="logout-container" onclick="logout()">
-                <a href="/logout">Logout</a>
-            </div>
 
-        </form>
-    </div>
+        <div id="profileView">
+            <h3>Profile Preview</h3>
+            <p id="viewFullName"></p>
+            <p id="viewUsername"></p>
+            <p id="viewDOB"></p>
+            <p id="viewEmail"></p>
+            <p id="viewPhone"></p>
+            <p id="viewSpecialization"></p>
+            <button type="button" onclick="editProfile()">Edit Profile</button>
+        </div>
 
-    <div id="profileView">
-        <h3>Profile Preview</h3>
-        <p id="viewFullName"></p>
-        <p id="viewUsername"></p>
-        <p id="viewDOB"></p>
-        <p id="viewEmail"></p>
-        <p id="viewPhone"></p>
-        <p id="viewSpecialization"></p>
-        <button type="button" onclick="editProfile()">Edit Profile</button>
-    </div>
+        <script>
+            var isEditable = false;
 
-    <script>
-        var isEditable = false;
-        var initialProfileValues = {
-            "fullName": "LahariAnjana",
-            "username": "lahari",
-            "email": "anjana.2004@gmail.com",
-            "dob": "2004-04-08",
-            "phone": "7013313866",
-            "specialization": "Machine Learning",
-        }
-        function populateForm() {
-            for (var key in initialProfileValues) {
-                if (initialProfileValues.hasOwnProperty(key)) {
-                    var inputField = document.getElementById(key);
-                    if (inputField) {
-                        inputField.value = initialProfileValues[key];
-                    }
+            // Function to fetch user details from backend and populate the form
+            function populateUserDetails(userId) {
+                // Fetch user details using the new endpoint
+                fetch(`/api/profiles/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (response.ok) {
+                            // Populate form fields with fetched user data
+                            document.getElementById('fullName').value = data.fullName;
+                            document.getElementById('username').value = data.username;
+                            document.getElementById('email').value = data.email;
+                            document.getElementById('phone').value = data.number;
+                            document.getElementById('dob').value = data.dateOfBirth;
+                            document.getElementById('specialization').value = data.Specialization;
+                        } else {
+                            // Handle the error case (e.g., user not found)
+                            console.error('Error fetching user details:', data);
+                            // Optionally, display an error message to the user
+                        }
+                    })
+                    .catch(error => console.error('Network error:', error));
+            }
+
+
+            // Function to enable editing of form fields
+            function changeEdit() {
+                isEditable = true;
+                var editButton = document.querySelector('.edit-button');
+                var cancelButton = document.querySelector('.cancel-button');
+                var submitButton = document.querySelector('.submit-button');
+                editButton.style.display = "none";
+                cancelButton.style.display = "inline";
+                submitButton.style.display = "inline";
+                var inputFields = document.querySelectorAll('input, select');
+                inputFields.forEach(field => {
+                    field.removeAttribute('readonly');
+                });
+                document.getElementById('specialization').removeAttribute('disabled');
+            }
+
+            // Function to cancel editing and revert changes
+            function cancelChanges() {
+                populateUserDetails(); // Reset form fields with original user details
+                var editButton = document.querySelector('.edit-button');
+                var cancelButton = document.querySelector('.cancel-button');
+                var submitButton = document.querySelector('.submit-button');
+                editButton.style.display = "inline";
+                cancelButton.style.display = "none";
+                submitButton.style.display = "none";
+                var inputFields = document.querySelectorAll('input, select');
+                inputFields.forEach(field => {
+                    field.setAttribute('readonly', 'true');
+                });
+                document.getElementById('specialization').setAttribute('disabled', 'true');
+            }
+
+            // Function to submit form changes
+            function submitForm() {
+                // Here you can add logic to handle form submission, e.g., send data to backend
+                var editButton = document.querySelector('.edit-button');
+                var cancelButton = document.querySelector('.cancel-button');
+                var submitButton = document.querySelector('.submit-button');
+                editButton.style.display = "inline";
+                cancelButton.style.display = "none";
+                submitButton.style.display = "none";
+                var inputFields = document.querySelectorAll('input, select');
+                inputFields.forEach(field => {
+                    field.setAttribute('readonly', 'true');
+                });
+                document.getElementById('specialization').setAttribute('disabled', 'true');
+            }
+
+            // Function to switch to edit profile mode
+            function editProfile() {
+                changeEdit(); // Enable editing
+            }
+
+            // Function to handle specialization selection
+            function checkSpecialization() {
+                var specializationSelect = document.getElementById('specialization');
+                var otherInput = document.getElementById('other-specialization');
+                if (specializationSelect.value === 'Other') {
+                    otherInput.style.display = 'block';
+                } else {
+                    otherInput.style.display = 'none';
+                    otherInput.value = '';
                 }
-            }document.getElementById("specialization").disabled = true;
+            }
+
+            // Call populateUserDetails when the page loads
             
-        }
-        
-        function changeEdit(){
-            isEditable = true;
-            var editButton = document.querySelector('.edit-button');
-            var cancelButton = document.querySelector('.cancel-button');
-            var submitButton = document.querySelector('.submit-button');
-            editButton.style.display = "none";
-            cancelButton.style.display = "inline";
-            submitButton.style.display = "inline";
-            for (var key in initialProfileValues) {
-                var inputField = document.getElementById(key);
-                if (inputField) {
-                    inputField.removeAttribute('readonly');
-                }
+            window.onload = function(){
+                const userId = /*[[${userId}]]*/ '';
+                console.log(userId);                
+                populateUserDetails(userId);
             }
-             document.getElementById('specialization').removeAttribute('disabled');
-        }
-        
-        function cancelChanges(){
-            populateForm();
-            var editButton = document.querySelector('.edit-button');
-            var cancelButton = document.querySelector('.cancel-button');
-            var submitButton = document.querySelector('.submit-button');
-            editButton.style.display = "inline";
-            cancelButton.style.display = "none";
-            submitButton.style.display = "none";
-            document.getElementById('specialization').setAttribute('disabled', 'true');
-        }
-    
-        // Call the function when the page loads
-        window.onload = populateForm;
-        function submitForm() {
-            for (var key in initialProfileValues) {
-                var inputField = document.getElementById(key);
-                initialProfileValues[key] = inputField.value;
-                inputField.setAttribute('readonly', 'true');
-            }
-            var specializationSelect = document.getElementById('specialization');
-            var otherInput = document.getElementById('other-specialization');
-            if (specializationSelect.value === 'Other') {
-                initialProfileValues['specialization'] = otherInput.value;
-                otherInput.setAttribute('readonly', 'true');
-            }
-            var editButton = document.querySelector('.edit-button');
-            var cancelButton = document.querySelector('.cancel-button');
-            var submitButton = document.querySelector('.submit-button');
-            editButton.style.display = "inline";
-            cancelButton.style.display = "none";
-            submitButton.style.display = "none";
-            document.getElementById('specialization').setAttribute('disabled', 'true');
-        }
+        </script>
 
-        function editProfile() {
-            // Show form, hide preview
-            document.getElementById("profileForm2").style.display = "block";
-            document.getElementById("profileView").style.display = "none";
-        }
+    </body>
 
-        function checkSpecialization() {
-            var specializationSelect = document.getElementById('specialization');
-            var otherInput = document.getElementById('other-specialization');
-            if (specializationSelect.value === 'Other') {
-                otherInput.style.display = 'block';
-            } else {
-                otherInput.style.display = 'none';
-                otherInput.value = '';
-            }
-        }
-    </script>
-</body>
-</html>
+    </html>

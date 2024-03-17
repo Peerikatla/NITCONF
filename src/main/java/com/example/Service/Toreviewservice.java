@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Repository.PaperRepository;
 import com.example.model.Paper;
-import com.example.model.Submission;
+// import com.example.model.Submission;
 
 @Service
 public class Toreviewservice {
@@ -37,19 +37,17 @@ public class Toreviewservice {
         }
 
         for (Paper paper : papers) {
-            for (Submission submission : paper.getSubmissions()) {
-                if (submission.getStatus() == "null") {
-                    Map<String, Object> submissionInfo = new HashMap<>();
-                    submissionInfo.put("title", paper.getTitle());
-                    submissionInfo.put("submissionStatus", submission.getStatus());
-                    submissionInfo.put("revisionStatus", paper.getRevisionStatus());
-                    submissionInfo.put("deadline", submission.getDeadline());
-
-                    // submissionInfo.put("abstractPdfLink", paper.getAbstractPdfLink());
-                    // submissionInfo.put("downloadPdfLink", paper.getDownloadPdfLink());
-
-                    submissionInfos.add(submissionInfo);
-                }
+            boolean torev = paper.getSubmissions().stream()
+                    .anyMatch(submission -> submission.getStatus() == null);
+            
+            if (torev) {
+                Map<String, Object> info = new HashMap<>();
+                info.put("title", paper.getTitle());
+                info.put("status", "To Review");
+                info.put("revisionStatus", paper.getRevisionStatus());
+                info.put("deadline", paper.getSubmissions().get(paper.getSubmissions().size() - 1).getDeadline());
+                info.put("pdflink", paper.getSubmissions().get(paper.getSubmissions().size() - 1).getLink());
+                submissionInfos.add(info);
             }
         }
         return submissionInfos;

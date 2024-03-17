@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.Repository.PaperRepository;
 import com.example.model.Paper;
-import com.example.model.Submission;
 
 @Service
 public class Reviewedservice {
@@ -48,11 +47,7 @@ public class Reviewedservice {
     }
 
     private Date getLatestDeadline(Paper paper) {
-        return paper.getSubmissions()
-                .stream()
-                .map(Submission::getDeadline)
-                .max(Date::compareTo)
-                .orElse(null);
+        return paper.getSubmissions().get(paper.getSubmissions().size() - 1).getDeadline();
     }
 
     private Paper findPaperById(int paperId) {

@@ -19,7 +19,7 @@ public class UserService {
 	private UserRepository userRepository;
 
     public User getUserById(Integer userId) {
-        return userRepository.findByuserid(userId).orElse(null);
+        return userRepository.findByuserid(userId);
     }
 
     @SuppressWarnings("null")
@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public void updateUserProfileFields(Integer userId, String fullName, String username, String number, String specialization, Date dateOfBirth) {
-        User user = userRepository.findByuserid(userId).orElse(null);
+        User user = userRepository.findByuserid(userId);
         if (user != null) {
             user.setFullName(fullName);
             user.setUsername(username);

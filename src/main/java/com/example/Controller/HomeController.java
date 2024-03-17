@@ -47,14 +47,10 @@ public class HomeController {
     @Operation(summary = "Display home page")
     @GetMapping("/Home")
     public String showHomePage(HttpSession session) {
-        // System.out.println("Session ID in HomeController.showHomePage: " +
-        // session.getAttribute("userid")); // Print session ID for debugging
+
         Integer userId = GetUserId(session);
         if (userId != null) {
-            System.out.println("User ID in HomeController.showHomePage: " + userId); // Print retrieved userId for
-                                                                                     // debugging
-            // Use userId for further logic (e.g., model.addAttribute("userInformation",
-            // userService.getUserById(userId));)
+            System.out.println("User ID in HomePage: " + userId); // Print retrieved userId for debugging
         }
         return "Home";
     }
@@ -72,13 +68,14 @@ public class HomeController {
     })
     @GetMapping("/To-review")
     public String Toreviewpage(Model model, HttpSession session) {
+
         Integer userId = GetUserId(session);
         System.out.println("User ID in Toreviewpage: " + userId); // Print retrieved userId for debugging
 
         List<Map<String, Object>> submissionInfos = toreviewservice.getAllSubmissionInfo(userId);
 
         System.out.println("Retrieved Submission Information:");
-        if (submissionInfos != null) {
+        if (submissionInfos.size() != 0) {
             System.out.println("Number of submissions: " + submissionInfos.size());
             for (Map<String, Object> submissionInfo : submissionInfos) {
                 System.out.println("  - Title: " + submissionInfo.get("title"));
@@ -106,8 +103,25 @@ public class HomeController {
     })
     @GetMapping("/Reviewed")
     public String ReviewedPage(Model model, HttpSession session) {
+
         Integer userId = GetUserId(session);
+        System.out.println("User ID in ReviewedPage: " + userId); // Print retrieved userId for debugging
+
         List<Map<String, Object>> reviewedPapers = reviewedservice.getPapersWithReviews(userId);
+
+        System.out.println("Retrieved Reviewed Papers:");
+        if( reviewedPapers.size() != 0){    
+            for (Map<String, Object> reviewedPaper : reviewedPapers) {
+                System.out.println("  - Title: " + reviewedPaper.get("title"));
+                System.out.println("  - Submission Status: " + reviewedPaper.get("submissionStatus"));
+                System.out.println("  - Revision Status: " + reviewedPaper.get("revisionStatus"));
+                System.out.println("  - Deadline: " + reviewedPaper.get("deadline"));
+            }
+        }
+        else{
+            System.out.println("No reviewed papers found for user.");
+        }
+
         model.addAttribute("reviewedPapers", reviewedPapers);
         return "Reviewed";
     }
@@ -124,6 +138,9 @@ public class HomeController {
     })
     @GetMapping("/History")
     public String HistoryPage(Model model, HttpSession session) {
+        Integer userId = GetUserId(session);
+        System.out.println("User ID in HistoryPage: " + userId); // Print retrieved userId for debugging
+
         return "History";
     }
 

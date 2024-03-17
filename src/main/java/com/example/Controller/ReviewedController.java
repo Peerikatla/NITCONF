@@ -11,7 +11,8 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * This class represents the controller for handling requests related to reviewed papers.
+ * This class represents the controller for handling requests related to
+ * reviewed papers.
  */
 @RestController
 @RequestMapping("/api")
@@ -51,9 +52,9 @@ public class ReviewedController {
      */
     @PatchMapping("/reviewed/papers/{paperId}/submissions/{submissionId}/comment")
     public void updateCommentAndRating(@PathVariable Integer paperId,
-                                       @PathVariable Integer submissionId,
-                                       @RequestParam String comment,
-                                       @RequestParam int rating) {
+            @PathVariable Integer submissionId,
+            @RequestParam String comment,
+            @RequestParam int rating) {
         reviewedservice.updatecomment(paperId, submissionId, comment, rating);
     }
 }

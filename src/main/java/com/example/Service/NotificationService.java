@@ -24,6 +24,7 @@ public class NotificationService {
             Map<String, Object> notificationMap = new HashMap<>();
             notificationMap.put("notificationId", notification.getNotificationId());
             notificationMap.put("message", notification.getMessage());
+            notificationMap.put("type", notification.getType());
             result.add(notificationMap);
         }
         return result;

@@ -33,7 +33,7 @@ public class Reviewedservice {
             boolean hasReview = paper.getSubmissions().stream()
                     .anyMatch(submission -> submission.getComment() != null && submission.getRating() != 0);
 
-            if (hasReview) {
+            if (hasReview && paper.getApprovestatus() == null) {
                 Map<String, Object> paperMap = new HashMap<>();
                 paperMap.put("title", paper.getTitle());
                 paperMap.put("status", "Reviewed");

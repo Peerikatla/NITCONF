@@ -24,8 +24,14 @@ public class Paper {
     @Column
     private String title;
 
+	@Column
+	private String Approvestatus;
+
     @Column
     private int revisionStatus;
+
+	@Column
+	private String Tag;
 
     @OneToMany(mappedBy = "paper", fetch = FetchType.EAGER)
 //    @Size(max = 5)
@@ -75,27 +81,41 @@ public class Paper {
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "Paper [paperId=" + paperId + ", revisionStatus=" + revisionStatus
-				+ ", submissions=" + submissions + ", user=" + user + "]";
+	public String getApprovestatus() {
+		return Approvestatus;
 	}
 
-	public Paper(Integer paperId, String title, int revisionStatus, List<Submission> submissions, User user) {
+	public void setApprovestatus(String approvestatus) {
+		this.Approvestatus = approvestatus;
+	}
+
+	public String getTag() {
+		return Tag;
+	}
+
+	public void setTag(String tag) {
+		this.Tag = tag;
+	}
+
+	@Override
+	public String toString() {
+		return "Paper [Approvestatus=" + Approvestatus + ", paperId=" + paperId + ", revisionStatus=" + revisionStatus
+				+ ", submissions=" + submissions + ", title=" + title + ", user=" + user + "]" + ", Tag=" + Tag;
+	}
+
+	public Paper(Integer paperId, String title, int revisionStatus, List<Submission> submissions, User user, String approvestatus, String tag) {
 		super();
 		this.paperId = paperId;
         this.title = title;
 		this.revisionStatus = revisionStatus;
 		this.submissions = submissions;
 		this.user = user;
+		this.Approvestatus = approvestatus;
+		this.Tag = tag;
 	}
 
 	public Paper() {
 		super();
 	}
 
-    
-
-    // getters and setters
-    
 }

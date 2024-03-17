@@ -1,5 +1,8 @@
 package com.example.Service;
 
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Repository.PaperRepository;
 import com.example.model.Paper;
+import com.example.model.Submission;
 
 /**
  * This class represents a service for retrieving history-related information.
@@ -37,19 +41,30 @@ public class HistoryService {
      * @param userId the ID of the user
      * @return a list of maps containing paper information
      */
-    public List<Map<String, Object>> getAllHistory(Integer userId){
+    public List<Map<String, Object>> getAllHistory(Integer userId) {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Paper> papers = paperRepository.findPapersByUserId(userId);
+        LocalDateTime currentTime = LocalDateTime.now();
+
         for (Paper paper : papers) {
-            if (paper.getSubmissions().stream().anyMatch(submission -> submission.getComment() != null && submission.getRating() != 0)) {
+            boolean needsReview = paper.getApprovestatus() != null && getDeadline(paper).isBefore(currentTime);
+            if (needsReview) {
                 Map<String, Object> paperMap = new HashMap<>();
                 paperMap.put("title", paper.getTitle());
-                paperMap.put("status", "Reviewed");
+                paperMap.put("status", paper.getApprovestatus());
                 paperMap.put("revisionStatus", paper.getRevisionStatus());
-                paperMap.put("deadline", paper.getSubmissions().stream().map(submission -> submission.getDeadline()).max(Comparator.naturalOrder()).orElse(null));
+                paperMap.put("deadline", getDeadline(paper));
                 result.add(paperMap);
             }
         }
         return result;
+    }
+
+    private LocalDateTime getDeadline(Paper paper) {
+        List<Submission> submissions = paper.getSubmissions();
+        return submissions.stream()
+                .map(submission -> submission.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .max(Comparator.naturalOrder())
+                .orElse(null);
     }
 }

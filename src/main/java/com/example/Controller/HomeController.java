@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpSession;
 
+import com.example.Service.HistoryService;
 import com.example.Service.NotificationService;
 import com.example.Service.Reviewedservice;
 import com.example.Service.Toreviewservice;
@@ -38,6 +39,9 @@ public class HomeController {
 
     @Autowired
     private NotificationService notificationService;
+    
+    @Autowired
+    private HistoryService historyService;
 
     private Integer GetUserId(HttpSession session) {
         return (Integer) session.getAttribute("userid");
@@ -145,6 +149,22 @@ public class HomeController {
     public String HistoryPage(Model model, HttpSession session) {
         Integer userId = GetUserId(session);
         System.out.println("User ID in HistoryPage: " + userId); // Print retrieved userId for debugging
+
+        List<Map<String, Object>> history = historyService.getAllHistory(userId);
+        System.out.println("Retrieved History:");
+
+        if(history.size() != 0){
+            System.out.println("Number of history papers: " + history.size());
+            for (Map<String, Object> historyPaper : history) {
+                System.out.println("  - Title: " + historyPaper.get("title"));
+                System.out.println("  - Status: " + historyPaper.get("status"));
+                System.out.println("  - Revision Status: " + historyPaper.get("revisionStatus"));
+                System.out.println("  - Deadline: " + historyPaper.get("deadline"));
+            }
+        }
+        else{
+            System.out.println("No history papers found for user.");
+        }
 
         return "History";
     }

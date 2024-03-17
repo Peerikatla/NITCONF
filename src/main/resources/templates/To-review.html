@@ -191,6 +191,42 @@
             overlay.style.display = "none";
             reviewPopup.style.display = "none";
         }
+        
+        // Function to fetch paper details from the backend
+        function fetchPaperDetails() {
+    // Fetch user ID from the backend 
+    const userId = getUserId(); 
+
+    fetch('/api/unreviewedsubmissions/${userId}')
+        .then(response => response.json())
+        .then(data => {
+            const paperTableBody = document.getElementById('pdfTableBody');
+            paperTableBody.innerHTML = ''; // Clear existing table rows
+            data.forEach(submission => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${submission.Paper.title}</td>
+                    <td>${submission.Paper.Approvestatus}</td>
+                    <td>${submission.Paper.revisionStatus}</td>
+                    <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
+                    <td>
+                        <a href="${submission.Paper.pdflink}" target="_blank">View</a>
+                        <button onclick="openReviewPopup(${submission.Paper.paperId})">Review</button>
+                        <a href="${submission.Paper.pdflink}" target="_blank">Download</a>
+                    </td>
+                `;
+                pdfTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching paper details:', error);
+        });
+}
+
+
+        // Call fetchPaperDetails when the page loads
+        window.onload = fetchPaperDetails;
+        
     </script>
 </head>
 
@@ -214,7 +250,7 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Status</th>
+                <th>Approve Status</th>
                 <th>Revision Status</th>
                 <th>Deadline</th>
                 <th>Action</th>
@@ -222,7 +258,7 @@
         </thead>
         <tbody id="pdfTableBody">
             <tr>
-                <td>12345</td>
+               <!-- <td>12345</td>
                 <td>NULL</td>
                 <td>0</td>
                 <td>24-02-2024</td>
@@ -231,7 +267,7 @@
                     <button onclick="openReviewPopup('12345')">Review</button>
                     <a href="#" target="_blank">Download</a>
                     
-                </td>
+                </td>-->
             </tr>
         </tbody>
     </table>

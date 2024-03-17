@@ -177,25 +177,40 @@
             originality: parseInt(document.getElementById('originality').value),
             relevance: parseInt(document.getElementById('relevance').value),
             quality: parseInt(document.getElementById('quality').value)
-        };
+        }};
 
-        fetch('/api/reviews', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reviewData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            console.log('Review submitted successfully');
-        })
-        .catch(error => {
-            console.error('Error submitting review:', error);
-        });
-    }
+        function fetchReviewedPapers() {
+			const userId = getUserId();
+            fetch('/api/papers/${userId}/reviews')
+                .then(response => response.json())
+                .then(data => {
+                    renderReviewedPapers(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching reviewed papers:', error);
+                });
+        }
+
+        function renderReviewedPapers(papers) {
+            const pdfTableBody = document.getElementById("pdfTableBody");
+            pdfTableBody.innerHTML = ""; // Clear previous content
+
+            papers.forEach(paper => {
+                const { paperId, title, status, revisionStatus, deadline } = paper;
+                const row = `
+                    <tr>
+                        <td>${paperId}</td>
+                        <td>${status}</td>
+                        <td>${revisionStatus}</td>
+                        <td>${deadline}</td>
+                        <td>
+                            <button onclick="openEditReviewPopup(${paperId}, '${title}')">Edit Review</button>
+                        </td>
+                    </tr>
+                `;
+                pdfTableBody.innerHTML += row;
+            });
+        }
 
     function saveEditedReview(paperId) {
         var reviewText = document.getElementById("reviewText").value;
@@ -252,16 +267,7 @@
         </thead>
         <tbody id="pdfTableBody">
             <tr>
-                <td>12345</td>
-                <td>Status</td>
-                <td>Revision Status</td>
-                <td>Deadline</td>
-                <td>
-					<a href="#" target="_blank">Abstract</a>
-                    <button onclick="openEditReviewPopup('12345')">Edit Review</button>
-                    <a href="#" target="_blank">Download</a>
-                    
-                </td>
+				
             </tr>
         </tbody>
     </table>

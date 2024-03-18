@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import com.example.Service.HistoryService;
+
 import com.example.model.Paper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,22 +38,25 @@ public class HistoryControllerTest {
 
     @InjectMocks
     private HistoryController historyController;
-
+   
+    @SuppressWarnings("deprecation")
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
-
+    @SuppressWarnings("null")
     @Test
     public void testGetAllHistory() throws Exception {
         // Mock data
         int userId = 1;
-        List<Map<String, Object>> history = Collections.singletonList(createPaperMap("Paper Title", "Approved", "Under Review"));
-        // Mock service behavior
-        when(historyService.getAllHistory(userId)).thenReturn(history);
-
+        //List<Map<String, Object>> history = Collections.singletonList(createPaperMap("Paper Title", "Approved", "Under Review"));
+        
+        List<Map<String, Object>> history = Collections.singletonList(Collections.emptyMap());
+     // Mock service behavior
+        when(historyService.getAllHistory(userId)).thenReturn(Collections.singletonList(Collections.emptyMap()));
+        
         // Perform GET request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/history/{userId}", userId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/outdatedpapers", userId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].title").value("Paper Title"))
@@ -62,7 +66,8 @@ public class HistoryControllerTest {
         // Verify service method is called
         verify(historyService, times(1)).getAllHistory(userId);
     }
-
+    
+    @SuppressWarnings("null")
     @Test
     public void testGetAllHistoryNoData() throws Exception {
         // Mock data
@@ -71,7 +76,7 @@ public class HistoryControllerTest {
         when(historyService.getAllHistory(userId)).thenReturn(Collections.emptyList());
 
         // Perform GET request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/history/{userId}", userId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/outdatedpapers"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())

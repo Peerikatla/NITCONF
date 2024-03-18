@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * This class represents the controller for handling requests related to
@@ -41,7 +40,7 @@ public class ReviewedController {
      * @return a list of papers with reviews
      */
     @GetMapping("/papers/reviews")
-    public ResponseEntity<List<Map<String, Object>>> getPapersWithReviews(@PathVariable Integer userId) {
+    public ResponseEntity<List<Map<String, Object>>> getPapersWithReviews(@RequestParam("userId") Integer userId) {
         List<Map<String, Object>> papersWithReviews = reviewedservice.getPapersWithReviews(userId);
         return new ResponseEntity<>(papersWithReviews, HttpStatus.OK);
     }

@@ -278,7 +278,7 @@
         var isEditable = false;
 
         // Function to fetch user details from backend and populate the form
-        function populateUserDetails(userId) {
+        function populateUserDetails() {
             // Fetch user details using the new endpoint
             // const url = `http://localhost:8080/api/profiles?userId=${userId}`;
             fetch('http://localhost:8080/api/profiles?userId=${userId}', {
@@ -372,11 +372,7 @@
 
         // Call populateUserDetails when the page loads
 
-        window.onload = function () {
-            const userId = 1;
-            console.log(userId);
-            populateUserDetails(userId);
-        }
+        window.onload = populateUserDetails;
     </script>
 
 </body>

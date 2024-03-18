@@ -95,7 +95,8 @@ public class HomeController {
             System.out.println("No submissions found for user.");
         }
 
-        model.addAttribute("submissionInfos", submissionInfos);
+        model.addAttribute("userid", userId);
+        // model.addAttribute("submissionInfos", submissionInfos);
         return "To-review";
     }
 

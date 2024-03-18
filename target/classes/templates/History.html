@@ -52,6 +52,30 @@
         nav a.profile:hover {
             box-shadow: 0 0 15px white;
         }
+        
+        table {
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+            /* Prevent line breaks within cells */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
 
         .paper {
             border: 1px solid #ddd;
@@ -105,8 +129,33 @@
         <a href="/Notifications">Notifications</a>
         <a href="/Profile">Profile</a>
     </nav>
-
-    <div class="paper">
+<table>
+       <thead>
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Revision Status</th>
+                <th>Deadline</th>
+            </tr>
+        </thead>
+        
+        <tbody id="paper">
+            <tr>
+               <!-- <td>12345</td>
+                <td>NULL</td>
+                <td>0</td>
+                <td>24-02-2024</td>
+                <td>
+                    <a href="#" target="_blank">Abstract</a>
+                    <button onclick="openReviewPopup('12345')">Review</button>
+                    <a href="#" target="_blank">Download</a>
+                    
+                </td>-->
+            </tr>
+        </tbody>
+        </table>
+        
+    <!--<div class="paper">
         <h2>Paper Title 1</h2>
         <div class="options">
             <button onclick="showAbstract('abstract1.pdf')">View Abstract</button>
@@ -116,7 +165,7 @@
         <p>Deadline: January 31, 2024</p>
         <p>Revision Status: First Submission</p>
         <p>Status: Approve</p>
-    </div>
+    </div> -->
 
     <!-- Abstract Popup -->
     <div id="abstractPopup" class="popup">
@@ -127,6 +176,56 @@
     </div>
 
     <script>
+		document.addEventListener("DOMContentLoaded", function () {
+            fetchHistoryPapers();
+        });
+
+        function fetchHistoryPapers() {
+            const userId = getUserId(); // Fetch the logged-in user's ID (You need to implement this function)
+
+            fetch('/api/outdatedpapers/${userId}')
+                .then(response => response.json())
+                .then(historyPapers => {
+                    renderHistoryPapers(historyPapers);
+                })
+                .catch(error => console.error('Error fetching history papers:', error));
+        }
+
+        function renderHistoryPapers(historyPapers) {
+            const historyPapersContainer = document.getElementById('historyPapersContainer');
+            historyPapersContainer.innerHTML = ''; // Clear existing content
+
+            historyPapers.forEach(paper => {
+                const paperD = document.createElement('div');
+                paper.classList.add('paper');
+
+                const title = document.createElement('h2');
+                title.textContent = paper.title;
+
+                const options = document.createElement('div');
+                options.classList.add('options');
+
+                const viewAbstractButton = document.createElement('button');
+                viewAbstractButton.textContent = 'View Abstract';
+                viewAbstractButton.addEventListener('click', () => showAbstract(paper.abstractUrl));
+
+                const downloadButton = document.createElement('a');
+                downloadButton.href = paper.downloadUrl;
+                downloadButton.textContent = 'Download PDF';
+                downloadButton.setAttribute('download', '');
+
+                options.appendChild(viewAbstractButton);
+                options.appendChild(downloadButton);
+
+                // Add other paper details to the paperDiv (deadline, revision status, status)
+
+                paper.appendChild(title);
+                paper.appendChild(options);
+
+                historyPapersContainer.appendChild(paperDiv);
+            });
+        }
+        
         function showAbstract(pdfUrl) {
             document.getElementById('abstractPopup').style.display = 'block';
             document.querySelector('#abstractPopup embed').setAttribute('src', pdfUrl);

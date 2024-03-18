@@ -40,7 +40,7 @@ public class ReviewedController {
      * @param userId the ID of the user
      * @return a list of papers with reviews
      */
-    @GetMapping("/papers/{userId}/reviews")
+    @GetMapping("/papers/reviews")
     public ResponseEntity<List<Map<String, Object>>> getPapersWithReviews(@PathVariable Integer userId) {
         List<Map<String, Object>> papersWithReviews = reviewedservice.getPapersWithReviews(userId);
         return new ResponseEntity<>(papersWithReviews, HttpStatus.OK);
@@ -55,7 +55,7 @@ public class ReviewedController {
      * @param rating       the new rating
      * @return a success message
      */
-    @PatchMapping("/reviewed/papers/{paperId}/submissions/{submissionId}/comment")
+    @PatchMapping("/reviewed/papers/submissions/comment")
     public ResponseEntity<String> updateCommentAndRating(@PathVariable Integer paperId,
             @PathVariable Integer submissionId,
             @RequestParam String comment,

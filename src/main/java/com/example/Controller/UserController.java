@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * It provides endpoints for retrieving, updating, and patching user profiles.
  */
 @RestController
-@RequestMapping("/api/profiles")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class UserController {
      * @param userId the ID of the user
      * @return the user profile if found, or a 404 Not Found response
      */
-    @GetMapping("/{userId}")
+    @GetMapping("/profiles/{userId}")
     public ResponseEntity<User> getUserProfile(@PathVariable Integer userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
@@ -43,7 +43,7 @@ public class UserController {
      * @param updatedUser the updated user profile
      * @return the updated user profile if found, or a 404 Not Found response
      */
-    @PutMapping("/{userId}")
+    @PutMapping("/profiles")
     public ResponseEntity<User> updateUserProfile(@PathVariable Integer userId,
             @RequestBody User updatedUser) {
         User existingUser = userService.getUserById(userId);
@@ -68,7 +68,7 @@ public class UserController {
      * @param dateOfBirth    the updated date of birth
      * @return the updated user profile if found, or a 404 Not Found response
      */
-    @PatchMapping("/{userId}")
+    @PatchMapping("/profiles")
     public ResponseEntity<User> updateProfileFields(@PathVariable Integer userId,
             @RequestBody User updatedUser) {
         userService.updateUserProfileFields(userId, updatedUser.getFullName(),

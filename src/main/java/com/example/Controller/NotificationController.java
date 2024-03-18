@@ -28,7 +28,7 @@ public class NotificationController {
      * @param userId the ID of the user
      * @return a ResponseEntity containing a list of notifications
      */
-    @GetMapping("/notifications/{userId}")
+    @GetMapping("/notifications")
     public ResponseEntity<List<Map<String, Object>>> getNotifications(@RequestParam Integer userId) {
         List<Map<String, Object>> notifications = notificationService.getAllNotification(userId);
         return new ResponseEntity<>(notifications, HttpStatus.OK);

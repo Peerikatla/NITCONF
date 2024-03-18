@@ -191,6 +191,44 @@
             overlay.style.display = "none";
             reviewPopup.style.display = "none";
         }
+
+        // Function to fetch paper details from the backend
+        function fetchPaperDetails() {
+            // Fetch user ID from the backend 
+            // const userid = `${userId}`;
+            const userId = 1;
+            const url = `http://localhost:8080/api/unreviewedsubmissions?userId=${userId}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Paper details:', data);
+                    const paperTableBody = document.getElementById('pdfTableBody');
+                    paperTableBody.innerHTML = ''; // Clear existing table rows
+                    data.forEach(submission => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                    <td>${submission.title}</td>
+                    <td>${submission.status}</td>
+                    <td>${submission.revisionStatus}</td>
+                    <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
+                    <td>
+                        <a href="${submission.pdflink}" target="_blank">View</a>
+                        <button onclick="openReviewPopup(${submission.paperId})">Review</button>
+                        <a href="${submission.pdflink}" target="_blank">Download</a>
+                    </td>
+                `;
+                        pdfTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching paper details:', error);
+                });
+        }
+
+
+        // Call fetchPaperDetails when the page loads
+        window.onload = fetchPaperDetails;
+
     </script>
 </head>
 
@@ -214,7 +252,7 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Status</th>
+                <th>Approve Status</th>
                 <th>Revision Status</th>
                 <th>Deadline</th>
                 <th>Action</th>
@@ -222,7 +260,7 @@
         </thead>
         <tbody id="pdfTableBody">
             <tr>
-                <td>12345</td>
+                <!-- <td>12345</td>
                 <td>NULL</td>
                 <td>0</td>
                 <td>24-02-2024</td>
@@ -231,7 +269,7 @@
                     <button onclick="openReviewPopup('12345')">Review</button>
                     <a href="#" target="_blank">Download</a>
                     
-                </td>
+                </td>-->
             </tr>
         </tbody>
     </table>

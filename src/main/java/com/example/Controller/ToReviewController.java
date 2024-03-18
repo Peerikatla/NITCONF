@@ -47,7 +47,7 @@ public class ToReviewController {
      * @return A ResponseEntity containing a list of submission information as Map
      *         objects.
      */
-    @GetMapping("/unreviewedsubmissions/{userId}")
+    @GetMapping("/unreviewedsubmissions")
     @ResponseBody
     public ResponseEntity<List<Map<String, Object>>> getAllSubmissionInfo(@RequestParam("userId") Integer userId) {
 
@@ -64,7 +64,7 @@ public class ToReviewController {
      * @param rating       The rating to be saved.
      * @return A ResponseEntity with no content and HTTP status 204 (No Content).
      */
-    @PatchMapping("/to-review/papers/{paperId}/submissions/{submissionId}/comment")
+    @PatchMapping("/to-review/papers/submissions/comment")
     public ResponseEntity<Void> saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId,
             @RequestParam String comment, @RequestParam int rating) {
 

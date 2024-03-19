@@ -198,9 +198,9 @@
                     <td>${submission.revisionStatus}</td>
                     <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
                     <td>
-                        <a href="${submission.pdflink}" target="_blank">View</a>
+                        <a href="${submission.link}" target="_blank">View</a>
                         <button onclick="openReviewPopup(${submission.paperId})">Review</button>
-                        <a href="${submission.pdflink}" target="_blank">Download</a>
+                        <a href="${submission.link}" target="_blank">Download</a>
                     </td>
                 `;
                         pdfTableBody.appendChild(row);
@@ -261,7 +261,7 @@
     <table border="1" cellspacing="0" cellpadding="10" style="width: 100%;">
         <thead>
             <tr>
-                <th>paperId</th>
+                <th>Title</th>
                 <th>Status</th>
                 <th>Revision Status</th>
                 <th>Deadline</th>

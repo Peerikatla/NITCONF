@@ -25,10 +25,11 @@ public class UserController {
      * @return the user profile if found, or a 404 Not Found response
      */
     @GetMapping("/profiles")
+    @ResponseBody
     public ResponseEntity<User> getUserProfile(@RequestParam("userId") Integer userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
-            System.out.println(user.toString());
+            System.out.println("in api"+user.toString());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             System.out.println("User not found");
@@ -44,6 +45,7 @@ public class UserController {
      * @return the updated user profile if found, or a 404 Not Found response
      */
     @PutMapping("/profiles")
+    @ResponseBody
     public ResponseEntity<User> updateUserProfile(@RequestParam("userId") Integer userId,
             @RequestBody User updatedUser) {
         User existingUser = userService.getUserById(userId);
@@ -69,6 +71,7 @@ public class UserController {
      * @return the updated user profile if found, or a 404 Not Found response
      */
     @PatchMapping("/profiles")
+    @ResponseBody
     public ResponseEntity<User> updateProfileFields(@PathVariable Integer userId,
             @RequestBody User updatedUser) {
         userService.updateUserProfileFields(userId, updatedUser.getFullName(),

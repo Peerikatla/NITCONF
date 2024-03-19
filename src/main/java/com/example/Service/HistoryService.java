@@ -1,6 +1,7 @@
 package com.example.Service;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class HistoryService {
                 paperMap.put("title", paper.getTitle());
                 paperMap.put("status", paper.getApprovestatus());
                 paperMap.put("revisionStatus", paper.getRevisionStatus());
-                paperMap.put("deadline", getDeadline(paper));
+                paperMap.put("deadline", ConvertToLocalDateViaLocalDateTime(getDeadline(paper)));
                 result.add(paperMap);
             }
         }
@@ -66,5 +67,9 @@ public class HistoryService {
                 .map(submission -> submission.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .max(Comparator.naturalOrder())
                 .orElse(null);
+    }
+    
+    private LocalDate ConvertToLocalDateViaLocalDateTime(LocalDateTime dateToConvert) {
+        return dateToConvert.toLocalDate();
     }
 }

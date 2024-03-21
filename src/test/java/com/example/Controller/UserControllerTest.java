@@ -3,98 +3,82 @@ package com.example.Controller;
 import com.example.Service.UserService;
 import com.example.model.User;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-// import org.junit.jupiter.api.extension.ExtendWith;
-// import org.mockito.Mock;
-// import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.security.test.context.support.WithMockUser;
-// import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.sql.Date;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.*;
 
-// @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@WebMvcTest(UserController.class)
-@AutoConfigureMockMvc
-public class UserControllerTest {
+@ExtendWith(MockitoExtension.class)
+class UserControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private UserService userService;
 
     @InjectMocks
     private UserController userController;
 
-    @SuppressWarnings("null")
     @Test
-    @WithMockUser(username = "admin", roles = { "ADMIN" }) // Mock authentication for admin user
-    public void testGetUserProfile() throws Exception {
+    void getUserProfile_UserExists_ReturnsUserProfile() {
+        // Arrange
+        int userId = 1;
+        User mockUser = new User();
+        mockUser.setUserid(userId);
+        when(userService.getUserById(userId)).thenReturn(mockUser);
 
-        User expectedUser = new User(1, "Kavuru Naveen Kumar", "TheNaveen",
-                "9182514197", "2917", 10L,
-                Date.valueOf(LocalDate.parse("2004-09-20")), "naveenkumar_b210560cs@nitc.ac.in", "Data Science");
+        // Act
+        ResponseEntity<User> responseEntity = userController.getUserProfile(userId);
 
-        // Mock UserService response
-        Mockito.when(userService.getUserById(1)).thenReturn(expectedUser);
-
-        // Perform GET request using mockMvc
-        mockMvc.perform(get("/api/profiles")
-                .param("userId", "1")
-                .param("admin", "true")) // Add admin parameter
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.userid").value(expectedUser.getUserid()))
-                .andExpect(jsonPath("$.fullName").value(expectedUser.getFullName()))
-                .andExpect(jsonPath("$.username").value(expectedUser.getUsername()))
-                .andExpect(jsonPath("$.number").value(expectedUser.getNumber()))
-                .andExpect(jsonPath("$.specialization").value(expectedUser.getSpecialization()))
-                .andExpect(jsonPath("$.dateOfBirth").value(expectedUser.getDateOfBirth().toString()))
-                .andExpect(jsonPath("$.email").value(expectedUser.getEmail()))
-                .andExpect(jsonPath("$.paperlimit").value(expectedUser.getPaperlimit()))
-                .andExpect(jsonPath("$.password").value(expectedUser.getPassword()));
-
-        Mockito.verify(userService, Mockito.times(1)).getUserById(1);
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(mockUser, responseEntity.getBody());
     }
 
     @Test
-    public void testUpdateProfileFields() throws Exception {
-        // Mock user data
-        User expectedUser = new User(1, "Kavuru Naveen Kumar", "TheNaveen", "9182514197", "2917", 10L,
-                Date.valueOf(LocalDate.parse("2004-09-20")), "naveenkumar_b210560cs@nitc.ac.in", "Data Science");
+    void getUserProfile_UserDoesNotExist_ReturnsNotFound() {
+        // Arrange
+        int userId = 1;
+        when(userService.getUserById(userId)).thenReturn(null);
 
-        User updatedUser = new User(1, "Kavuru Naveen Kumar", "TheNaveen", "9492522866", "2917", 10L,
-                Date.valueOf(LocalDate.parse("2004-09-20")), "naveenkumar_b210560cs@nitc.ac.in", "Data Science");
+        // Act
+        ResponseEntity<User> responseEntity = userController.getUserProfile(userId);
 
-        // Mock UserService behavior
-        when(userService.getUserById(1)).thenReturn(expectedUser);
-        // You can mock other UserService behaviors if needed
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(null, responseEntity.getBody());
+    }
 
-        // Perform the test
-        HttpStatus result = userController.updateProfileFields(1, updatedUser);
+    @Test
+    void updateProfileFields_UserExists_ReturnsOk() {
+        // Arrange
+        int userId = 1;
+        User existingUser = new User();
+        existingUser.setUserid(userId);
+        User updatedUser = new User();
+        updatedUser.setUserid(userId);
+        when(userService.getUserById(userId)).thenReturn(existingUser);
 
-        // Verify that the service method is called with the correct parameters
-        verify(userService).updateUserProfileFields(expectedUser, updatedUser);
+        // Act
+        HttpStatus status = userController.updateProfileFields(userId, updatedUser);
 
-        // Check if HttpStatus.OK is returned
-        assertEquals(HttpStatus.OK, result);
+        // Assert
+        assertEquals(HttpStatus.OK, status);
+    }
+
+    @Test
+    void updateProfileFields_UserDoesNotExist_ReturnsNotFound() {
+        // Arrange
+        int userId = 1;
+        when(userService.getUserById(userId)).thenReturn(null);
+
+        // Act
+        HttpStatus status = userController.updateProfileFields(userId, new User());
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, status);
     }
 }

@@ -87,16 +87,27 @@ public class ReviewedControllerTest {
         int paperId = 1;
         int submissionId = 1;
         String comment = "Updated comment";
-        int rating = 4;
+        int originality = 4;
+        int relevance = 5;
+        int quality = 3;
+        int technicalContentandAccuracy = 4;
+        int significanceOfWork = 5;
+        int appropriateForSAC = 3;
+
 
         // Perform PATCH request to API endpoint
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
                 .param("comment", comment)
-                .param("rating", String.valueOf(rating)))
+                .param( "originality", String.valueOf(originality))
+                .param("relevance", String.valueOf(relevance))
+                .param("quality", String.valueOf(quality))
+                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
+                .param("significanceOfWork", String.valueOf(significanceOfWork))
+                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
                 .andExpect(status().isOk());
 
         // Verify service method is called with correct arguments
-        verify(reviewedservice, times(1)).updatecomment(paperId, submissionId, comment, rating);
+        verify(reviewedservice, times(1)).updatecomment(paperId, submissionId, comment, originality, relevance, quality, technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
     }
 
     @Test
@@ -105,16 +116,25 @@ public class ReviewedControllerTest {
         int paperId = 1;
         int submissionId = 1;
         String comment = "Updated comment";
-        int rating = 6; // Invalid rating
-
+        int originality = 4;
+        int relevance = 5;
+        int quality = 6; // Invalid rating
+        int technicalContentandAccuracy = 4;
+        int significanceOfWork = 5;
+        int appropriateForSAC = 3;
         // Perform PATCH request to API endpoint with invalid rating
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
                 .param("comment", comment)
-                .param("rating", String.valueOf(rating)))
+                .param( "originality", String.valueOf(originality))
+                .param("relevance", String.valueOf(relevance))
+                .param("quality", String.valueOf(quality))
+                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
+                .param("significanceOfWork", String.valueOf(significanceOfWork))
+                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
                 .andExpect(status().isBadRequest());
 
         // Verify service method is not called
-        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, rating);
+        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, originality, relevance, quality, technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
     }
 
     @Test
@@ -123,15 +143,25 @@ public class ReviewedControllerTest {
         int paperId = 1;
         int submissionId = 2;
         String comment = ""; // Empty comment
-        int rating = 4;
+        int originality = 4;
+        int relevance = 5;
+        int quality = 3;
+        int technicalContentandAccuracy = 4;
+        int significanceOfWork = 5;
+        int appropriateForSAC = 3;
 
         // Perform PATCH request to API endpoint with empty comment
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/reviewed/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
                 .param("comment", comment)
-                .param("rating", String.valueOf(rating)))
+                .param( "originality", String.valueOf(originality))
+                .param("relevance", String.valueOf(relevance))
+                .param("quality", String.valueOf(quality))
+                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
+                .param("significanceOfWork", String.valueOf(significanceOfWork))
+                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
                 .andExpect(status().isBadRequest());
 
         // Verify service method is not called
-        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, rating);
+        verify(reviewedservice, never()).updatecomment(paperId, submissionId, comment, originality, relevance, quality, technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
     }
 }

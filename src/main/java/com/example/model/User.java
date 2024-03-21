@@ -1,6 +1,5 @@
 package com.example.model;
 // import lombok.AllArgsConstructor; 
-import lombok.Builder;
 import lombok.Data;
 // import lombok.NoArgsConstructor;
 
@@ -21,7 +20,6 @@ import jakarta.persistence.Table;
  *
  * @author example
  */
-@Builder
 @Entity
 @Data
 // @AllArgsConstructor
@@ -194,7 +192,7 @@ public class User {
     
 
     public User(Integer userid, String fullName, String username, String number, String password,
-			Long paperlimit, Date dateOfBirth, String email, String specialization, List<Paper> papers) {
+			Long paperlimit, Date dateOfBirth, String email, String specialization) {
 		super();
 		this.userid = userid;
 		this.fullName = fullName;
@@ -205,7 +203,6 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
         this.email = email;
 		Specialization = specialization;
-		this.papers = papers;
 	}
 
 	public Date getDateOfBirth() {

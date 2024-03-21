@@ -179,41 +179,42 @@
             quality: parseInt(document.getElementById('quality').value)
         }};
 
-        function fetchPaperDetails() {
-            // Fetch user ID from the backend 
-            // const userid = `${userId}`;
-            const userId = 1;
-            const url = `http://localhost:8080/api/papers/reviews?userId=${userId}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Paper details:', data);
-                    const paperTableBody = document.getElementById('pdfTableBody');
-                    paperTableBody.innerHTML = ''; // Clear existing table rows
-                    data.forEach(submission => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                    <td>${submission.title}</td>
-                    <td>${submission.status}</td>
-                    <td>${submission.revisionStatus}</td>
-                    <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
-                    <td>
-                        <a href="${submission.link}" target="_blank">View</a>
-                        <button onclick="openReviewPopup(${submission.paperId})">Review</button>
-                        <a href="${submission.link}" target="_blank">Download</a>
-                    </td>
-                `;
-                        pdfTableBody.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching paper details:', error);
+    function fetchPaperDetails() {
+        // Fetch user ID from the backend 
+        // const userid = `${userId}`;
+        const userId = 1;
+        const url = `http://localhost:8080/api/papers/reviews?userId=${userId}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Paper details:', data);
+                const paperTableBody = document.getElementById('pdfTableBody');
+                paperTableBody.innerHTML = ''; // Clear existing table rows
+                data.forEach(submission => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${submission.title}</td>
+                <td>${submission.status}</td>
+                <td>${submission.revisionStatus}</td>
+                <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
+                <td>
+                    <a href="${submission.link}" target="_blank">View</a>
+                    <button onclick="openReviewPopup(${submission.paperId})">Review</button>
+                    <a href="${submission.link}" target="_blank">Download</a>
+                </td>
+            `;
+                    pdfTableBody.appendChild(row);
                 });
-        }
+            })
+            .catch(error => {
+                console.error('Error fetching paper details:', error);
+            });
+    }
 
-
-        // Call fetchPaperDetails when the page loads
-        window.onload = fetchPaperDetails;
+    
+    // Call fetchPaperDetails when the page loads
+        
+    window.onload = fetchPaperDetails;
 
     function saveEditedReview(paperId) {
         var reviewText = document.getElementById("reviewText").value;

@@ -27,14 +27,30 @@ public class Submission {
 	private String status; // null or reviewed or revised
 
 	@Column
-	private String comment; //initially null and then updated by the reviewer to a message about what was wrong with the paper
+	private String comment; // initially null and then updated by the reviewer to a message about what was
+							// wrong with the paper
 
 	@Column
-	private Integer rating; //initially null and then updated by the reviewer to a number between 1 and 5
-	
+	private Integer Originality;
+
 	@Column
-	private String Link; //link of the pdf file submitted by the user
-	
+	private Integer Relevance;
+
+	@Column
+	private Integer Quality;
+
+	@Column
+	private Integer TechnicalContentandAccuracy;
+
+	@Column
+	private Integer SignificanceOfWork;
+
+	@Column
+	private Integer AppropriateForSAC;
+
+	@Column
+	private String Link; // link of the pdf file submitted by the user
+
 	@ManyToOne(targetEntity = Paper.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "paperId")
 	private Paper paper;
@@ -43,15 +59,49 @@ public class Submission {
 		super();
 	}
 
-	public Submission(Integer submissionId, Date deadline, String status, String comment, int rating, String link, Paper paper) {
-		super();
+	
+
+	public Submission(Integer submissionId, Date deadline, String status, String comment, Integer originality,
+			Integer relevance, Integer quality, Integer technicalContentandAccuracy, Integer significanceOfWork,
+			Integer appropriateForSAC, String link, Paper paper) {
 		this.submissionId = submissionId;
 		this.deadline = deadline;
 		this.status = status;
 		this.comment = comment;
-		this.rating = rating;
-		this.Link = link;
+		Originality = originality;
+		Relevance = relevance;
+		Quality = quality;
+		TechnicalContentandAccuracy = technicalContentandAccuracy;
+		SignificanceOfWork = significanceOfWork;
+		AppropriateForSAC = appropriateForSAC;
+		Link = link;
 		this.paper = paper;
+	}
+
+
+
+	public Integer getTechnicalContentandAccuracy() {
+		return TechnicalContentandAccuracy;
+	}
+
+	public void setTechnicalContentandAccuracy(Integer technicalContentandAccuracy) {
+		TechnicalContentandAccuracy = technicalContentandAccuracy;
+	}
+
+	public Integer getSignificanceOfWork() {
+		return SignificanceOfWork;
+	}
+
+	public void setSignificanceOfWork(Integer significanceOfWork) {
+		SignificanceOfWork = significanceOfWork;
+	}
+
+	public Integer getAppropriateForSAC() {
+		return AppropriateForSAC;
+	}
+
+	public void setAppropriateForSAC(Integer appropriateForSAC) {
+		AppropriateForSAC = appropriateForSAC;
 	}
 
 	public Integer getSubmissionId() {
@@ -86,12 +136,28 @@ public class Submission {
 		this.comment = comment;
 	}
 
-	public int getRating() {
-		return rating;
+	public Integer getOriginality() {
+		return Originality;
 	}
 
-	public void setRating(int rating) {
-		this.rating = rating;
+	public void setOriginality(Integer originality) {
+		Originality = originality;
+	}
+
+	public Integer getRelevance() {
+		return Relevance;
+	}
+
+	public void setRelevance(Integer relevance) {
+		Relevance = relevance;
+	}
+
+	public Integer getQuality() {
+		return Quality;
+	}
+
+	public void setQuality(Integer quality) {
+		Quality = quality;
 	}
 
 	public String getLink() {

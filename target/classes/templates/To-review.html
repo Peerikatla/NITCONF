@@ -168,6 +168,7 @@
 
             overlay.style.display = "block";
             reviewPopup.style.display = "block";
+
         }
 
         function saveComment(paperId) {
@@ -225,6 +226,25 @@
                 });
         }
 
+        function saveComment(paperId, submissionId, comment, originality, relevance, quality) {
+            const url = `http://localhost:8080/to-review/papers/submissions/comment?paperId=${paperId}&submissionId=${submissionId}&comment=${comment}&Originality=${originality}&Relevance=${relevance}&Quality=${quality}`;
+            fetch(url, {
+                method: 'PATCH'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Comment saved successfully');
+                        // Handle success response
+                    } else {
+                        console.error('Failed to save comment');
+                        // Handle error response
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving comment:', error);
+                    // Handle error
+                });
+        }
 
         // Call fetchPaperDetails when the page loads
         window.onload = fetchPaperDetails;

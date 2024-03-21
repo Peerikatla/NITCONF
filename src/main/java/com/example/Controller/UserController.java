@@ -2,13 +2,16 @@ package com.example.Controller;
 
 import com.example.Service.UserService;
 import com.example.model.User;
+
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This class represents the controller for handling user-related API requests.
+ * This class represents the controller for managing user-related operations.
  */
 @RestController
 @RequestMapping("/api")
@@ -21,17 +24,16 @@ public class UserController {
      * Retrieves the user profile based on the provided user ID.
      *
      * @param userId the ID of the user
-     * @return a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if not found
+     * @return a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if the user is not found
      */
     @GetMapping("/profiles")
     @ResponseBody
-    public ResponseEntity<User> getUserProfile(@RequestParam("userId") Integer userId) {
-        User user = userService.getUserById(userId);
+    public ResponseEntity<Map<String, Object>> getUserProfile(@RequestParam("userId") Integer userId) {
+        Map<String, Object> user = userService.getUserInfo(userId);
+
         if (user != null) {
-            System.out.println("in api" + user.toString());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
-            System.out.println("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

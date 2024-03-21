@@ -1,7 +1,7 @@
 package com.example.Service;
 
-
-import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,25 @@ public class UserService {
             existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
             userRepository.save(existingUser);
         }
+    }
+
+    public Map<String, Object> getUserInfo(Integer userId) {
+
+        Map<String, Object> userInfo = new HashMap<>();
+
+        User user = userRepository.findByuserid(userId);
+
+        if(user != null){
+            userInfo.put( "userId", user.getUserid());
+            userInfo.put( "fullName", user.getFullName());
+            userInfo.put( "username", user.getUsername());
+            userInfo.put( "number", user.getNumber());
+            userInfo.put( "specialization", user.getSpecialization());
+            userInfo.put( "dateOfBirth", user.getDateOfBirth());
+            userInfo.put("email", user.getEmail());
+        }
+        
+        return userInfo;
     }
   
 }

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.Map;
+
 @ExtendWith(MockitoExtension.class)
 class UserControllerTest {
 
@@ -31,7 +33,7 @@ class UserControllerTest {
         when(userService.getUserById(userId)).thenReturn(mockUser);
 
         // Act
-        ResponseEntity<User> responseEntity = userController.getUserProfile(userId);
+        ResponseEntity<Map<String, Object>> responseEntity = userController.getUserProfile(userId);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
@@ -45,7 +47,7 @@ class UserControllerTest {
         when(userService.getUserById(userId)).thenReturn(null);
 
         // Act
-        ResponseEntity<User> responseEntity = userController.getUserProfile(userId);
+        ResponseEntity<Map<String, Object>> responseEntity = userController.getUserProfile(userId);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());

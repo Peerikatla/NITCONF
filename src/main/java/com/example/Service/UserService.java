@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +28,13 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
-    public void updateUserProfileFields(User existingUser, User updatedUser) {
+    public void updateUserProfileFields(User existingUser, String fullName, String username, String number, String specialization, Date DateofBirth) {
         if (existingUser != null) {
-            existingUser.setFullName(updatedUser.getFullName());
-            existingUser.setUsername(updatedUser.getUsername());
-            existingUser.setNumber(updatedUser.getNumber());
-            existingUser.setSpecialization(updatedUser.getSpecialization());
-            existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
+            existingUser.setFullName(fullName);
+            existingUser.setUsername(username);
+            existingUser.setNumber(number);
+            existingUser.setSpecialization(specialization);
+            existingUser.setDateOfBirth(DateofBirth);
             userRepository.save(existingUser);
         }
     }

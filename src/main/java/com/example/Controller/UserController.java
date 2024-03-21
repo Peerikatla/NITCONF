@@ -3,6 +3,7 @@ package com.example.Controller;
 import com.example.Service.UserService;
 import com.example.model.User;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,9 @@ public class UserController {
      * Retrieves the user profile based on the provided user ID.
      *
      * @param userId the ID of the user
-     * @return a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if the user is not found
+     * @return a ResponseEntity containing the user profile if found, or
+     *  HttpStatus.NOT_FOUND if the user is not found
+     *  a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if the user is not found
      */
     @GetMapping("/profiles")
     @ResponseBody
@@ -42,15 +45,21 @@ public class UserController {
      * Updates the specified fields of the user profile.
      *
      * @param userId      the ID of the user
-     * @param updatedUser the updated user object containing the fields to be updated
-     * @return HttpStatus.OK if the user exists and the profile is updated, or HttpStatus.NOT_FOUND if the user is not found
+     * @param updatedUser the updated user object containing the fields to be
+     *                    updated
+     * @return HttpStatus.OK if the user exists and the profile is updated, or
+     *         HttpStatus.NOT_FOUND if the user is not found
      */
     @PatchMapping("/profiles")
-    @ResponseBody
-    public HttpStatus updateProfileFields(@RequestParam("userId") Integer userId, @RequestBody User updatedUser) {
+    public HttpStatus updateProfileFields(@RequestParam("userId") Integer userId,
+            @RequestParam("fullName") String fullName,
+            @RequestParam("username") String username,
+            @RequestParam("number") String number,
+            @RequestParam("specialization") String specialization,
+            @RequestParam("DateofBirth") Date DateofBirth){
         User existingUser = userService.getUserById(userId);
         if (existingUser != null) {
-            userService.updateUserProfileFields(existingUser, updatedUser);
+            userService.updateUserProfileFields(existingUser, fullName, username, number, specialization, (java.sql.Date) DateofBirth);
             return HttpStatus.OK;
         } else {
             return HttpStatus.NOT_FOUND;

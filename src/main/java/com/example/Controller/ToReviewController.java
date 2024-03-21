@@ -64,14 +64,14 @@ public class ToReviewController {
      * @param rating       The rating to be saved.
      * @return A ResponseEntity with no content and HTTP status 204 (No Content).
      */
-    @PatchMapping("/to-review/papers/submissions/comment")
-    public ResponseEntity<Void> saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId,
+    @PatchMapping("/to-review/papers/{paperId}/submissions/{SubmissionId}/comment")
+    public HttpStatus saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId,
             @RequestParam String comment, @RequestParam int Originality, @RequestParam int Relevance, @RequestParam int Quality,
             @RequestParam Integer TechnicalContentandAccuracy, @RequestParam Integer SignificanceOfWork, 
             @RequestParam Integer AppropriateForSAC) {
 
         toreviewservice.saveComment(paperId, submissionId, comment, Originality, Relevance, Quality, TechnicalContentandAccuracy, SignificanceOfWork, AppropriateForSAC);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return HttpStatus.OK;
     }
 
 }

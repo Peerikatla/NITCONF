@@ -26,7 +26,8 @@ public class UserController {
      *
      * @param userId the ID of the user
      * @return a ResponseEntity containing the user profile if found, or
-     *         HttpStatus.NOT_FOUND if the user is not found
+     *  HttpStatus.NOT_FOUND if the user is not found
+     *  a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if the user is not found
      */
     @GetMapping("/profiles")
     @ResponseBody

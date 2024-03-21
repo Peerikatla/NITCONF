@@ -277,31 +277,42 @@
     <script>
         var isEditable = false;
 
-        // Function to fetch user details from backend and populate the form
-        function populateUserDetails(user) {
+	           
+	          
+    
 
-            const url = `http://localhost:8080/api/profiles?userId=${user}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (response.ok) {
-                        // Populate form fields with fetched user data
-                        document.getElementById('fullName').value = data.fullName;
-                        document.getElementById('username').value = data.username;
-                        document.getElementById('email').value = data.email;
-                        document.getElementById('phone').value = data.number;
-                        document.getElementById('dob').value = data.dateOfBirth;
-                        document.getElementById('specialization').value = data.Specialization;
-                    } else {
-                        // Handle the error case (e.g., user not found)
-                        console.error('Error fetching user details:', data);
-                        // Optionally, display an error message to the user
-                    }
-                })
-                .catch(error => console.error('Network error:', error));
-        }
+    function setUserDetails() {
+		const user = 1;
 
+        fetch('http://localhost:8080/api/profiles?userId=' + user, {
+        method: 'GET',
+    })
+            .then(res => res.json())    //return res.json  which is json
+            .then(data => {
 
+                console.log(data);
+
+                // Populate user details in the form fields
+                document.getElementById("fullName").setAttribute("value", data.fullName);
+                document.getElementById("username").setAttribute("value", data.username);
+                document.getElementById("email").setAttribute("value", data.email);
+                document.getElementById("phone").setAttribute("value", data.number);
+                document.getElementById("dob").setAttribute("value", data.dateOfBirth);
+                document.getElementById("specialization").value = data.Specialization;
+
+            })
+            .catch((error) => {
+
+                console.log(error);
+            });
+    }
+
+    // Call setUserDetails when the page loads
+    window.onload = function () {
+        setUserDetails(); // Assuming you don't need any parameter for this call
+    };
+    
+    
         // Function to enable editing of form fields
         function changeEdit() {
             isEditable = true;
@@ -320,7 +331,7 @@
 
         // Function to cancel editing and revert changes
         function cancelChanges() {
-            populateUserDetails(); // Reset form fields with original user details
+            //populateUserDetails(); // Reset form fields with original user details
             var editButton = document.querySelector('.edit-button');
             var cancelButton = document.querySelector('.cancel-button');
             var submitButton = document.querySelector('.submit-button');
@@ -367,9 +378,7 @@
             }
         }
 
-        // Call populateUserDetails when the page loads
-
-        window.onload = populateUserDetails(1);
+        
     </script>
 
 </body>

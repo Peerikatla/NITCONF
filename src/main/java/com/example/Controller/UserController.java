@@ -8,8 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * This class represents the controller for handling user-related operations.
- * It provides endpoints for retrieving, updating, and patching user profiles.
+ * This class represents the controller for handling user-related API requests.
  */
 @RestController
 @RequestMapping("/api")
@@ -19,17 +18,17 @@ public class UserController {
     private UserService userService;
 
     /**
-     * Retrieves the user profile for the given user ID.
+     * Retrieves the user profile based on the provided user ID.
      *
      * @param userId the ID of the user
-     * @return the user profile if found, or a 404 Not Found response
+     * @return a ResponseEntity containing the user profile if found, or HttpStatus.NOT_FOUND if not found
      */
     @GetMapping("/profiles")
     @ResponseBody
     public ResponseEntity<User> getUserProfile(@RequestParam("userId") Integer userId) {
         User user = userService.getUserById(userId);
         if (user != null) {
-            System.out.println("in api"+user.toString());
+            System.out.println("in api" + user.toString());
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             System.out.println("User not found");
@@ -38,53 +37,21 @@ public class UserController {
     }
 
     /**
-     * Updates the user profile for the given user ID.
+     * Updates the specified fields of the user profile.
      *
      * @param userId      the ID of the user
-     * @param updatedUser the updated user profile
-     * @return the updated user profile if found, or a 404 Not Found response
-     */
-    @PutMapping("/profiles")
-    @ResponseBody
-    public ResponseEntity<User> updateUserProfile(@RequestParam("userId") Integer userId,
-            @RequestBody User updatedUser) {
-        User existingUser = userService.getUserById(userId);
-        if (existingUser != null) {
-            updatedUser.setUserid(userId);
-            User savedUser = userService.updateUserProfile(updatedUser);
-            return new ResponseEntity<>(savedUser, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    /**
-     * Updates specific fields of the user profile for the given user ID.
-     *
-     * @param userId         the ID of the user
-     * @param firstName      the updated first name
-     * @param lastName       the updated last name
-     * @param username       the updated username
-     * @param number         the updated number
-     * @param specialization the updated specialization
-     * @param dateOfBirth    the updated date of birth
-     * @return the updated user profile if found, or a 404 Not Found response
+     * @param updatedUser the updated user object containing the fields to be updated
+     * @return HttpStatus.OK if the user exists and the profile is updated, or HttpStatus.NOT_FOUND if the user is not found
      */
     @PatchMapping("/profiles")
     @ResponseBody
-    public ResponseEntity<User> updateProfileFields(@PathVariable Integer userId,
-            @RequestBody User updatedUser) {
-        userService.updateUserProfileFields(userId, updatedUser.getFullName(),
-                updatedUser.getUsername(),
-                updatedUser.getNumber(),
-                updatedUser.getSpecialization(),
-                updatedUser.getDateOfBirth());
-        User updateduser = userService.getUserById(userId);
-        if (updateduser != null) {
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public HttpStatus updateProfileFields(@RequestParam("userId") Integer userId, @RequestBody User updatedUser) {
+        User existingUser = userService.getUserById(userId);
+        if (existingUser != null) {
+            userService.updateUserProfileFields(existingUser, updatedUser);
+            return HttpStatus.OK;
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return HttpStatus.NOT_FOUND;
         }
     }
-
 }

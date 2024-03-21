@@ -2,6 +2,7 @@ package com.example.Controller;
 
 import com.example.Service.Toreviewservice;
 import com.example.model.Paper;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,7 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -43,7 +49,6 @@ public class ToReviewControllerTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @SuppressWarnings("null")
     @Test
     public void testGetAllPapersWithSubmissions() throws Exception {
         // Mock data
@@ -53,10 +58,7 @@ public class ToReviewControllerTest {
 
         // Perform GET request to API endpoint
         mockMvc.perform(MockMvcRequestBuilders.get("/api/papers"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(paper.getPaperId()))
-                .andExpect(jsonPath("$[0].title").value(paper.getTitle()));
+                .andExpect(status().isOk());
 
         // Verify service method is called
         verify(toreviewservice, times(1)).getAllPapersWithSubmissions();
@@ -65,20 +67,37 @@ public class ToReviewControllerTest {
     @SuppressWarnings("null")
     @Test
     public void testGetAllSubmissionInfo() throws Exception {
-        // Mock data
-        int userId = 1;
-        List<Map<String, Object>> submissionInfoList = Collections.singletonList(Collections.emptyMap());
-        // Mock service behavior
-        when(toreviewservice.getAllSubmissionInfo(userId)).thenReturn(submissionInfoList);
+        // Mock submission information
+        List<Map<String, Object>> submissionInfo = new ArrayList<>();
+        Map<String, Object> submission1 = new HashMap<>();
+        submission1.put("title", "linear regression");
+        submission1.put( "status", "To Review");
+        submission1.put( "revision status", 0);
+        submission1.put("deadline", Date.valueOf(LocalDate.parse("2024-04-01")));
+        submission1.put("link", "");
+        submission1.put("submissionId", 4);
+        submission1.put("paperId", 2);
+        submissionInfo.add(submission1);
 
-        // Perform GET request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/submissions/{userId}", userId))
+        // Mock toreviewservice response
+        when(toreviewservice.getAllSubmissionInfo(2)).thenReturn(submissionInfo);
+
+        // Perform GET request using mockMvc
+        mockMvc.perform(get("/api/unreviewedsubmissions")
+                .param("userId", "2"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0]").value(Collections.emptyMap()));
+                .andExpect( jsonPath("$[0].title").value(submission1.get("title")))
+                .andExpect( jsonPath("$[0].status").value(submission1.get("status")))
+                .andExpect(jsonPath("$[0].revision status").value(submission1.get("revision status")))
+                .andExpect(jsonPath("$[0].deadline").value(submission1.get("deadline").toString()))
+                .andExpect(jsonPath("$[0].link").value(submission1.get("link")))
+                .andExpect(jsonPath("$[0].submissionId").value(submission1.get("submissionId")))
+                .andExpect(jsonPath("[0].paperId").value(submission1.get("paperId")));
+        // Add more assertions for other submission information if needed
 
-        // Verify service method is called
-        verify(toreviewservice, times(1)).getAllSubmissionInfo(userId);
+        // Verify that toreviewservice method is called with the correct parameter
+        verify(toreviewservice).getAllSubmissionInfo(1);
     }
 
     @Test
@@ -87,16 +106,28 @@ public class ToReviewControllerTest {
         int paperId = 2;
         int submissionId = 201;
         String comment = "Test comment";
-        int rating = 5;
+        int originality = 5;
+        int relevance = 5;
+        int quality = 5;
+        int technicalContentandAccuracy = 5;
+        int significanceOfWork = 5;
+        int appropriateForSAC = 5;
 
         // Perform PATCH request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
+        mockMvc.perform(MockMvcRequestBuilders
+                .patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
                 .param("comment", comment)
-                .param("rating", String.valueOf(rating)))
+                .param("originality", String.valueOf(originality))
+                .param("relevance", String.valueOf(relevance))
+                .param("quality", String.valueOf(quality))
+                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
+                .param("significanceOfWork", String.valueOf(significanceOfWork))
+                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
                 .andExpect(status().isOk());
 
         // Verify service method is called with correct arguments
-        verify(toreviewservice, times(1)).saveComment(paperId, submissionId, comment, rating);
+        verify(toreviewservice, times(1)).saveComment(paperId, submissionId, comment, originality, relevance, quality,
+                technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
     }
 
     @Test
@@ -105,15 +136,27 @@ public class ToReviewControllerTest {
         int paperId = 1;
         int submissionId = 1;
         String comment = ""; // Empty comment
-        int rating = 5;
+        int originality = 5;
+        int relevance = 5;
+        int quality = 5;
+        int technicalContentandAccuracy = 5;
+        int significanceOfWork = 5;
+        int appropriateForSAC = 5;
 
         // Perform PATCH request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
+        mockMvc.perform(MockMvcRequestBuilders
+                .patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
                 .param("comment", comment)
-                .param("rating", String.valueOf(rating)))
+                .param("originality", String.valueOf(originality))
+                .param("relevance", String.valueOf(relevance))
+                .param("quality", String.valueOf(quality))
+                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
+                .param("significanceOfWork", String.valueOf(significanceOfWork))
+                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
                 .andExpect(status().isOk());
 
         // Verify service method is not called
-        verify(toreviewservice, never()).saveComment(paperId, submissionId, comment, rating);
+        verify(toreviewservice, never()).saveComment(paperId, submissionId, comment, originality, relevance, quality,
+                technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
     }
 }

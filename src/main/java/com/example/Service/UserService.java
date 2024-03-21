@@ -27,15 +27,14 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
-    public void updateUserProfileFields(Integer userId, String fullName, String username, String number, String specialization, Date dateOfBirth) {
-        User user = userRepository.findByuserid(userId);
-        if (user != null) {
-            user.setFullName(fullName);
-            user.setUsername(username);
-            user.setNumber(number);
-            user.setSpecialization(specialization);
-            user.setDateOfBirth(dateOfBirth);
-            userRepository.save(user);
+    public void updateUserProfileFields(User existingUser, User updatedUser) {
+        if (existingUser != null) {
+            existingUser.setFullName(updatedUser.getFullName());
+            existingUser.setUsername(updatedUser.getUsername());
+            existingUser.setNumber(updatedUser.getNumber());
+            existingUser.setSpecialization(updatedUser.getSpecialization());
+            existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
+            userRepository.save(existingUser);
         }
     }
   

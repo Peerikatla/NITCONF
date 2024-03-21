@@ -69,6 +69,8 @@ public class Toreviewservice {
                     info.put("revisionStatus", paper.getRevisionStatus());
                     info.put("deadline", convertToLocalDateViaSqlDate(submission.getDeadline()));
                     info.put("link", submission.getLink());
+                    info.put("submissionId", submission.getSubmissionId());
+                    info.put("paperId", paper.getPaperId());
                     submissionInfos.add(info);
                 }
             }
@@ -76,13 +78,19 @@ public class Toreviewservice {
         return submissionInfos;
     }
 
-    public void saveComment(Integer paperId, Integer submissionId, String comment, int rating) {
+    public void saveComment(Integer paperId, Integer submissionId, String comment, int Originality, int Relevance, int Quality, int TechnicalContentandAccuracy, int SignificanceOfWork, int AppropriateForSAC) {
         findPaperById(paperId).getSubmissions().stream()
                 .filter(submission -> submission.getSubmissionId() == submissionId)
                 .findFirst()
                 .ifPresent(submission -> {
                     submission.setComment(comment);
-                    submission.setRating(rating);
+                    submission.setOriginality(submissionId);
+                    submission.setRelevance(Relevance);
+                    submission.setQuality(Quality);
+                    submission.setTechnicalContentandAccuracy(TechnicalContentandAccuracy);
+                    submission.setSignificanceOfWork(SignificanceOfWork);
+                    submission.setAppropriateForSAC(AppropriateForSAC);
+                    submission.setStatus("reviewed");
                 });
     }
 

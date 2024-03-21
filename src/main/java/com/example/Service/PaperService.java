@@ -18,13 +18,15 @@ public class PaperService {
         return (List<Paper>) paperRepository.findAll();
     }
 
-    public void saveComment(int paperId, int submissionId, String comment, int rating) {
+    public void saveComment(int paperId, int submissionId, String comment, int Originality, int Relevance, int Quality) {
         findPaperById(paperId).getSubmissions().stream()
                 .filter(submission -> submission.getSubmissionId() == submissionId)
                 .findFirst()
                 .ifPresent(submission -> {
                     submission.setComment(comment);
-                    submission.setRating(rating);
+                    submission.setOriginality(Originality);
+                    submission.setRelevance(Relevance);
+                    submission.setQuality(Quality);
                 });
     }
 

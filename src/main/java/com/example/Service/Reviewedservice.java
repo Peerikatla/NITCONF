@@ -64,7 +64,12 @@ public class Reviewedservice {
                     paperMap.put("revisionStatus", paper.getRevisionStatus());
                     paperMap.put("deadline", convertToLocalDateViaSqlDate(submission.getDeadline()));
                     paperMap.put("comment", submission.getComment());
-                    paperMap.put("rating", submission.getRating());
+                    paperMap.put("originality", submission.getOriginality());
+                    paperMap.put("relevance", submission.getRelevance());
+                    paperMap.put("quality", submission.getQuality());
+                    paperMap.put("technicalContentandAccuracy", submission.getTechnicalContentandAccuracy());
+                    paperMap.put("significanceOfWork", submission.getSignificanceOfWork());
+                    paperMap.put("appropriateForSAC", submission.getAppropriateForSAC());
                     paperMap.put("link", submission.getLink());
                     result.add(paperMap);
                 }
@@ -86,13 +91,19 @@ public class Reviewedservice {
                 .orElse(null);
     }
 
-    public void updatecomment(Integer paperId, Integer submissionId, String comment, int rating) {
+    public void updatecomment(Integer paperId, Integer submissionId, String comment, Integer Originality,
+            Integer Relevance, Integer Quality, Integer TechnicalContentandAccuracy, Integer SignificanceOfWork, Integer AppropriateForSAC) {
         findPaperById(paperId).getSubmissions().stream()
                 .filter(submission -> submission.getSubmissionId() == submissionId)
                 .findFirst()
                 .ifPresent(submission -> {
                     submission.setComment(comment);
-                    submission.setRating(rating);
+                    submission.setOriginality(Originality);
+                    submission.setRelevance(Relevance);
+                    submission.setQuality(Quality);
+                    submission.setTechnicalContentandAccuracy(TechnicalContentandAccuracy);
+                    submission.setSignificanceOfWork(SignificanceOfWork);
+                    submission.setAppropriateForSAC(AppropriateForSAC);
                 });
     }
 }

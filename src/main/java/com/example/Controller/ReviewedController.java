@@ -58,8 +58,13 @@ public class ReviewedController {
     public ResponseEntity<String> updateCommentAndRating(@PathVariable Integer paperId,
             @PathVariable Integer submissionId,
             @RequestParam String comment,
-            @RequestParam int rating) {
-        reviewedservice.updatecomment(paperId, submissionId, comment, rating);
+            @RequestParam int originality,
+            @RequestParam int readability,
+            @RequestParam int relevance,
+            @RequestParam int technicalContentandAccuracy,
+            @RequestParam int significanceOfWork,
+            @RequestParam int appropriateForSAC) {
+        reviewedservice.updatecomment(paperId, submissionId, comment, originality, readability, relevance, technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
         return new ResponseEntity<>("Comment and rating updated successfully", HttpStatus.OK);
     }
 }

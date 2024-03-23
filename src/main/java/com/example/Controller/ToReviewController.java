@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,14 +65,51 @@ public class ToReviewController {
      * @param rating       The rating to be saved.
      * @return A ResponseEntity with no content and HTTP status 204 (No Content).
      */
-    @PatchMapping("/to-review/papers/{paperId}/submissions/{SubmissionId}/comment")
-    public HttpStatus saveComment(@PathVariable Integer paperId, @PathVariable Integer submissionId,
-            @RequestParam String comment, @RequestParam int Originality, @RequestParam int Relevance, @RequestParam int Quality,
-            @RequestParam Integer TechnicalContentandAccuracy, @RequestParam Integer SignificanceOfWork, 
-            @RequestParam Integer AppropriateForSAC) {
+    @PatchMapping("/to-review/papers/submissions/comment")
+    public ResponseEntity<Void> saveComment(@RequestBody Map<String, Object> requestBody) {
+        try {
+        	String paperIdStr = (String) requestBody.get("paperId");
+        	Integer paperId = Integer.parseInt(paperIdStr);
+        	
+        	String submissionIdStr = (String) requestBody.get("submissionId");
+        	Integer submissionId = Integer.parseInt(submissionIdStr);
+        	 String comment = (String) requestBody.get("comment");
 
-        toreviewservice.saveComment(paperId, submissionId, comment, Originality, Relevance, Quality, TechnicalContentandAccuracy, SignificanceOfWork, AppropriateForSAC);
-        return HttpStatus.OK;
+        	String originalityStr = (String) requestBody.get("originality");
+        	Integer originality = Integer.parseInt(originalityStr);
+
+        	String relevanceStr = (String) requestBody.get("relevance");
+        	Integer relevance = Integer.parseInt(relevanceStr);
+
+        	String qualityStr = (String) requestBody.get("quality");
+        	Integer quality = Integer.parseInt(qualityStr);
+
+        	String technicalContentAndAccuracyStr = (String) requestBody.get("technicalContentAndAccuracy");
+        	Integer technicalContentAndAccuracy = Integer.parseInt(technicalContentAndAccuracyStr);
+
+        	String significanceOfWorkStr = (String) requestBody.get("significanceOfWork");
+        	Integer significanceOfWork = Integer.parseInt(significanceOfWorkStr);
+
+        	String appropriateForSACStr = (String) requestBody.get("appropriateForSAC");
+        	Integer appropriateForSAC = Integer.parseInt(appropriateForSACStr);
+
+
+            // Check if any of the required parameters are null
+            if (paperId == null || submissionId == null || comment == null || originality == null || relevance == null
+                    || quality == null || technicalContentAndAccuracy == null || significanceOfWork == null
+                    || appropriateForSAC == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Return bad request status if any parameter is missing
+            }
+
+            // Call the service method to save the comment
+            toreviewservice.saveComment(paperId, submissionId, comment, originality, relevance, quality,
+                    technicalContentAndAccuracy, significanceOfWork, appropriateForSAC);
+            return new ResponseEntity<>(HttpStatus.OK); // Return success status
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any exceptions for debugging
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Return internal server error status
+        }
     }
+
 
 }

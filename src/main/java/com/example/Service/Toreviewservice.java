@@ -67,7 +67,7 @@ public class Toreviewservice {
                     info.put("title", paper.getTitle());
                     info.put("status", "To Review");
                     info.put("revisionStatus", paper.getRevisionStatus());
-                    info.put("deadline", convertToLocalDateViaSqlDate(submission.getDeadline()));
+                    info.put("deadline", submission.getDeadline());
                     info.put("link", submission.getLink());
                     info.put("submissionId", submission.getSubmissionId());
                     info.put("paperId", paper.getPaperId());
@@ -78,22 +78,23 @@ public class Toreviewservice {
         return submissionInfos;
     }
 
-    public void saveComment(Integer paperId, Integer submissionId, String comment, int Originality, int Relevance, int Quality, int TechnicalContentandAccuracy, int SignificanceOfWork, int AppropriateForSAC) {
-        findPaperById(paperId).getSubmissions().stream()
-                .filter(submission -> submission.getSubmissionId() == submissionId)
-                .findFirst()
-                .ifPresent(submission -> {
-                    submission.setComment(comment);
-                    submission.setOriginality(submissionId);
-                    submission.setRelevance(Relevance);
-                    submission.setQuality(Quality);
-                    submission.setTechnicalContentandAccuracy(TechnicalContentandAccuracy);
-                    submission.setSignificanceOfWork(SignificanceOfWork);
-                    submission.setAppropriateForSAC(AppropriateForSAC);
-                    submission.setStatus("reviewed");
-                });
+    public void saveComment(Integer paperId, Integer submissionId, String comment, Integer originality,
+            Integer relevance, Integer quality, Integer technicalContentAndAccuracy, Integer significanceOfWork,
+            Integer appropriateForSAC) {
+        Submission submission = submissionRepository.findBysubmissionId(submissionId);
+        if (submission != null) {
+            submission.setComment(comment);
+            submission.setOriginality(originality);
+            submission.setRelevance(relevance);
+            submission.setQuality(quality);
+            submission.setTechnicalContentandAccuracy(technicalContentAndAccuracy);
+            submission.setSignificanceOfWork(significanceOfWork);
+            submission.setAppropriateForSAC(appropriateForSAC);
+            submission.setStatus("reviewed");
+            submissionRepository.save(submission);
+        }
     }
-
+    
     private Paper findPaperById(Integer paperId) {
         return papers.stream()
                 .filter(paper -> paper.getPaperId() == paperId)
@@ -101,7 +102,4 @@ public class Toreviewservice {
                 .orElse(null);
     }
 
-    private LocalDate convertToLocalDateViaSqlDate(Date date) {
-        return new java.sql.Date(date.getTime()).toLocalDate();
-    }
 }

@@ -183,7 +183,7 @@
         // Fetch user ID from the backend 
         // const userid = `${userId}`;
         const userId = 1;
-        const url = `http://localhost:8080/api/papers/reviews?userId=${userId}`;
+        const url = `http://localhost:8080/api/papers/reviewedsubmissions?userId=${userId}`;
         fetch(url)
             .then(response => response.json())
             .then(data => {

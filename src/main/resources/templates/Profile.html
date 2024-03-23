@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+	<meta name="_csrf" th:content="${_csrf.token}" />
+
 
 <head>
     <meta charset="UTF-8" />
@@ -279,7 +281,7 @@
         
         // Function to retrieve user data from the backend and populate form fields
 function setUserDetails() {
-    // Assuming user ID is known or can be retrieved from somewhere
+    
     const userId = 1;
 
     // Fetch user data from the backend
@@ -325,9 +327,10 @@ window.onload = function () {
     }
 };
 
+
 // Function to submit form changes
 function submitForm() {
-    const userId = 1; // Assuming the user ID is known
+    const userId = 1; 
     const formData = {
         userId: userId,
         fullName: document.getElementById("fullName").value,
@@ -338,17 +341,24 @@ function submitForm() {
         dateOfBirth: document.getElementById("dob").value
     };
 
+    console.log('Form Data before PATCH request:', formData); // Print form data before sending
+    
+     // Retrieve CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+
     // Send PATCH request to update user data in the backend
     fetch('http://localhost:8080/api/profiles', {
         method: 'PATCH',
         body: JSON.stringify(formData),
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
         }
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data);
+        console.log('Response from PATCH request:', data); // Print response from server
         alert("Profile updated successfully.");
         // Update user data in local storage for persistence
         localStorage.setItem('userData', JSON.stringify(formData));
@@ -358,6 +368,7 @@ function submitForm() {
         console.log(error);
     });
 }
+
 
         
         
@@ -372,10 +383,8 @@ function submitForm() {
     cancelButton.style.display = "inline";
     submitButton.style.display = "inline";
     var inputFields = document.querySelectorAll('input');
-    inputFields.forEach(field => {
-        if (field.id !== 'username') { // Skip the username input field
+    inputFields.forEach(field => {  
             field.removeAttribute('readonly');
-        }
     });
     document.getElementById('specialization').removeAttribute('disabled'); // Remove the disabled attribute
 }
@@ -383,7 +392,7 @@ function submitForm() {
 
         // Function to cancel editing and revert changes
         function cancelChanges() {
-            //populateUserDetails(); // Reset form fields with original user details
+            //populateUserDetails(); 
             var editButton = document.querySelector('.edit-button');
             var cancelButton = document.querySelector('.cancel-button');
             var submitButton = document.querySelector('.submit-button');

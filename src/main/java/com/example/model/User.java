@@ -3,7 +3,7 @@ package com.example.model;
 import lombok.Data;
 // import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -59,7 +59,8 @@ public class User {
      */
     private Long paperlimit;
 
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
+
 
     private String email;
 
@@ -192,7 +193,7 @@ public class User {
     
 
     public User(Integer userid, String fullName, String username, String number, String password,
-			Long paperlimit, Date dateOfBirth, String email, String specialization) {
+			Long paperlimit, LocalDate dateOfBirth, String email, String specialization) {
 		super();
 		this.userid = userid;
 		this.fullName = fullName;
@@ -205,11 +206,11 @@ public class User {
 		Specialization = specialization;
 	}
 
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 

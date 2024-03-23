@@ -3,6 +3,7 @@ package com.example.Controller;
 import com.example.Service.UserService;
 import com.example.model.User;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 
@@ -51,18 +52,23 @@ public class UserController {
      *         HttpStatus.NOT_FOUND if the user is not found
      */
     @PatchMapping("/profiles")
-    public HttpStatus updateProfileFields(@RequestParam("userId") Integer userId,
-            @RequestParam("fullName") String fullName,
-            @RequestParam("username") String username,
-            @RequestParam("number") String number,
-            @RequestParam("specialization") String specialization,
-            @RequestParam("DateofBirth") Date DateofBirth){
+    public HttpStatus updateProfileFields(@RequestBody Map<String, Object> updatedUser) {
+        Integer userId = 1;
+        String fullName = (String) updatedUser.get("fullName");
+        String username = (String) updatedUser.get("username");
+        String number = (String) updatedUser.get("number");
+        String specialization = (String) updatedUser.get("specialization");
+     // Convert dateOfBirth String to LocalDate object
+        LocalDate dateOfBirth = LocalDate.parse((String) updatedUser.get("dateOfBirth"));
+
+
         User existingUser = userService.getUserById(userId);
         if (existingUser != null) {
-            userService.updateUserProfileFields(existingUser, fullName, username, number, specialization, (java.sql.Date) DateofBirth);
+            userService.updateUserProfileFields(existingUser, fullName, username, number, specialization, dateOfBirth);
             return HttpStatus.OK;
         } else {
             return HttpStatus.NOT_FOUND;
         }
     }
+
 }

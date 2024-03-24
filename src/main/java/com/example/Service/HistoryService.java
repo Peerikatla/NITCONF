@@ -55,6 +55,7 @@ public class HistoryService {
                 paperMap.put("status", paper.getApprovestatus());
                 paperMap.put("revisionStatus", paper.getRevisionStatus());
                 paperMap.put("deadline", getDeadline(paper));
+                paperMap.put("paperId", paper.getPaperId());
                 result.add(paperMap);
             }
         }

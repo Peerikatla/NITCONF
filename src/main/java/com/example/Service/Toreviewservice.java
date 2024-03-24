@@ -1,8 +1,6 @@
 package com.example.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +23,7 @@ public class Toreviewservice {
     @Autowired
     private SubmissionRepository submissionRepository;
 
-    private List<Paper> papers;
+    // private List<Paper> papers;
 
     public Toreviewservice(PaperRepository paperRepository) {
         this.paperRepository = paperRepository;
@@ -79,7 +77,7 @@ public class Toreviewservice {
     }
 
     public void saveComment(Integer paperId, Integer submissionId, String comment, Integer originality,
-            Integer relevance, Integer quality, Integer technicalContentAndAccuracy, Integer significanceOfWork,
+            Integer relevance, Integer quality, Integer TCA, Integer significanceOfWork,
             Integer appropriateForSAC) {
         Submission submission = submissionRepository.findBysubmissionId(submissionId);
         if (submission != null) {
@@ -87,7 +85,7 @@ public class Toreviewservice {
             submission.setOriginality(originality);
             submission.setRelevance(relevance);
             submission.setQuality(quality);
-            submission.setTechnicalContentAndAccuracy(technicalContentAndAccuracy);
+            submission.setTCA(TCA);
             submission.setSignificanceOfWork(significanceOfWork);
             submission.setAppropriateForSAC(appropriateForSAC);
             submission.setStatus("reviewed");
@@ -95,11 +93,11 @@ public class Toreviewservice {
         }
     }
     
-    private Paper findPaperById(Integer paperId) {
-        return papers.stream()
-                .filter(paper -> paper.getPaperId() == paperId)
-                .findFirst()
-                .orElse(null);
-    }
+    // private Paper findPaperById(Integer paperId) {
+    //     return papers.stream()
+    //             .filter(paper -> paper.getPaperId() == paperId)
+    //             .findFirst()
+    //             .orElse(null);
+    // }
 
 }

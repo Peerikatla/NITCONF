@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notifications</title>
     <style>
         body {
@@ -77,27 +77,49 @@
         }
     </style>
 </head>
+
 <body>
-<header>
-    <h1>
-        <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
-    </h1>
-    <h5>Precision speaks: Comment, Rate and Critique</h5>
-</header>
+    <header>
+        <h1>
+            <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
+        </h1>
+        <h5>Precision speaks: Comment, Rate and Critique</h5>
+    </header>
 
-<nav>
-    <a href="/To-review">To Review</a>
-    <a href="/Reviewed">Reviewed</a>
-    <a href="/History">History</a>
-    <a href="/Notifications" class="Notifications">Notifications</a>
-    <a href="/Profile">Profile</a>
-</nav>
+    <nav>
+        <a href="/To-review">To Review</a>
+        <a href="/Reviewed">Reviewed</a>
+        <a href="/History">History</a>
+        <a href="/Notifications" class="Notifications">Notifications</a>
+        <a href="/Profile">Profile</a>
+    </nav>
 
-<div class="container">
-    <!-- Notification message with clickable "Click here" option -->
-    <div class="notification">
-        <p>You have been assigned to review paper 12345. Please <a href="/To-review" style="text-decoration: underline; color: blue;">click here</a> to start reviewing.</p>
+    <div class="container">
+        <!-- Notification message with clickable "Click here" option -->
+        <div class="notification">
+            <p>You have been assigned to review papers. Please <a href="/To-review"
+                    style="text-decoration: underline; color: blue;">click here</a> to start reviewing.</p>
+        </div>
     </div>
-</div>
+
+    <script>
+        function getNotifications(){
+            // Fetch notifications from the server
+            fetch('/api/notifications')
+            .then(response => response.json())
+            .then(data => {
+                // Display notifications
+                data.forEach(notification => {
+                    const notificationElement = document.createElement('div');
+                    notificationElement.classList.add('notification');
+                    notificationElement.innerHTML = `<p>${notification.message}</p>`;
+                    document.querySelector('.container').appendChild(notificationElement);
+                });
+            });
+        }
+
+        window.onload = getNotifications;
+    </script>
 </body>
+
 </html>

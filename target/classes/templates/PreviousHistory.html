@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: linear-gradient(to right, black, skyblue);
+            color: skyblue;
+            text-align: left;
+            padding: 15px;
+            text-shadow: #333;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #ddd;
+            padding: 10px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            transition: box-shadow 0.5s ease-in-out;
+            padding: 05px;
+            border-radius: 10px;
+        }
+
+        nav a:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a.History {
+            color: white;
+            background-color: black;
+        }
+
+        nav a.profile {
+
+            color: rgb(0, 0, 0);
+        }
+
+        nav a.profile:hover {
+            box-shadow: 0 0 15px white;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+            white-space: nowrap;
+            /* Prevent line breaks within cells */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+
+        .paper {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px;
+            background-color: #fff;
+        }
+
+        .options {
+            margin-top: 10px;
+
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            z-index: 1000;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+            width: 80%;
+            text-align: center;
+        }
+
+        .popup-content {
+            margin-bottom: 15px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        .popup-buttons button {
+            margin: 0 10px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .popup-buttons button.save {
+            background-color: rgb(0, 0, 0);
+            color: white;
+        }
+
+        .popup-buttons button.save:hover {
+            background-color: rgb(0, 0, 0);
+        }
+
+        .popup-buttons button.close {
+            background-color: rgb(128, 128, 128);
+            color: white;
+        }
+
+        .popup-buttons button.close:hover {
+            background-color: rgb(128, 128, 128);
+        }
+
+        .titlecard {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px;
+            background-color: #fff;
+        }
+
+        .titlecard #paperTitle {
+            margin: 0;
+        }
+
+        .titlecard #paperStatus {
+            margin: 0;
+        }
+
+        button.review {
+            background-color: rgb(128, 128, 128);
+            /* Blue background */
+            color: #fff;
+            /* White text color */
+            border: 2px solid rgb(128, 128, 128);
+            /* Blue border */
+            border-radius: 10px;
+            /* Rounded corners */
+            padding: 8px 16px;
+            /* Padding */
+            cursor: pointer;
+            /* Cursor style */
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth transition */
+        }
+
+        button.review:hover {
+            background-color: rgb(192, 192, 192);
+            /* Darker blue on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a href="/Home" style="text-decoration: none; color: skyblue">NITCONF</a>
+        </h1>
+        <h5 style="color: white">Precision speaks: Comment, Rate and Critique</h5>
+    </header>
+
+    <nav>
+        <a href="/To-review">To Review</a>
+        <a href="/Reviewed">Reviewed</a>
+        <a href="/History" class="History">History</a>
+        <a href="/Notifications">Notifications</a>
+        <a href="/Profile">Profile</a>
+    </nav>
+
+    <div class="titlecard">
+        <h3 id="paperTitle"></h3>
+        <p id="paperStatus"></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Submission Number</th>
+                <th>Deadline</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="paper">
+            <tr>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="popup" id="reviewPopup"></div>
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        function getDetails(paperId) {
+            const url = `http://localhost:8080/api/outdatedpapers/paper/details?paperId=${paperId}`
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    document.getElementById("paperTitle").innerText = "Title: " + data.title;
+                    document.getElementById("paperStatus").innerText = "Status: " + data.status;
+                });
+        }
+
+        function getallsubmissions(paperId) {
+            const url = `http://localhost:8080/api/outdatedpapers/paper/allsubmissions?paperId=${paperId}`
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    const paper = document.getElementById("paper");
+                    data.forEach((submission) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                        <td>${submission.submissionNumber}</td>
+                        <td>${submission.deadline}</td>
+                        <td>
+                            <button class="review" onclick="reviewinfo(${submission.submissionId})">Reviews</button>
+                        </td>
+                    `;
+                        paper.appendChild(row);
+                    })
+                })
+                .catch((error) => {
+                    console.error("Error fetching paper details:", error)
+                });
+        }
+
+        function reviewinfo(submissionId) {
+            var overlay = document.getElementById("overlay");
+            var reviewPopup = document.getElementById("reviewPopup");
+
+            // // Create hidden input fields for paperId and submissionId
+            // var hiddenInputs = `
+            //     <input type="hidden" id="paperId" name="paperId" value="${paperId}">
+            //     <input type="hidden" id="submissionId" name="submissionId" value="${submissionId}">
+            // `;
+
+            console.log(submissionId);
+
+            const url = `http://localhost:8080/api/outdatedpapers/paper/submission?submissionId=${submissionId}`
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+
+                    var popupContent = `
+                        <div class="popup-content">
+                            <h2>Review Paper</h2>
+                            <label for="comment">Comment:</label>
+                            <textarea id="comment" rows="4" cols="50">${data.comment}</textarea>
+                            <br>
+                            <label for="originality">Originality:</label>
+                            <input type="number" id="originality" name="originality" min="1" max="5" value="${data.originality !== undefined ? data.originality : ''}">
+                            <br>
+                            <label for="relevance">Relevance:</label>
+                            <input type="number" id="relevance" name="relevance" min="1" max="5" value="${data.relevance}">
+                            <br>
+                            <label for="quality">Quality:</label>
+                            <input type="number" id="quality" name="quality" min="1" max="5" value="${data.quality}">
+                            <br>
+                            <label for="TCA">TechnicalContentAndAccuracy:</label>
+                            <input type="number" id="TCA" name="TCA" min="1" max="5" value="${data.TCA}">
+                            <br>
+                            <label for="significanceOfWork">SignificanceOfWork:</label>
+                            <input type="number" id="significanceOfWork" name="significanceOfWork" min="1" max="5" value="${data.significanceOfWork}">
+                            <br>
+                            <label for="appropriateForSAC">AppropriateForSAC:</label>
+                            <input type="number" id="appropriateForSAC" name="appropriateForSAC" min="1" max="5" value="${data.appropriateForSAC}">
+                        </div>
+                        <div class="popup-buttons">
+                            <button class="close" onclick="closePopup()">Close</button>
+                        </div>
+                    `;
+
+                    reviewPopup.innerHTML = /*hiddenInputs +*/ popupContent;
+
+                    overlay.style.display = "block";
+                    reviewPopup.style.display = "block";
+                })
+                .catch((error) => {
+                    console.error("Error fetching paper details:", error)
+                });
+
+        }
+
+        function closePopup() {
+            var overlay = document.getElementById("overlay");
+            var editReviewPopup = document.getElementById("editReviewPopup");
+
+            overlay.style.display = "none";
+            reviewPopup.style.display = "none";
+        }
+
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const paperId = urlParams.get('paperId');
+            console.log(paperId);
+            getDetails(paperId);
+            getallsubmissions(paperId);
+        };
+    </script>
+</body>
+
+</html>

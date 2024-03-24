@@ -24,12 +24,12 @@ public class Reviewedservice {
     @Autowired
     private SubmissionRepository submissionRepository;
 
-    private List<Paper> papers;
+//     private List<Paper> papers;
     
- // Initialize the papers list in the constructor
-    public Reviewedservice() {
-        papers = new ArrayList<>();
-    }
+//     Initialize the papers list in the constructor
+//     public Reviewedservice() {
+//         papers = new ArrayList<>();
+//     }
 
     public List<Paper> getAllPapersWithSubmissions() {
         return (List<Paper>) paperRepository.findAll();
@@ -70,7 +70,7 @@ public class Reviewedservice {
                         paperMap.put("originality", submission.getOriginality());
                         paperMap.put("relevance", submission.getRelevance());
                         paperMap.put("quality", submission.getQuality());
-                        paperMap.put("technicalContentAndAccuracy", submission.getTechnicalContentAndAccuracy());
+                        paperMap.put("TCA", submission.getTCA());
                         paperMap.put("significanceOfWork", submission.getSignificanceOfWork());
                         paperMap.put("appropriateForSAC", submission.getAppropriateForSAC());
                         paperMap.put("link", submission.getLink());
@@ -91,7 +91,7 @@ public class Reviewedservice {
 
     
    public void updatecomment(Integer paperId, Integer submissionId, String comment, Integer Originality,
-	        Integer Relevance, Integer Quality, Integer TechnicalContentAndAccuracy, Integer SignificanceOfWork, Integer AppropriateForSAC) {
+	        Integer Relevance, Integer Quality, Integer TCA, Integer SignificanceOfWork, Integer AppropriateForSAC) {
 	    Paper paper = findPaperById(paperId);
 	    if (paper != null) {
 	        paper.getSubmissions().stream()
@@ -102,7 +102,7 @@ public class Reviewedservice {
 	                    submission.setOriginality(Originality);
 	                    submission.setRelevance(Relevance);
 	                    submission.setQuality(Quality);
-	                    submission.setTechnicalContentAndAccuracy(TechnicalContentAndAccuracy);
+	                    submission.setTCA(TCA);
 	                    submission.setSignificanceOfWork(SignificanceOfWork);
 	                    submission.setAppropriateForSAC(AppropriateForSAC);
 	                    submissionRepository.save(submission);
@@ -125,7 +125,7 @@ public class Reviewedservice {
             submissionDetails.put("originality", submission.getOriginality());
             submissionDetails.put("relevance", submission.getRelevance());
             submissionDetails.put("quality", submission.getQuality());
-            submissionDetails.put("technicalContentAndAccuracy", submission.getTechnicalContentAndAccuracy());
+            submissionDetails.put("TCA", submission.getTCA());
             submissionDetails.put("significanceOfWork", submission.getSignificanceOfWork());
             submissionDetails.put("appropriateForSAC", submission.getAppropriateForSAC());
             return submissionDetails;

@@ -27,8 +27,7 @@ public class Submission {
 	private String status; // null or reviewed or revised
 
 	@Column
-	private String comment; // initially null and then updated by the reviewer to a message about what was
-							// wrong with the paper
+	private String comment;
 
 	@Column
 	private Integer Originality;
@@ -40,7 +39,7 @@ public class Submission {
 	private Integer Quality;
 
 	@Column
-	private Integer TechnicalContentAndAccuracy;
+	private Integer TCA;
 
 	@Column
 	private Integer SignificanceOfWork;
@@ -62,30 +61,30 @@ public class Submission {
 	
 
 	public Submission(Integer submissionId, LocalDate deadline, String status, String comment, Integer originality,
-			Integer relevance, Integer quality, Integer technicalContentandAccuracy, Integer significanceOfWork,
+			Integer relevance, Integer quality, Integer TCA, Integer significanceOfWork,
 			Integer appropriateForSAC, String link, Paper paper) {
 		this.submissionId = submissionId;
 		this.deadline = deadline;
 		this.status = status;
 		this.comment = comment;
-		Originality = originality;
-		Relevance = relevance;
-		Quality = quality;
-		TechnicalContentAndAccuracy = technicalContentandAccuracy;
-		SignificanceOfWork = significanceOfWork;
-		AppropriateForSAC = appropriateForSAC;
-		Link = link;
+		this.Originality = originality;
+		this.Relevance = relevance;
+		this.Quality = quality;
+		this.TCA = TCA;
+		this.SignificanceOfWork = significanceOfWork;
+		this.AppropriateForSAC = appropriateForSAC;
+		this.Link = link;
 		this.paper = paper;
 	}
 
 
 
-	public Integer getTechnicalContentAndAccuracy() {
-		return TechnicalContentAndAccuracy;
+	public Integer getTCA() {
+		return TCA;
 	}
 
-	public void setTechnicalContentAndAccuracy(Integer technicalContentandAccuracy) {
-		TechnicalContentAndAccuracy = technicalContentandAccuracy;
+	public void setTCA(Integer TCA) {
+		this.TCA = TCA;
 	}
 
 	public Integer getSignificanceOfWork() {
@@ -93,7 +92,7 @@ public class Submission {
 	}
 
 	public void setSignificanceOfWork(Integer significanceOfWork) {
-		SignificanceOfWork = significanceOfWork;
+		this.SignificanceOfWork = significanceOfWork;
 	}
 
 	public Integer getAppropriateForSAC() {
@@ -101,7 +100,7 @@ public class Submission {
 	}
 
 	public void setAppropriateForSAC(Integer appropriateForSAC) {
-		AppropriateForSAC = appropriateForSAC;
+		this.AppropriateForSAC = appropriateForSAC;
 	}
 
 	public Integer getSubmissionId() {
@@ -141,7 +140,7 @@ public class Submission {
 	}
 
 	public void setOriginality(Integer originality) {
-		Originality = originality;
+		this.Originality = originality;
 	}
 
 	public Integer getRelevance() {
@@ -149,7 +148,7 @@ public class Submission {
 	}
 
 	public void setRelevance(Integer relevance) {
-		Relevance = relevance;
+		this.Relevance = relevance;
 	}
 
 	public Integer getQuality() {
@@ -157,7 +156,7 @@ public class Submission {
 	}
 
 	public void setQuality(Integer quality) {
-		Quality = quality;
+		this.Quality = quality;
 	}
 
 	public String getLink() {
@@ -165,7 +164,7 @@ public class Submission {
 	}
 
 	public void setLink(String link) {
-		Link = link;
+		this.Link = link;
 	}
 
 	public Paper getPaper() {

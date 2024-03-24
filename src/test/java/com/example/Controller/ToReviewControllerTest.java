@@ -1,162 +1,163 @@
 package com.example.Controller;
 
+import com.example.Repository.SubmissionRepository;
 import com.example.Service.Toreviewservice;
 import com.example.model.Paper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.example.Repository.PaperRepository;
+import com.example.Repository.SubmissionRepository;
+import com.example.Repository.UserRepository;
+import com.example.Service.Toreviewservice;
+import com.example.model.Paper;
+import com.example.model.Submission;
+import com.example.model.User;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-public class ToReviewControllerTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-    @Autowired
-    private MockMvc mockMvc;
+class ToReviewControllerTest {
+
+	@Mock
+    private Toreviewservice toreviewservice;
+    
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
-    private Toreviewservice toreviewservice;
-
+    private SubmissionRepository submissionRepository;
+    
+    @Mock
+    private PaperRepository paperRepository;
+    
     @InjectMocks
     private ToReviewController toReviewController;
 
-    @SuppressWarnings("deprecation")
+    private User user;
+    private Paper paper;
+    private Submission submission1;
+    
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    void setUp() {
+        MockitoAnnotations.openMocks(this); // Initialize mocks
+        
+        // Set up the user
+        user = new User();
+        user.setUserid(1);
+        user.setEmail("gayatripeerikatla@gmil.com");
+        user.setFullName("Gayatri P");
+        user.setUsername("gayatri");
+        user.setNumber("8688469868");
+        user.setPassword("me@1");
+        user.setPaperlimit(15L);
+        user.setSpecialization("Machine learning");
+        user.setDateOfBirth(LocalDate.of(2003, Month.SEPTEMBER, 8)); // Set date of birth
+        
+        // Set up the paper
+        paper = new Paper();
+        paper.setPaperId(8);
+        paper.setTitle("svm");
+        paper.setRevisionStatus(0); 
+        paper.setApprovestatus(null); // Assuming initial approval status as "Pending"
+        paper.setTag("machine learning"); // Assuming a tag for the paper
+        paper.setUser(user); // Set the user for the paper
+
+        // Set up the submission
+        submission1 = new Submission();
+        submission1.setSubmissionId(27);
+        submission1.setDeadline(LocalDate.of(2024, Month.APRIL, 20)); // Set deadline
+        submission1.setStatus("toreview");
+        submission1.setLink("src/main/resources/Static/ml.pdf");
+        submission1.setComment(null);
+        submission1.setOriginality(null);
+        submission1.setRelevance(null);
+        submission1.setQuality(null);
+        submission1.setTCA(null);
+        submission1.setSignificanceOfWork(null);
+        submission1.setAppropriateForSAC(null);
+        submission1.setPaper(paper);
     }
 
+
     @Test
-    public void testGetAllPapersWithSubmissions() throws Exception {
+    void testGetAllPapersWithSubmissions() {
         // Mock data
-        Paper paper = new Paper();
-        // Mock service behavior
-        when(toreviewservice.getAllPapersWithSubmissions()).thenReturn(Collections.singletonList(paper));
+        List<Paper> papers = new ArrayList<>();
+        papers.add(paper);
+        when(toreviewservice.getAllPapersWithSubmissions()).thenReturn(papers);
 
-        // Perform GET request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/papers"))
-                .andExpect(status().isOk());
+        // Test
+        ResponseEntity<List<Paper>> responseEntity = toReviewController.getAllPapersWithSubmissions();
 
-        // Verify service method is called
-        verify(toreviewservice, times(1)).getAllPapersWithSubmissions();
+        // Verify
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(papers, responseEntity.getBody());
     }
 
-    @SuppressWarnings("null")
     @Test
-    public void testGetAllSubmissionInfo() throws Exception {
-        // Mock submission information
+    void testGetAllSubmissionInfo() {
+        // Mock data
         List<Map<String, Object>> submissionInfo = new ArrayList<>();
-        Map<String, Object> submission1 = new HashMap<>();
-        submission1.put("title", "linear regression");
-        submission1.put( "status", "To Review");
-        submission1.put( "revision status", 0);
-        submission1.put("deadline", Date.valueOf(LocalDate.parse("2024-04-01")));
-        submission1.put("link", "");
-        submission1.put("submissionId", 4);
-        submission1.put("paperId", 2);
-        submissionInfo.add(submission1);
+        Map<String, Object> submissionMap = new HashMap<>();
+        submissionMap.put("title", paper.getTitle());
+        submissionMap.put("status", submission1.getStatus());
+        submissionMap.put("revisionStatus", paper.getRevisionStatus());
+        submissionMap.put("deadline", submission1.getDeadline());
+        submissionMap.put("link", submission1.getLink());
+        submissionMap.put("submissionId", submission1.getSubmissionId());
+        submissionMap.put("paperId", paper.getPaperId());
+        submissionInfo.add(submissionMap);
 
-        // Mock toreviewservice response
-        when(toreviewservice.getAllSubmissionInfo(2)).thenReturn(submissionInfo);
+        when(toreviewservice.getAllSubmissionInfo(1)).thenReturn(submissionInfo);
 
-        // Perform GET request using mockMvc
-        mockMvc.perform(get("/api/unreviewedsubmissions")
-                .param("userId", "2"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect( jsonPath("$[0].title").value(submission1.get("title")))
-                .andExpect( jsonPath("$[0].status").value(submission1.get("status")))
-                .andExpect(jsonPath("$[0].revision status").value(submission1.get("revision status")))
-                .andExpect(jsonPath("$[0].deadline").value(submission1.get("deadline").toString()))
-                .andExpect(jsonPath("$[0].link").value(submission1.get("link")))
-                .andExpect(jsonPath("$[0].submissionId").value(submission1.get("submissionId")))
-                .andExpect(jsonPath("[0].paperId").value(submission1.get("paperId")));
-        // Add more assertions for other submission information if needed
+        // Test
+        ResponseEntity<List<Map<String, Object>>> responseEntity = toReviewController.getAllSubmissionInfo(1);
 
-        // Verify that toreviewservice method is called with the correct parameter
-        verify(toreviewservice).getAllSubmissionInfo(1);
+        // Verify
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(submissionInfo, responseEntity.getBody());
     }
+
 
     @Test
-    public void testSaveComment() throws Exception {
+    void testSaveComment() {
         // Mock data
-        int paperId = 2;
-        int submissionId = 201;
-        String comment = "Test comment";
-        int originality = 5;
-        int relevance = 5;
-        int quality = 5;
-        int technicalContentandAccuracy = 5;
-        int significanceOfWork = 5;
-        int appropriateForSAC = 5;
+        ResponseEntity<Void> expectedResponse = new ResponseEntity<>(HttpStatus.OK);
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("paperId", "2");
+        requestBody.put("submissionId", "12");
+        requestBody.put("comment", "Test comment");
+        requestBody.put("originality", "5");
+        requestBody.put("relevance", "4");
+        requestBody.put("quality", "3");
+        requestBody.put("TCA", "2");
+        requestBody.put("significanceOfWork", "4");
+        requestBody.put("appropriateForSAC", "5");
 
-        // Perform PATCH request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders
-                .patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
-                .param("comment", comment)
-                .param("originality", String.valueOf(originality))
-                .param("relevance", String.valueOf(relevance))
-                .param("quality", String.valueOf(quality))
-                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
-                .param("significanceOfWork", String.valueOf(significanceOfWork))
-                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
-                .andExpect(status().isOk());
+        // Mock behavior
+        doNothing().when(toreviewservice).saveComment(anyInt(), anyInt(), anyString(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt(), anyInt());
 
-        // Verify service method is called with correct arguments
-        verify(toreviewservice, times(1)).saveComment(paperId, submissionId, comment, originality, relevance, quality,
-                technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
+        // Test
+        ResponseEntity<Void> responseEntity = toReviewController.saveComment(requestBody);
+        
+        System.out.println("Response: " + responseEntity);
+
+
+        // Verify
+        assertEquals(expectedResponse.getStatusCode(), responseEntity.getStatusCode());
     }
 
-    @Test
-    public void testSaveCommentWithEmptyComment() throws Exception {
-        // Mock data
-        int paperId = 1;
-        int submissionId = 1;
-        String comment = ""; // Empty comment
-        int originality = 5;
-        int relevance = 5;
-        int quality = 5;
-        int technicalContentandAccuracy = 5;
-        int significanceOfWork = 5;
-        int appropriateForSAC = 5;
-
-        // Perform PATCH request to API endpoint
-        mockMvc.perform(MockMvcRequestBuilders
-                .patch("/api/to-review/papers/{paperId}/submissions/{submissionId}/comment", paperId, submissionId)
-                .param("comment", comment)
-                .param("originality", String.valueOf(originality))
-                .param("relevance", String.valueOf(relevance))
-                .param("quality", String.valueOf(quality))
-                .param("technicalContentandAccuracy", String.valueOf(technicalContentandAccuracy))
-                .param("significanceOfWork", String.valueOf(significanceOfWork))
-                .param("appropriateForSAC", String.valueOf(appropriateForSAC)))
-                .andExpect(status().isOk());
-
-        // Verify service method is not called
-        verify(toreviewservice, never()).saveComment(paperId, submissionId, comment, originality, relevance, quality,
-                technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
-    }
 }

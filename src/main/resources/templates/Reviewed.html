@@ -276,8 +276,9 @@ button.review:hover {
                     <label for="quality">Quality:</label>
                     <input type="number" id="quality" name="quality" min="1" max="5" value="${data.quality}">
                     <br>
-                     <label for="technicalContentAndAccuracy">TechnicalContentAndAccuracy:</label>
-                    <input type="number" id="technicalContentAndAccuracy" name="technicalContentAndAccuracy" min="1" max="5" value="${data.technicalContentAndAccuracy}">
+                    <label for="TCA">TechnicalContentAndAccuracy:</label>
+                    <input type="number" id="TCA" name="TCA" min="1" max="5" value="${data.TCA}">
+
                     <br>
                     <label for="significanceOfWork">SignificanceOfWork:</label>
                     <input type="number" id="significanceOfWork" name="significanceOfWork" min="1" max="5" value="${data.significanceOfWork}">
@@ -303,21 +304,20 @@ button.review:hover {
         });
 }
 
-
-// Function to submit form changes
-function saveComment() {
-   // const userId = 1; 
-    const formData = {
-        paperId: document.getElementById("paperId").value,
-        submissionId:document.getElementById("submissionId").value,
-        comment: document.getElementById("comment").value,
-        originality: document.getElementById("originality").value,
-        relevance: document.getElementById("relevance").value,
-        quality: document.getElementById("quality").value,
-        technicalContentAndAccuracy : document.getElementById("technicalContentAndAccuracy").value,
-        significanceOfWork : document.getElementById("significanceOfWork").value,
-        appropriateForSAC: document.getElementById("appropriateForSAC").value
-    };
+        // Function to submit form changes
+        function saveComment() {
+            // const userId = 1; 
+            const formData = {
+                paperId: document.getElementById("paperId").value,
+                submissionId: document.getElementById("submissionId").value,
+                comment: document.getElementById("comment").value,
+                originality: document.getElementById("originality").value,
+                relevance: document.getElementById("relevance").value,
+                quality: document.getElementById("quality").value,
+                TCA: document.getElementById("TCA").value,
+                significanceOfWork: document.getElementById("significanceOfWork").value,
+                appropriateForSAC: document.getElementById("appropriateForSAC").value
+            };
 
    console.log('Form Data before PATCH request:', formData);
 

@@ -51,6 +51,9 @@ public class ToReviewController {
     public ResponseEntity<List<Paper>> getAllPapersWithSubmissions() {
         
         List<Paper> papers = toreviewservice.getAllPapersWithSubmissions();
+        if(papers == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(papers, HttpStatus.OK);
     }
 
@@ -66,6 +69,9 @@ public class ToReviewController {
     public ResponseEntity<List<Map<String, Object>>> getAllSubmissionInfo(@RequestParam("userId") Integer userId) {
 
         List<Map<String, Object>> submissionInfo = toreviewservice.getAllSubmissionInfo(userId);
+        if(submissionInfo == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(submissionInfo, HttpStatus.OK);
     }
 

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,9 +52,6 @@ public class ToReviewController {
     public ResponseEntity<List<Paper>> getAllPapersWithSubmissions() {
         
         List<Paper> papers = toreviewservice.getAllPapersWithSubmissions();
-        if(papers == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(papers, HttpStatus.OK);
     }
 
@@ -69,9 +67,6 @@ public class ToReviewController {
     public ResponseEntity<List<Map<String, Object>>> getAllSubmissionInfo(@RequestParam("userId") Integer userId) {
 
         List<Map<String, Object>> submissionInfo = toreviewservice.getAllSubmissionInfo(userId);
-        if(submissionInfo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(submissionInfo, HttpStatus.OK);
     }
 
@@ -103,8 +98,8 @@ public class ToReviewController {
         	String qualityStr = (String) requestBody.get("quality");
         	Integer quality = Integer.parseInt(qualityStr);
 
-        	String technicalContentAndAccuracyStr = (String) requestBody.get("TAC");
-        	Integer technicalContentAndAccuracy = Integer.parseInt(technicalContentAndAccuracyStr);
+        	String TCAStr = (String) requestBody.get("TCA");
+        	Integer TCA = Integer.parseInt(TCAStr);
 
         	String significanceOfWorkStr = (String) requestBody.get("significanceOfWork");
         	Integer significanceOfWork = Integer.parseInt(significanceOfWorkStr);
@@ -115,14 +110,14 @@ public class ToReviewController {
 
             // Check if any of the required parameters are null
             if (paperId == null || submissionId == null || comment == null || originality == null || relevance == null
-                    || quality == null || technicalContentAndAccuracy == null || significanceOfWork == null
+                    || quality == null || TCA == null || significanceOfWork == null
                     || appropriateForSAC == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Return bad request status if any parameter is missing
             }
 
             // Call the service method to save the comment
             toreviewservice.saveComment(paperId, submissionId, comment, originality, relevance, quality,
-                    technicalContentAndAccuracy, significanceOfWork, appropriateForSAC);
+            		TCA, significanceOfWork, appropriateForSAC);
             return new ResponseEntity<>(HttpStatus.OK); // Return success status
         } catch (Exception e) {
             e.printStackTrace(); // Log any exceptions for debugging

@@ -111,6 +111,28 @@
             max-height: 80%;
             overflow: auto;
         }
+
+        button.review {
+            background-color: rgb(128, 128, 128);
+            /* Blue background */
+            color: #fff;
+            /* White text color */
+            border: 2px solid rgb(128, 128, 128);
+            /* Blue border */
+            border-radius: 10px;
+            /* Rounded corners */
+            padding: 8px 16px;
+            /* Padding */
+            cursor: pointer;
+            /* Cursor style */
+            transition: background-color 0.3s, color 0.3s;
+            /* Smooth transition */
+        }
+
+        button.review:hover {
+            background-color: rgb(192, 192, 192);
+            /* Darker blue on hover */
+        }
     </style>
 </head>
 
@@ -196,7 +218,7 @@
                     <td>${paper.revisionStatus}</td>
                     <td>${paper.deadline}</td> <!-- Fetch deadline from the submission -->
                     <td>
-                        <button onclick="redirectPreviousSubmissions(${paper.paperId})">Previous Submissions</button>
+                        <button class="review" onclick="redirectPreviousSubmissions(${paper.paperId})">Previous Submissions</button>
                     </td>
                     
                 `;

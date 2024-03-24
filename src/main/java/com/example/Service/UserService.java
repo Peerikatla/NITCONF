@@ -23,9 +23,9 @@ public class UserService {
         return userRepository.findByuserid(userId);
     }
 
-    public User updateUserProfile(User updatedUser) {
-        return userRepository.save(updatedUser);
-    }
+    // public User updateUserProfile(User updatedUser) {
+    //     return userRepository.save(updatedUser);
+    // }
 
     public void updateUserProfileFields(User existingUser, String fullName, String username, String number, String specialization,LocalDate dateOfBirth) {
         if (existingUser != null) {

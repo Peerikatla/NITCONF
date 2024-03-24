@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+	<meta name="_csrf" th:content="${_csrf.token}" />
 
 <head>
     <meta charset="UTF-8" />
@@ -139,39 +140,8 @@
     </style>
 
     <script>
-        function openReviewPopup(paperId) {
-            var overlay = document.getElementById("overlay");
-            var reviewPopup = document.getElementById("reviewPopup");
-
-            var popupContent = `
-                <div class="popup-content">
-                    <h2>Review Paper</h2>
-                    <label for="comment">Comment:</label>
-                    <textarea id="comment" rows="4" cols="50"></textarea>
-                    <br>
-                    <label for="originality">Originality:</label>
-                    <input type="number" id="originality" name="originality" min="1" max="5">
-                    <br>
-                    <label for="relevance">Relevance:</label>
-                    <input type="number" id="relevance" name="relevance" min="1" max="5">
-                    <br>
-                    <label for="quality">Quality:</label>
-                    <input type="number" id="quality" name="quality" min="1" max="5">
-                </div>
-                <div class="popup-buttons">
-                    <button class="save" onclick="saveComment(${paperId})">Save Comment</button>
-                    <button class="close" onclick="closePopup()">Close</button>
-                </div>
-            `;
-
-            reviewPopup.innerHTML = popupContent;
-
-            overlay.style.display = "block";
-            reviewPopup.style.display = "block";
-
-        }
-
-        function saveComment(paperId) {
+             
+       /* function saveComment(paperId) {
             var comment = document.getElementById("comment").value;
             var originality = document.getElementById("originality").value;
             var relevance = document.getElementById("relevance").value;
@@ -183,7 +153,7 @@
             console.log("Quality for Paper ID " + paperId + ": " + quality);
 
             closePopup();
-        }
+        }*/
 
         function closePopup() {
             var overlay = document.getElementById("overlay");
@@ -196,7 +166,7 @@
         // Function to fetch paper details from the backend
         function fetchPaperDetails() {
             // Fetch user ID from the backend 
-            // const userid = `${userId}`;
+            // const userid = ${userId};
             const userId = 1;
             const url = `http://localhost:8080/api/unreviewedsubmissions?userId=${userId}`;
             fetch(url)
@@ -214,7 +184,7 @@
                     <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
                     <td>
                         <a href="${submission.pdflink}" target="_blank">View</a>
-                        <button onclick="openReviewPopup(${submission.paperId})">Review</button>
+                        <button onclick="openReviewPopup(${submission.paperId}, ${submission.submissionId})">Review</button>
                         <a href="${submission.pdflink}" target="_blank">Download</a>
                     </td>
                 `;
@@ -225,26 +195,101 @@
                     console.error('Error fetching paper details:', error);
                 });
         }
+        
+        
+        function openReviewPopup(paperId, submissionId) {
+			
+			console.log("the paperid is :",paperId);
+            var overlay = document.getElementById("overlay");
+            var reviewPopup = document.getElementById("reviewPopup");
+            // Create hidden input fields for paperId and submissionId
+            var hiddenInputs = `
+                <input type="hidden" id="paperId" name="paperId" value="${paperId}">
+                <input type="hidden" id="submissionId" name="submissionId" value="${submissionId}">
+            `;
 
-        function saveComment(paperId, submissionId, comment, originality, relevance, quality) {
-            const url = `http://localhost:8080/to-review/papers/submissions/comment?paperId=${paperId}&submissionId=${submissionId}&comment=${comment}&Originality=${originality}&Relevance=${relevance}&Quality=${quality}`;
-            fetch(url, {
-                method: 'PATCH'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Comment saved successfully');
-                        // Handle success response
-                    } else {
-                        console.error('Failed to save comment');
-                        // Handle error response
-                    }
-                })
-                .catch(error => {
-                    console.error('Error saving comment:', error);
-                    // Handle error
-                });
+ 
+            var popupContent = `
+                <div class="popup-content">
+					
+				
+                    <h2>Review Paper</h2>
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" rows="4" cols="50"></textarea>
+                    <br>
+                    <label for="originality">Originality:</label>
+                    <input type="number" id="originality" name="originality" min="1" max="5">
+                    <br>
+                    <label for="relevance">Relevance:</label>
+                    <input type="number" id="relevance" name="relevance" min="1" max="5">
+                    <br>
+                    <label for="quality">Quality:</label>
+                    <input type="number" id="quality" name="quality" min="1" max="5">
+                    <br>
+                    <label for="technicalContentAndAccuracy">TechnicalContentAndAccuracy:</label>
+                    <input type="number" id="technicalContentAndAccuracy" name="technicalContentAndAccuracy" min="1" max="5">
+                    <br>
+                    <label for="significanceOfWork">SignificanceOfWork:</label>
+                    <input type="number" id="significanceOfWork" name="significanceOfWork" min="1" max="5">
+                    <br>
+                    <label for="appropriateForSAC">AppropriateForSAC:</label>
+                    <input type="number" id="appropriateForSAC" name="appropriateForSAC" min="1" max="5">
+                </div>
+                <div class="popup-buttons">
+                    <button class="save" onclick="saveComment()">Save Comment</button>
+                    <button class="close" onclick="closePopup()">Close</button>
+                </div>
+            `;
+
+            reviewPopup.innerHTML = hiddenInputs + popupContent;
+
+            overlay.style.display = "block";
+            reviewPopup.style.display = "block";
+
         }
+
+
+// Function to submit form changes
+function saveComment() {
+   // const userId = 1; 
+    const formData = {
+        paperId: document.getElementById("paperId").value,
+        submissionId:document.getElementById("submissionId").value,
+        comment: document.getElementById("comment").value,
+        originality: document.getElementById("originality").value,
+        relevance: document.getElementById("relevance").value,
+        quality: document.getElementById("quality").value,
+        technicalContentAndAccuracy : document.getElementById("technicalContentAndAccuracy").value,
+        significanceOfWork : document.getElementById("significanceOfWork").value,
+        appropriateForSAC: document.getElementById("appropriateForSAC").value
+    };
+
+    console.log('Form Data before PATCH request:', formData); // Print form data before sending
+    
+     // Retrieve CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+
+
+    // Send PATCH request to update user data in the backend
+    fetch('http://localhost:8080/api/to-review/papers/submissions/comment', {
+        method: 'PATCH',
+        body: JSON.stringify(formData),
+        headers: {
+            'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Response from PATCH request:', data); // Print response from server
+        alert("comment saved successfully.");
+        
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+     closePopup();
+}
 
         // Call fetchPaperDetails when the page loads
         window.onload = fetchPaperDetails;

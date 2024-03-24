@@ -223,4 +223,10 @@ public class HomeController {
         return "redirect:/login";
     }
 
+    @GetMapping("/History/details")
+    public String HistoryDetails(Model model, HttpSession session) {
+        Integer userId = GetUserId(session);
+        System.out.println("User ID in HistoryDetails: " + userId);       
+        return "PreviousHistory";
+    }
 }

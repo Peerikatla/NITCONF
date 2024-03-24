@@ -136,6 +136,7 @@
                 <th>Status</th>
                 <th>Revision Status</th>
                 <th>Deadline</th>
+                <th>Options</th>
             </tr>
         </thead>
         
@@ -194,6 +195,9 @@
                     <td>${paper.status}</td>
                     <td>${paper.revisionStatus}</td>
                     <td>${paper.deadline}</td> <!-- Fetch deadline from the submission -->
+                    <td>
+                        <button onclick="redirectPreviousSubmissions(${paper.paperId})">Previous Submissions</button>
+                    </td>
                     
                 `;
                          paperTableBody.appendChild(row);
@@ -220,6 +224,10 @@
         function showPreviousReviews(paperId) {
             // Add logic to display previous reviews based on paperId
             alert('Displaying previous reviews for ' + paperId);
+        }
+
+        function redirectPreviousSubmissions(paperId) {
+            window.location.href = `/History/details?paperId=${paperId}`;
         }
     </script>
 

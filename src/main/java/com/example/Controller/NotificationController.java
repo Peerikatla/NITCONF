@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 import java.util.Map;
+
 /**
  * This class represents the controller for handling notifications.
  */
@@ -30,8 +31,8 @@ public class NotificationController {
      */
     @GetMapping("/notifications")
     public ResponseEntity<List<Map<String, Object>>> getNotifications(@RequestParam Integer userId) {
-        List<Map<String, Object>> notifications = notificationService.getAllNotification(userId);
+        List<Map<String, Object>> notifications = notificationService.getAllNotification(userId);        
         return new ResponseEntity<>(notifications, HttpStatus.OK);
     }
-    
 }
+

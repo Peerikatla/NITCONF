@@ -206,6 +206,7 @@
             background-color: rgb(192, 192, 192);
             /* Darker blue on hover */
         }
+
     </style>
 
     <script>
@@ -254,7 +255,7 @@
                     <td>
                         <button class="view" onclick="viewAbstract(${submission.submissionId})">View</button>
                         <button class="review" onclick="openReviewPopup(${submission.paperId}, ${submission.submissionId})">Review</button>
-                        <button class="download"onclick="downloadPaper(${submission.submissionId})">Download</button>
+                        <button class="download" onclick="downloadPaper(${submission.submissionId})">Download</button>
                     </td>
                 `;
                         pdfTableBody.appendChild(row);
@@ -359,6 +360,21 @@ function saveComment() {
     });
      closePopup();
 }
+
+// Function to open the abstract in a new window
+    function viewAbstract(submissionId) {
+        window.open(`http://localhost:8080/api/abstract?submissionId=${submissionId}`, '_blank');
+    }
+    
+    function downloadPaper(submissionId) {
+        // Fetch the paper details from the server
+        const url = `http://localhost:8080/api/download?submissionId=${submissionId}`;
+
+        // Create a temporary anchor element to trigger the download
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.click(); // Click the anchor element to initiate download
+        }
 
         // Call fetchPaperDetails when the page loads
         window.onload = fetchPaperDetails;

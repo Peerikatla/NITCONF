@@ -1,13 +1,20 @@
 package com.example.Controller;
 
+import com.example.Repository.SubmissionRepository;
 import com.example.Service.Reviewedservice;
 import com.example.model.Paper;
+import com.example.model.Submission;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +113,84 @@ public class ReviewedController {
         }
     }
 
+    @Autowired
+    private SubmissionRepository submissionRepository;
 
+    @GetMapping("/abstract")
+    public ResponseEntity<Resource> viewAbstract(@RequestParam("submissionId") Integer submissionId) {
+        try {
+            // Fetch the submission information from the repository
+            Submission submission = submissionRepository.findBysubmissionId(submissionId);
+            if (submission == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Submission not found
+            }
+
+            // Get the file path for the abstract PDF from the submission model
+            String filePath = submission.getLink();
+            if (filePath == null || filePath.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Abstract file path not found
+            }
+
+            // Create a Resource object from the file path
+            Resource resource = new FileSystemResource(filePath);
+
+            // Check if the resource exists
+            if (!resource.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Abstract file not found
+            }
+
+            // Build headers for the response
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE); // Set content type to PDF
+
+            // Return ResponseEntity with the file resource and headers
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.contentLength())
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Error reading file
+        }
+    }
+    
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadPaper1(@RequestParam("submissionId") Integer submissionId) {
+        try {
+            // Fetch the submission information from the repository
+            Submission submission = submissionRepository.findBysubmissionId(submissionId);
+            if (submission == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Submission not found
+            }
+
+            // Get the file path for the PDF from the submission model
+            String filePath = submission.getLink();
+            if (filePath == null || filePath.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // PDF file path not found
+            }
+
+            // Create a Resource object from the file path
+            Resource resource = new FileSystemResource(filePath);
+
+            // Check if the resource exists
+            if (!resource.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // PDF file not found
+            }
+
+            // Build headers for the response
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+            headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+
+            // Return ResponseEntity with the file resource and headers
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(resource.contentLength())
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
 }

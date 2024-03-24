@@ -138,6 +138,56 @@
         .popup-buttons button.close:hover {
             background-color:rgb(128, 128, 128);
         }
+        
+       
+
+ 
+ /* Style for the "View" button */
+button.view {
+    background-color: rgb(0, 128, 0); /* Blue background */
+    color: #fff; /* White text color */
+    border: 2px solid rgb(0, 128, 0); /* Blue border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 8px 16px; /* Padding */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+button.view:hover {
+    background-color: rgb(0, 128, 64); /* Darker blue on hover */
+}
+       
+        
+/* Style for the "Download" button */
+button.download {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text color */
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 8px 16px; /* Padding */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+button.download:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button.review {
+    background-color: rgb(128, 128, 128); /* Blue background */
+    color: #fff; /* White text color */
+    border: 2px solid rgb(128, 128, 128); /* Blue border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 8px 16px; /* Padding */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
+button.review:hover {
+    background-color: rgb(192, 192, 192); /* Darker blue on hover */
+}
+
+        
     </style>
 
    <script>
@@ -172,9 +222,9 @@
                     <td>${submission.revisionStatus}</td>
                     <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
                     <td>
-                        <a href="${submission.pdflink}" target="_blank">View</a>
-                        <button onclick="openReviewPopup(${submission.paperId}, ${submission.submissionId})">Edit Review</button>
-                        <a href="${submission.pdflink}" target="_blank">Download</a>
+                        <button class="view" onclick="viewAbstract(${submission.submissionId})">View</button>
+                        <button class="review" onclick="openReviewPopup(${submission.paperId}, ${submission.submissionId})">Edit Review</button>
+                        <button class="download"onclick="downloadPaper(${submission.submissionId})">Download</button>
                     </td>
                 `;
                         pdfTableBody.appendChild(row);
@@ -299,7 +349,24 @@ function saveComment() {
         console.log(error);
     });
      closePopup();
+     
+   
 }
+
+  // Function to open the abstract in a new window
+    function viewAbstract(submissionId) {
+        window.open(`http://localhost:8080/api/abstract?submissionId=${submissionId}`, '_blank');
+    }
+    
+    function downloadPaper(submissionId) {
+        // Fetch the paper details from the server
+        const url = `http://localhost:8080/api/download?submissionId=${submissionId}`;
+
+        // Create a temporary anchor element to trigger the download
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.click(); // Click the anchor element to initiate download
+        }
 
      window.onload = fetchPaperDetails;
     

@@ -1,119 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-                margin: 0;
-                padding: 0;
-                background-color: #f2f2f2;
-                box-sizing: border-box;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            box-sizing: border-box;
+        }
 
-            header {
-                background: linear-gradient(to right, black, skyblue);
-                color: skyblue;
-                text-align: left;
-                padding: 15px;
-                text-shadow: #333;
-                width: auto;
-                margin: 0;
-                border-radius: 3px;
-                padding-left: 15px;
-            }
+        header {
+            background: linear-gradient(to right, black, skyblue);
+            color: skyblue;
+            text-align: left;
+            padding: 15px;
+            text-shadow: #333;
+            width: auto;
+            margin: 0;
+            border-radius: 3px;
+            padding-left: 15px;
+        }
 
-            .dashboard {
-                width: auto;
-            }
+        .profile-bar {
+            width: auto;
+            height: 70px;
+            background-color: rgb(74, 144, 174);
+            padding: 5px;
+            text-align: right;
+            border-radius: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
 
-            .content {
-                text-align: left;
-                max-width: 600px;
-                margin: 20px;
-                padding: 20px;
-            }
+        .profile-bar h2 {
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            margin-right: 550px;
+        }
 
-            .navigation {
-                display: flex;
-                justify-content: center;
-                /* Center horizontally */
-                margin-top: 20px;
-            }
+        .profile-bar a {
+            text-decoration: none;
+            color: black;
+            font-size: 28px;
+            margin-right: 10px;
+        }
+
+        .profile-bar img {
+            vertical-align: middle;
+        }
+
+        .content {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            margin-top: 20px;
+        }
 
 
-            .nav-box {
-                background-color: #fff;
-                border: 1px solid #000;
-                border-radius: 8px;
-                padding: 20px;
-                width: 10%;
-                margin: 2px 20px;
-                /* Adjusted margin */
-            }
+        .nav-box {
+            background-color: #fff;
+            border: 1px solid #000;
+            border-radius: 8px;
+            padding: 20px;
+            width: 10%;
+            margin: 2px 20px;
+            /* Adjusted margin */
+        }
 
 
-            .nav-box:hover {
-                background-color: lightgrey;
-            }
+        .nav-box:hover {
+            background-color: lightgrey;
+        }
+    </style>
+</head>
 
-            .profilebar {
-                float: right;
-                margin-right: 20px;
-            }
-        </style>
-    </head>
+<body>
 
-    <body>
+    <header>
+        <h1>
+            NITCONF
+        </h1>
+        <h5 style="color:white">Precision speaks: Comment, Rate and Critique</h5>
+    </header>
 
-        <header>
-            <h1>
-                NITCONF
-            </h1>
-            <h5 style="color:white">Precision speaks: Comment, Rate and Critique</h5>
-        </header>
+    <div class="profile-bar">
+        <h2>Dashboard</h2>
+        <a href="/Notifications" title="Notifications"><span class="new">&#128276;</span></a>
+        <a href="/Profile" title="View Profile"><img
+                src="https://www.shutterstock.com/image-vector/profile-icon-isolated-white-on-600nw-211470211.jpg"
+                alt="Profile" width="40" height="45"></a>
+    </div>
 
-        <div class="dashboard">
-            <h2>Dashboard</h2>
-            <div class="profilebar">
-                <a href="/Notifications" title="Notifications"><span class="new">&#128276;</span></a>
-                <a href="/Profile" title="View Profile"><img
-                        src="https://www.shutterstock.com/image-vector/profile-icon-isolated-white-on-600nw-211470211.jpg"
-                        alt="Profile" width="40" height="45"></a>
-            </div>
+    <div class="content">
+        <h2>Welcome to NITCONF Dashboard</h2>
+        <p>This is your personalized dashboard. Explore the different sections and manage your reviews efficiently.</p>
+        <!-- Add more content as needed -->
+    </div>
+
+    <div class="navigation">
+        <div class="nav-box">
+            <a href="/To-review" style="text-decoration: none; color: #25234f;">
+                <h3>To Review</h3>
+                <p> click here to view the Papers to be reviewed</p>
+            </a>
         </div>
-
-        <div class="content">
-            <h2>Welcome to NITCONF Dashboard</h2>
-            <p>This is your personalized dashboard. Explore the different sections and manage your reviews efficiently.</p>
-            <!-- Add more content as needed -->
+        <div class="nav-box">
+            <a href="/Reviewed" style="text-decoration: none; color: #25234f;">
+                <h3>Reviewed</h3>
+                <p>click here to view the Papers reviewed</p>
+            </a>
         </div>
-
-        <div class="navigation">
-            <div class="nav-box">
-                <a href="/To-review" style="text-decoration: none; color: #25234f;">
-                    <h3>To Review</h3>
-                    <p> click here to view the Papers to be reviewed</p>
-                </a>
-            </div>
-            <div class="nav-box">
-                <a href="/Reviewed" style="text-decoration: none; color: #25234f;">
-                    <h3>Reviewed</h3>
-                    <p>click here to view the Papers reviewed</p>
-                </a>
-            </div>
-            <div class="nav-box">
-                <a href="/History" style="text-decoration: none; color: #25234f;">
-                    <h3>History</h3>
-                    <p>click here to view the reviewed Papers history</p>
-                </a>
-            </div>
+        <div class="nav-box">
+            <a href="/History" style="text-decoration: none; color: #25234f;">
+                <h3>History</h3>
+                <p>click here to view the reviewed Papers history</p>
+            </a>
         </div>
+    </div>
 
-    </body>
+</body>
 
 </html>

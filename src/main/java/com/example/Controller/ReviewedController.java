@@ -79,7 +79,7 @@ public class ReviewedController {
         	String qualityStr = (String) requestBody.get("quality");
         	Integer quality = Integer.parseInt(qualityStr);
 
-        	String technicalContentAndAccuracyStr = (String) requestBody.get("technicalContentAndAccuracy");
+        	String technicalContentAndAccuracyStr = (String) requestBody.get("TCA");
         	Integer technicalContentAndAccuracy = Integer.parseInt(technicalContentAndAccuracyStr);
 
         	String significanceOfWorkStr = (String) requestBody.get("significanceOfWork");

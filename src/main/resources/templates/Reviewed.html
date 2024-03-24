@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+	<meta name="_csrf" th:content="${_csrf.token}" />
 
 <head>
     <meta charset="UTF-8" />
@@ -140,105 +141,168 @@
     </style>
 
    <script>
-    function openEditReviewPopup(paperId) {
-        var overlay = document.getElementById("overlay");
-        var editReviewPopup = document.getElementById("editReviewPopup");
-
-        var popupContent = `
-            <div class="popup-content">
-                <h2>Edit Review Popup</h2>
-                <textarea id="reviewText" rows="4" cols="50">This is the previous review text...</textarea>
-                <br>
-                <label for="originality">Originality:</label>
-                <input type="number" id="originality" name="originality" min="1" max="5">
-                <br>
-                <label for="relevance">Relevance:</label>
-                <input type="number" id="relevance" name="relevance" min="1" max="5">
-                <br>
-                <label for="quality">Quality:</label>
-                <input type="number" id="quality" name="quality" min="1" max="5">
-            </div>
-            <div class="popup-buttons">
-                <button class="save" onclick="saveEditedReview(${paperId})">Save Changes</button>
-                <button class="close" onclick="closePopup()">Close</button>
-            </div>
-        `;
-
-        editReviewPopup.innerHTML = popupContent;
-
-        overlay.style.display = "block";
-        editReviewPopup.style.display = "block";
-    }
-
-    function submitReview() {
-        const reviewData = {
-            paperId: 12345,
-            reviewText: document.getElementById('reviewText').value,
-            originality: parseInt(document.getElementById('originality').value),
-            relevance: parseInt(document.getElementById('relevance').value),
-            quality: parseInt(document.getElementById('quality').value)
-        }};
-
-    function fetchPaperDetails() {
-        // Fetch user ID from the backend 
-        // const userid = `${userId}`;
-        const userId = 1;
-        const url = `http://localhost:8080/api/papers/reviewedsubmissions?userId=${userId}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Paper details:', data);
-                const paperTableBody = document.getElementById('pdfTableBody');
-                paperTableBody.innerHTML = ''; // Clear existing table rows
-                data.forEach(submission => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                <td>${submission.title}</td>
-                <td>${submission.status}</td>
-                <td>${submission.revisionStatus}</td>
-                <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
-                <td>
-                    <a href="${submission.link}" target="_blank">View</a>
-                    <button onclick="openReviewPopup(${submission.paperId})">Review</button>
-                    <a href="${submission.link}" target="_blank">Download</a>
-                </td>
-            `;
-                    pdfTableBody.appendChild(row);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching paper details:', error);
-            });
-    }
-
     
-    // Call fetchPaperDetails when the page loads
         
-    window.onload = fetchPaperDetails;
-
-    function saveEditedReview(paperId) {
-        var reviewText = document.getElementById("reviewText").value;
-        var originality = document.getElementById("originality").value;
-        var relevance = document.getElementById("relevance").value;
-        var quality = document.getElementById("quality").value;
-
-        console.log("Edited Review for Paper ID " + paperId + ": " + reviewText);
-        console.log("Originality for Paper ID " + paperId + ": " + originality);
-        console.log("Relevance for Paper ID " + paperId + ": " + relevance);
-        console.log("Quality for Paper ID " + paperId + ": " + quality);
-
-        // Add your logic to save the edited review here
-
-        closePopup();
-    }
-
-    function closePopup() {
+        function closePopup() {
         var overlay = document.getElementById("overlay");
         var editReviewPopup = document.getElementById("editReviewPopup");
 
         overlay.style.display = "none";
         editReviewPopup.style.display = "none";
     }
+    
+
+    // Function to fetch paper details from the backend
+        function fetchPaperDetails() {
+            // Fetch user ID from the backend 
+            // const userid = ${userId};
+            const userId = 1;
+            const url = `http://localhost:8080/api/reviewedsubmissions?userId=${userId}`;
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Paper details:', data);
+                    const paperTableBody = document.getElementById('pdfTableBody');
+                    paperTableBody.innerHTML = ''; // Clear existing table rows
+                    data.forEach(submission => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                    <td>${submission.title}</td>
+                    <td>${submission.status}</td>
+                    <td>${submission.revisionStatus}</td>
+                    <td>${submission.deadline}</td> <!-- Fetch deadline from the submission -->
+                    <td>
+                        <a href="${submission.pdflink}" target="_blank">View</a>
+                        <button onclick="openReviewPopup(${submission.paperId}, ${submission.submissionId})">Edit Review</button>
+                        <a href="${submission.pdflink}" target="_blank">Download</a>
+                    </td>
+                `;
+                        pdfTableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching paper details:', error);
+                });
+        }
+        
+
+    
+    
+    function openReviewPopup(paperId, submissionId) {
+    var overlay = document.getElementById("overlay");
+    var reviewPopup = document.getElementById("editReviewPopup");
+     const userId=1;
+     
+     console.log("the paperid is :",paperId);
+     console.log("the submissionId is :",submissionId);
+     
+    // Fetch the paper details from the server
+     const url = `http://localhost:8080/api/reviewed/paper/submission?submissionId=${submissionId}`;
+     
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            console.log('Fetched data:', data);
+            // Create hidden input fields for paperId and submissionId
+            var hiddenInputs = `
+                <input type="hidden" id="paperId" name="paperId" value="${paperId}">
+                <input type="hidden" id="submissionId" name="submissionId" value="${submissionId}">
+            `;
+
+            // Populate the input fields with the fetched data
+            var popupContent = `
+                <div class="popup-content">
+                    <h2>Review Paper</h2>
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" rows="4" cols="50">${data.comment}</textarea>
+                    <br>
+                    <label for="originality">Originality:</label>
+                    <input type="number" id="originality" name="originality" min="1" max="5" value="${data.originality !== undefined ? data.originality : ''}">
+
+                    <br>
+                    <label for="relevance">Relevance:</label>
+                    <input type="number" id="relevance" name="relevance" min="1" max="5" value="${data.relevance}">
+                    <br>
+                    <label for="quality">Quality:</label>
+                    <input type="number" id="quality" name="quality" min="1" max="5" value="${data.quality}">
+                    <br>
+                     <label for="technicalContentAndAccuracy">TechnicalContentAndAccuracy:</label>
+                    <input type="number" id="technicalContentAndAccuracy" name="technicalContentAndAccuracy" min="1" max="5" value="${data.technicalContentAndAccuracy}">
+                    <br>
+                    <label for="significanceOfWork">SignificanceOfWork:</label>
+                    <input type="number" id="significanceOfWork" name="significanceOfWork" min="1" max="5" value="${data.significanceOfWork}">
+                    <br>
+                    <label for="appropriateForSAC">AppropriateForSAC:</label>
+                    <input type="number" id="appropriateForSAC" name="appropriateForSAC" min="1" max="5" value="${data.appropriateForSAC}">
+                </div>
+                <div class="popup-buttons">
+                    <button class="save" onclick="saveComment()">update Comment</button>
+                    <button class="close" onclick="closePopup()">Close</button>
+                </div>
+            `;
+
+            // Set the content of the review popup
+            reviewPopup.innerHTML = hiddenInputs + popupContent;
+
+            // Display the overlay and review popup
+            overlay.style.display = "block";
+            reviewPopup.style.display = "block";
+        })
+        .catch(error => {
+            console.error('Error fetching paper details:', error);
+        });
+}
+
+
+// Function to submit form changes
+function saveComment() {
+   // const userId = 1; 
+    const formData = {
+        paperId: document.getElementById("paperId").value,
+        submissionId:document.getElementById("submissionId").value,
+        comment: document.getElementById("comment").value,
+        originality: document.getElementById("originality").value,
+        relevance: document.getElementById("relevance").value,
+        quality: document.getElementById("quality").value,
+        technicalContentAndAccuracy : document.getElementById("technicalContentAndAccuracy").value,
+        significanceOfWork : document.getElementById("significanceOfWork").value,
+        appropriateForSAC: document.getElementById("appropriateForSAC").value
+    };
+
+   console.log('Form Data before PATCH request:', formData);
+
+    // Retrieve CSRF token from meta tag
+    const csrfMetaTag = document.querySelector('meta[name="_csrf"]');
+    if (!csrfMetaTag) {
+        console.error('CSRF token meta tag not found');
+        return; // Exit function if CSRF token meta tag is not found
+    }
+
+    const csrfToken = csrfMetaTag.getAttribute('content');
+
+    // Send PATCH request to update user data in the backend
+    fetch('http://localhost:8080/api/reviewed/papers/submissions/comment', {
+        method: 'PATCH',
+        body: JSON.stringify(formData),
+        headers: {
+            'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Response from PATCH request:', data); // Print response from server
+        alert("comment updated successfully.");
+        
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+     closePopup();
+}
+
+     window.onload = fetchPaperDetails;
+    
 </script>
 
 </head>

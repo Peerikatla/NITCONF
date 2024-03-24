@@ -2,8 +2,8 @@ package com.example.Service;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+//import java.time.LocalDateTime;
+//import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class HistoryService {
     public List<Map<String, Object>> getAllHistory(Integer userId) {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Paper> papers = paperRepository.findPapersByUserId(userId);
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDate currentTime = LocalDate.now();
 
         for (Paper paper : papers) {
             boolean needsReview = paper.getApprovestatus() != null && getDeadline(paper).isBefore(currentTime);
@@ -54,22 +54,23 @@ public class HistoryService {
                 paperMap.put("title", paper.getTitle());
                 paperMap.put("status", paper.getApprovestatus());
                 paperMap.put("revisionStatus", paper.getRevisionStatus());
-                paperMap.put("deadline", ConvertToLocalDateViaLocalDateTime(getDeadline(paper)));
+                paperMap.put("deadline", getDeadline(paper));
                 result.add(paperMap);
             }
         }
         return result;
     }
 
-    private LocalDateTime getDeadline(Paper paper) {
+    private LocalDate getDeadline(Paper paper) {
         List<Submission> submissions = paper.getSubmissions();
         return submissions.stream()
-                .map(submission -> submission.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .map(submission -> submission.getDeadline())
                 .max(Comparator.naturalOrder())
                 .orElse(null);
     }
+
     
-    private LocalDate ConvertToLocalDateViaLocalDateTime(LocalDateTime dateToConvert) {
+   /* private LocalDate ConvertToLocalDateViaLocalDateTime(LocalDateTime dateToConvert) {
         return dateToConvert.toLocalDate();
-    }
+    }*/
 }

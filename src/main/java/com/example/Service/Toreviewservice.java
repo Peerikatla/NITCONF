@@ -87,7 +87,7 @@ public class Toreviewservice {
             submission.setOriginality(originality);
             submission.setRelevance(relevance);
             submission.setQuality(quality);
-            submission.setTechnicalContentandAccuracy(technicalContentAndAccuracy);
+            submission.setTechnicalContentAndAccuracy(technicalContentAndAccuracy);
             submission.setSignificanceOfWork(significanceOfWork);
             submission.setAppropriateForSAC(appropriateForSAC);
             submission.setStatus("reviewed");

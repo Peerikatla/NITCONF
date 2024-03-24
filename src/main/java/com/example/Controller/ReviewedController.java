@@ -44,6 +44,12 @@ public class ReviewedController {
         List<Map<String, Object>> papersWithReviews = reviewedservice.getPapersWithReviews(userId);
         return new ResponseEntity<>(papersWithReviews, HttpStatus.OK);
     }
+    
+    @GetMapping("/reviewed/paper/submission")
+    public ResponseEntity<Map<String, Object>> getSubmissionDetails(@RequestParam("submissionId") Integer submissionId) {
+        Map<String, Object> submissionDetails = reviewedservice.getSubmissionDetails(submissionId);
+        return new ResponseEntity<>(submissionDetails, HttpStatus.OK);
+    }
 
     /**
      * Updates the comment and rating for a specific paper submission.
@@ -54,17 +60,52 @@ public class ReviewedController {
      * @param rating       the new rating
      * @return a success message
      */
-    @PatchMapping("/reviewed/papers/{paperId}/submissions/{submissionId}/comment")
-    public ResponseEntity<String> updateCommentAndRating(@PathVariable Integer paperId,
-            @PathVariable Integer submissionId,
-            @RequestParam String comment,
-            @RequestParam int originality,
-            @RequestParam int readability,
-            @RequestParam int relevance,
-            @RequestParam int technicalContentandAccuracy,
-            @RequestParam int significanceOfWork,
-            @RequestParam int appropriateForSAC) {
-        reviewedservice.updatecomment(paperId, submissionId, comment, originality, readability, relevance, technicalContentandAccuracy, significanceOfWork, appropriateForSAC);
-        return new ResponseEntity<>("Comment and rating updated successfully", HttpStatus.OK);
+    @PatchMapping("/reviewed/papers/submissions/comment")
+    public ResponseEntity<Void> saveComment(@RequestBody Map<String, Object> requestBody) {
+        try {
+        	String paperIdStr = (String) requestBody.get("paperId");
+        	Integer paperId = Integer.parseInt(paperIdStr);
+        	
+        	String submissionIdStr = (String) requestBody.get("submissionId");
+        	Integer submissionId = Integer.parseInt(submissionIdStr);
+        	 String comment = (String) requestBody.get("comment");
+
+        	String originalityStr = (String) requestBody.get("originality");
+        	Integer originality = Integer.parseInt(originalityStr);
+
+        	String relevanceStr = (String) requestBody.get("relevance");
+        	Integer relevance = Integer.parseInt(relevanceStr);
+
+        	String qualityStr = (String) requestBody.get("quality");
+        	Integer quality = Integer.parseInt(qualityStr);
+
+        	String technicalContentAndAccuracyStr = (String) requestBody.get("technicalContentAndAccuracy");
+        	Integer technicalContentAndAccuracy = Integer.parseInt(technicalContentAndAccuracyStr);
+
+        	String significanceOfWorkStr = (String) requestBody.get("significanceOfWork");
+        	Integer significanceOfWork = Integer.parseInt(significanceOfWorkStr);
+
+        	String appropriateForSACStr = (String) requestBody.get("appropriateForSAC");
+        	Integer appropriateForSAC = Integer.parseInt(appropriateForSACStr);
+
+
+            // Check if any of the required parameters are null
+            if (paperId == null || submissionId == null || comment == null || originality == null || relevance == null
+                    || quality == null || technicalContentAndAccuracy == null || significanceOfWork == null
+                    || appropriateForSAC == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Return bad request status if any parameter is missing
+            }
+
+            // Call the service method to save the comment
+            reviewedservice.updatecomment(paperId, submissionId, comment, originality, relevance, quality,
+                    technicalContentAndAccuracy, significanceOfWork, appropriateForSAC);
+            return new ResponseEntity<>(HttpStatus.OK); // Return success status
+        } catch (Exception e) {
+            e.printStackTrace(); // Log any exceptions for debugging
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Return internal server error status
+        }
     }
+
+
+
 }

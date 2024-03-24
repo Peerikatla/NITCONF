@@ -10,7 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "submissions")
@@ -21,7 +21,7 @@ public class Submission {
 	private Integer submissionId;
 
 	@Column(nullable = false)
-	private Date deadline;
+	private LocalDate deadline;
 
 	@Column
 	private String status; // null or reviewed or revised
@@ -40,7 +40,7 @@ public class Submission {
 	private Integer Quality;
 
 	@Column
-	private Integer TechnicalContentandAccuracy;
+	private Integer TechnicalContentAndAccuracy;
 
 	@Column
 	private Integer SignificanceOfWork;
@@ -61,7 +61,7 @@ public class Submission {
 
 	
 
-	public Submission(Integer submissionId, Date deadline, String status, String comment, Integer originality,
+	public Submission(Integer submissionId, LocalDate deadline, String status, String comment, Integer originality,
 			Integer relevance, Integer quality, Integer technicalContentandAccuracy, Integer significanceOfWork,
 			Integer appropriateForSAC, String link, Paper paper) {
 		this.submissionId = submissionId;
@@ -71,7 +71,7 @@ public class Submission {
 		Originality = originality;
 		Relevance = relevance;
 		Quality = quality;
-		TechnicalContentandAccuracy = technicalContentandAccuracy;
+		TechnicalContentAndAccuracy = technicalContentandAccuracy;
 		SignificanceOfWork = significanceOfWork;
 		AppropriateForSAC = appropriateForSAC;
 		Link = link;
@@ -80,12 +80,12 @@ public class Submission {
 
 
 
-	public Integer getTechnicalContentandAccuracy() {
-		return TechnicalContentandAccuracy;
+	public Integer getTechnicalContentAndAccuracy() {
+		return TechnicalContentAndAccuracy;
 	}
 
-	public void setTechnicalContentandAccuracy(Integer technicalContentandAccuracy) {
-		TechnicalContentandAccuracy = technicalContentandAccuracy;
+	public void setTechnicalContentAndAccuracy(Integer technicalContentandAccuracy) {
+		TechnicalContentAndAccuracy = technicalContentandAccuracy;
 	}
 
 	public Integer getSignificanceOfWork() {
@@ -112,11 +112,11 @@ public class Submission {
 		this.submissionId = submissionId;
 	}
 
-	public Date getDeadline() {
+	public LocalDate getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(Date deadline) {
+	public void setDeadline(LocalDate deadline) {
 		this.deadline = deadline;
 	}
 

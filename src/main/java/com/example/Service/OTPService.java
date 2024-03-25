@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 @Service
 public class OTPService {
+    
     @Autowired
     private UserRepository userRepository;
 

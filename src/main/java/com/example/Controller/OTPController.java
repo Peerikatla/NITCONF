@@ -25,7 +25,7 @@ public class OTPController {
     private OTPService otpService;
 
     @PostMapping("/forgot-password/sendOTP")
-    public ResponseEntity<?> forgotPassword(@RequestParam("email") String email) {
+    public ResponseEntity<String> forgotPassword(@RequestParam("email") String email) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             otpService.generateAndSendOtp(user);
@@ -36,7 +36,7 @@ public class OTPController {
     }
 
     @PostMapping("/forgot-password/verifyOTP")
-    public ResponseEntity<?> verifyOTP(@RequestParam("email") String email, @RequestParam("otp") String otp) {
+    public ResponseEntity<String> verifyOTP(@RequestParam("email") String email, @RequestParam("otp") String otp) {
         User user = userRepository.findByEmail(email);
 
         if (user != null && user.getOtp() != null && user.getOtp().equals(otp) &&
@@ -51,7 +51,7 @@ public class OTPController {
     }
 
     @PostMapping("reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam("email") String email, @RequestParam("password") String password) {
+    public ResponseEntity<String> resetPassword(@RequestParam("email") String email, @RequestParam("password") String password) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
             user.setPassword(password);

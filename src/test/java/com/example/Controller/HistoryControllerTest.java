@@ -72,10 +72,10 @@ public class HistoryControllerTest {
         user.setNumber("8688469868");
         user.setPassword("me@1");
         user.setPaperlimit(15L);
-        user.setSpecialization("Machine learning");
+        user.setSpecialization("Machine learning");//set tag
         user.setDateOfBirth(LocalDate.of(2003, Month.SEPTEMBER, 8)); // Set date of birth
 
-        // Set up the paper
+        // Set up the paper 
         paper = new Paper();
         paper.setPaperId(8);
         paper.setTitle("svm");

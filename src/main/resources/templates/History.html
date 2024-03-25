@@ -249,10 +249,12 @@
         }
 
         function redirectPreviousSubmissions(paperId) {
-            window.location.href = `/History/details?paperId=${paperId}`;
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+            window.location.href = `/History/details?paperId=${paperId}&userId=${userId}`;
         }
 
-        function updateLinks() {
+        function updateLinks(userId) {
             const linksToUpdate = document.querySelectorAll('a[href^="/"]');
 
             linksToUpdate.forEach(link => {
@@ -263,7 +265,7 @@
 
         window.onload = function () {
             fetchPaperDetails(userId);
-            updateLinks();
+            updateLinks(userId);
         }
     </script>
 

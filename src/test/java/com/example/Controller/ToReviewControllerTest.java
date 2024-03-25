@@ -19,10 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.Repository.PaperRepository;
-import com.example.Repository.SubmissionRepository;
 import com.example.Repository.UserRepository;
-import com.example.Service.Toreviewservice;
-import com.example.model.Paper;
 import com.example.model.Submission;
 import com.example.model.User;
 
@@ -62,7 +59,6 @@ class ToReviewControllerTest {
         user.setUsername("gayatri");
         user.setNumber("8688469868");
         user.setPassword("me@1");
-        user.setPaperlimit(15L);
         user.setSpecialization("Machine learning");
         user.setDateOfBirth(LocalDate.of(2003, Month.SEPTEMBER, 8)); // Set date of birth
         

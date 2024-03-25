@@ -229,4 +229,9 @@ public class HomeController {
         System.out.println("User ID in HistoryDetails: " + userId);       
         return "PreviousHistory";
     }
+
+    @GetMapping("/forgot-password")
+    public String ForgotPassword() {
+        return "ForgotPassword";
+    }
 }

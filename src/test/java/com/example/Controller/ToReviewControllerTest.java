@@ -71,8 +71,8 @@ class ToReviewControllerTest {
         paper.setPaperId(8);
         paper.setTitle("svm");
         paper.setRevisionStatus(0); 
-        paper.setApprovestatus(null); // Assuming initial approval status as "Pending"
-        paper.setTag("machine learning"); // Assuming a tag for the paper
+        paper.setApprovestatus(null); 
+        paper.setTag("Machine learning"); // Assuming a tag for the paper
         paper.setUser(user); // Set the user for the paper
 
         // Set up the submission
@@ -139,12 +139,12 @@ class ToReviewControllerTest {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("paperId", "2");
         requestBody.put("submissionId", "12");
-        requestBody.put("comment", "Test comment");
-        requestBody.put("originality", "5");
+        requestBody.put("comment", "Good WOrk!");
+        requestBody.put("originality", "4");
         requestBody.put("relevance", "4");
         requestBody.put("quality", "3");
-        requestBody.put("TCA", "2");
-        requestBody.put("significanceOfWork", "4");
+        requestBody.put("TCA", "5");
+        requestBody.put("significanceOfWork", "3");
         requestBody.put("appropriateForSAC", "5");
 
         // Mock behavior
@@ -153,7 +153,7 @@ class ToReviewControllerTest {
         // Test
         ResponseEntity<Void> responseEntity = toReviewController.saveComment(requestBody);
         
-        System.out.println("Response: " + responseEntity);
+        //System.out.println("Response: " + responseEntity);
 
 
         // Verify

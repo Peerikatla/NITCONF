@@ -170,55 +170,6 @@ CI/CD Pipelines: Integration with continuous integration and continuous deployme
   - **Reviewed**: Papers that have been reviewed by the user.
   - **View History**: A history of papers reviewed in the past 6 months.
 
-## Pages and Functionalities
-### To Review Page
-- **Layout**: Displays assigned papers in a row-wise manner.
-- **Columns**:
-  1. **Pdf id and Downloads**: Includes a pdf id, 'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Actions**: Shows the paper's title with 'Review' and 'Display All Reviews' options. 'Review' opens a pop-up for rating, commenting, and final actions ('Accept', 'Reject', or 'Revise'). 'Display All Reviews' reveals all previous comments/reviews.
-  3. **Status**: Indicates the current status of the paper (Accept/Reject/Pending).
-  4. **Revision**: Shows the revision round of the paper (e.g., first, second).
-  5. **Deadline**: Lists the review deadline set by the Program Committee.
-  <!--6. **Decline**: A button that can be pressed if the reviewer chooses not to review that paper.-->
-     
- ![To Review](https://github.com/The-Naveen/NITCONF/assets/129659666/f0038085-2f76-42bb-9572-dcf27255dd6a)
-
-
-
-### Reviewed Page
-- **Content**: Lists all reviewed papers.
-- **Columns**:
-  1. **Paper id and Downloads**: Includes a paper id, 'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Edit Options**: Displays the paper's title with 'Edit' and 'Display All Reviews' buttons. 'Edit' allows modification of the most recent review. 'Display All' shows all past reviews.
-  3. **Status**: The final status of the paper (Accept/Reject/Revise).
-  4. **Revision**: Shows the revision round of the paper (e.g., first, second).
-  5. **Deadline**: The review deadline, after which the paper is removed from this page.
-<!--![2](https://github.com/afrasd/NITCONF/assets/103187343/3c86a087-d8ae-4a67-85b0-adbc787777c6)-->
-![Reviewed](https://github.com/The-Naveen/NITCONF/assets/129659666/b1b3113d-5e17-4a38-8533-6c4d1852db6b)
-
-
-
-  
-  
-### View History Page
-- **Content**: Lists all reviewed papers in the last 6 months.
-- **Columns**:
-  1. **Downloads**: Includes'Abstract' and 'PDF Download' buttons.
-  2. **Paper Title and Edit Options**: Displays the paper's title with a 'Display Previous Reviews' button.
-  3. **Status**: The final status of the paper (Accept/Reject/Revise).
-  4. **Revision**: Shows the revision round of the paper (e.g., first, second).
-  <!--5. **Deadline**: The review deadline, after which the paper is removed from this page.-->
-
-     
- <!--![3](https://github.com/afrasd/NITCONF/assets/103187343/6a0ac50c-11a8-41f3-9a9b-7fae0e3a2c41)-->
- ![History](https://github.com/The-Naveen/NITCONF/assets/129659666/126ea930-2e6f-4877-bd80-e6e19ae6959c)
-
-     
-
-### 'Notifications' Page
-- **Content**: Lists all notifications from PC, like paper assignments and deadline reminders.
-  
-  
 ### 2.6 Assumptions and Dependencies
 ## Assumptions:
 - **Third-Party Components**: Assuming the availability and reliability of third-party libraries or frameworks used in the development of the website.
@@ -271,6 +222,69 @@ Within each submission, the user interface allows reviewers to access abstracts,
 - b. Outgoing Data:
 
    - Review Feedback: Managed by Spring MVC controllers, sending review feedback stored in MYSQL to the frontend.
+
+
+
+## Pages and Functionalities
+### To Review Page
+- **Layout**: Displays assigned papers in a row-wise manner.
+- **Columns**:
+  1. **Title**: Displays the Title of the Submission.
+  2. **Status**: In this page all of the values contain "To Review" as status.
+  3. **Revision Status**: Displays the number of previous subissions on the particular paper.
+  4. **Deadline**: The Date before which it needs to be reviewed.
+  5. **Action**: Action contains View, Download and Review.
+     
+![To-Review](https://github.com/The-Naveen/NITCONF/assets/129659666/096671b8-4e4c-4f8c-ba3b-a9ad64f102c2)
+
+
+
+
+
+### Reviewed Page
+- **Content**: Lists all reviewed papers.
+- **Columns**:
+  1. **Title**: Displays the Title of the Submission.
+  2. **Status**: In this page all of the values contain "Reviewed" as status.
+  3. **Revision Status**: Displays the number of previous subissions on the particular paper.
+  4. **Deadline**: The review deadline, after which the paper is removed from this page.
+  5. **Action**: Action contains View, Download and Review.
+
+![Reviewed](https://github.com/The-Naveen/NITCONF/assets/129659666/967a00f4-bdf5-44b9-927a-8186c4a42ecd)
+
+
+  
+  
+### View History Page
+- **Content**: Lists all reviewed papers in the last 6 months.
+- **Columns**:
+  1. **Title**: Displays the Title of the Submission.
+  2. **Status**: Contain Approved or Rejected.
+  3. **Revision Status**: Displays the number of previous subissions on the particular paper.
+  4. **Deadline**: The review deadline, when the paper is expired to modify review.
+  5. **Action**: Action contains View, Download and all previous Reviews of that paper through a button. 
+
+     
+![History](https://github.com/The-Naveen/NITCONF/assets/129659666/ca3e4ab8-e659-44f9-9486-7de8a4018069)
+
+### Previous History Page
+- **Content**: Lists all reviewed papers in the last 6 months.
+- **Columns**:
+  1. **Title**: Displays the Title of the Submission.
+  2. **Status**: Contain Approved or Rejected.
+  3. **Submission Number**: Displays the Submission's Number of the submission.
+  4. **Deadline**: The review deadline, when the paper is expired to modify review.
+  5. **Action**: Action contains View, Download and The review we gave.
+
+![Previous History](https://github.com/The-Naveen/NITCONF/assets/129659666/c7aaeee2-d601-4c6f-97ae-4962af5a351e)
+
+
+
+### 'Notifications' Page
+- **Content**: Lists all notifications from PC, like paper assignments and deadline reminders.
+
+
+
 
 <!-- ## System Features
 This template illustrates organizing the functional requirements for the product by system features, the major services provided by the product. You may prefer to organize this section by use case, mode of operation, user class, object class, functional hierarchy, or combinations of these, whatever makes the most logical sense for your product.

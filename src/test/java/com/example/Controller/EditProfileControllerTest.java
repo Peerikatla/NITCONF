@@ -50,7 +50,7 @@ public class EditProfileControllerTest {
         requestBody.put("dateOfBirth", LocalDate.of(2003, 5, 28).toString());
 
         // Act
-        HttpStatus status = userController.updateProfileFields(requestBody);
+        HttpStatus status = userController.updateProfileFields(userId,requestBody);
 
         // Assert
         assertEquals(HttpStatus.OK, status);
@@ -73,7 +73,7 @@ public class EditProfileControllerTest {
         requestBody.put("dateOfBirth", LocalDate.of(2003, 5, 28).toString());
 
         // Act
-        HttpStatus status = userController.updateProfileFields(requestBody);
+        HttpStatus status = userController.updateProfileFields(userId,requestBody);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, status);

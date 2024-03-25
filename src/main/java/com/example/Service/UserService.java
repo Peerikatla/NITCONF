@@ -27,13 +27,14 @@ public class UserService {
     //     return userRepository.save(updatedUser);
     // }
 
-    public void updateUserProfileFields(User existingUser, String fullName, String username, String number, String specialization,LocalDate dateOfBirth) {
+    public void updateUserProfileFields(User existingUser, String fullName, String username, String number, String specialization,LocalDate dateOfBirth,String email) {
         if (existingUser != null) {
             existingUser.setFullName(fullName);
             existingUser.setUsername(username);
             existingUser.setNumber(number);
             existingUser.setSpecialization(specialization);
             existingUser.setDateOfBirth(dateOfBirth);
+            existingUser.setEmail(email);
             userRepository.save(existingUser);
         }
     }

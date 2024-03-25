@@ -52,18 +52,19 @@ public class UserController {
      */
     @PatchMapping("/profiles")
     public HttpStatus updateProfileFields(@RequestBody Map<String, Object> updatedUser) {
-        Integer userId = 1;
+        Integer userId = (Integer) updatedUser.get("userId");
         String fullName = (String) updatedUser.get("fullName");
         String username = (String) updatedUser.get("username");
         String number = (String) updatedUser.get("number");
         String specialization = (String) updatedUser.get("specialization");
      // Convert dateOfBirth String to LocalDate object
         LocalDate dateOfBirth = LocalDate.parse((String) updatedUser.get("dateOfBirth"));
+        String email = (String) updatedUser.get("email");
 
 
         User existingUser = userService.getUserById(userId);
         if (existingUser != null) {
-            userService.updateUserProfileFields(existingUser, fullName, username, number, specialization, dateOfBirth);
+            userService.updateUserProfileFields(existingUser, fullName, username, number, specialization, dateOfBirth,email);
             return HttpStatus.OK;
         } else {
             return HttpStatus.NOT_FOUND;

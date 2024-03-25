@@ -49,6 +49,7 @@ public class SecurityConfig {
         return http
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/Home").permitAll()
+                        .requestMatchers("/forgot-password", "/reset-password").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
@@ -70,4 +71,6 @@ public class SecurityConfig {
                         .permitAll())
                 .build();
     }
+
+    
 }

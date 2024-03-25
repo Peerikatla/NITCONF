@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-	<meta name="_csrf" th:content="${_csrf.token}" />
+<meta name="_csrf" th:content="${_csrf.token}" />
 
 
 <head>
@@ -236,7 +236,8 @@
                 </div>
                 <div class="each-field">
                     <div class="label-name">Specialization</div>
-                    <select id="specialization" name="specialization" required onchange="checkSpecialization()" disabled>
+                    <select id="specialization" name="specialization" required onchange="checkSpecialization()"
+                        disabled>
                         <option value="Machine Learning">Machine Learning</option>
                         <option value="Web Development">Web Development</option>
                         <option value="Data Science">Data Science</option>
@@ -278,116 +279,125 @@
 
     <script>
         var isEditable = false;
-        
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+
         // Function to retrieve user data from the backend and populate form fields
-function setUserDetails() {
-    
-    const userId = 1;
+        function setUserDetails(userId) {
 
-    // Fetch user data from the backend
-    fetch('http://localhost:8080/api/profiles?userId=' + userId, {
-        method: 'GET',
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
+            // Fetch user data from the backend
+            fetch('http://localhost:8080/api/profiles?userId=' + userId, {
+                method: 'GET',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
 
-        // Populate form fields with retrieved user data
-        document.getElementById("fullName").value = data.fullName;
-        document.getElementById("username").value = data.username;
-        document.getElementById("email").value = data.email;
-        document.getElementById("phone").value = data.number;
-        document.getElementById("dob").value = data.dateOfBirth;
-        document.getElementById("specialization").value = data.specialization;
+                    // Populate form fields with retrieved user data
+                    document.getElementById("fullName").value = data.fullName;
+                    document.getElementById("username").value = data.username;
+                    document.getElementById("email").value = data.email;
+                    document.getElementById("phone").value = data.number;
+                    document.getElementById("dob").value = data.dateOfBirth;
+                    document.getElementById("specialization").value = data.specialization;
 
-        // Store user data in local storage for persistence
-        localStorage.setItem('userData', JSON.stringify(data));
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-}
+                    // Store user data in local storage for persistence
+                    localStorage.setItem('userData', JSON.stringify(data));
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
-// Call setUserDetails when the page loads
-window.onload = function () {
-    // Check if user data exists in local storage
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-        // If user data exists in local storage, populate form fields with it
-        const parsedUserData = JSON.parse(userData);
-        document.getElementById("fullName").value = parsedUserData.fullName;
-        document.getElementById("username").value = parsedUserData.username;
-        document.getElementById("email").value = parsedUserData.email;
-        document.getElementById("phone").value = parsedUserData.number;
-        document.getElementById("dob").value = parsedUserData.dateOfBirth;
-        document.getElementById("specialization").value = parsedUserData.specialization;
-    } else {
-        // If user data doesn't exist in local storage, fetch it from the backend
-        setUserDetails();
-    }
-};
+        function updateLinks() {
+            const linksToUpdate = document.querySelectorAll('a[href^="/"]');
+
+            linksToUpdate.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                link.setAttribute('href', `${currentHref}?userId=${userId}`);
+            });
+        }
+
+        // Call setUserDetails when the page loads
+        window.onload = function () {
+            // Check if user data exists in local storage
+            const userData = localStorage.getItem('userData');
+            // if (userData) {
+            //     // If user data exists in local storage, populate form fields with it
+            //     const parsedUserData = JSON.parse(userData);
+            //     document.getElementById("fullName").value = parsedUserData.fullName;
+            //     document.getElementById("username").value = parsedUserData.username;
+            //     document.getElementById("email").value = parsedUserData.email;
+            //     document.getElementById("phone").value = parsedUserData.number;
+            //     document.getElementById("dob").value = parsedUserData.dateOfBirth;
+            //     document.getElementById("specialization").value = parsedUserData.specialization;
+            // } else {
+            // If user data doesn't exist in local storage, fetch it from the backend
+            setUserDetails(userId);
+            // }
+            updateLinks();
+        };
 
 
-// Function to submit form changes
-function submitForm() {
-    const userId = 1; 
-    const formData = {
-        userId: userId,
-        fullName: document.getElementById("fullName").value,
-        username: document.getElementById("username").value,
-        email: document.getElementById("email").value,
-        number: document.getElementById("phone").value,
-        specialization: document.getElementById("specialization").value,
-        dateOfBirth: document.getElementById("dob").value
-    };
+        // Function to submit form changes
+        function submitForm() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId');
+            const formData = {
+                userId: userId,
+                fullName: document.getElementById("fullName").value,
+                username: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                number: document.getElementById("phone").value,
+                specialization: document.getElementById("specialization").value,
+                dateOfBirth: document.getElementById("dob").value
+            };
 
-    console.log('Form Data before PATCH request:', formData); // Print form data before sending
-    
-     // Retrieve CSRF token from meta tag
+            console.log('Form Data before PATCH request:', formData); // Print form data before sending
+
+            // Retrieve CSRF token from meta tag
             const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 
 
-    // Send PATCH request to update user data in the backend
-    fetch('http://localhost:8080/api/profiles', {
-        method: 'PATCH',
-        body: JSON.stringify(formData),
-        headers: {
-            'Content-Type': 'application/json',
+            // Send PATCH request to update user data in the backend
+            fetch('http://localhost:8080/api/profiles', {
+                method: 'PATCH',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken // Include CSRF token in the headers
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Response from PATCH request:', data); // Print response from server
+                    alert("Profile updated successfully.");
+                    // Update user data in local storage for persistence
+                    localStorage.setItem('userData', JSON.stringify(formData));
+                    cancelChanges(); // Revert to non-editable mode
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log('Response from PATCH request:', data); // Print response from server
-        alert("Profile updated successfully.");
-        // Update user data in local storage for persistence
-        localStorage.setItem('userData', JSON.stringify(formData));
-        cancelChanges(); // Revert to non-editable mode
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-}
 
-
-        
-        
 
         // Function to enable editing of form fields
         function changeEdit() {
-    isEditable = true;
-    var editButton = document.querySelector('.edit-button');
-    var cancelButton = document.querySelector('.cancel-button');
-    var submitButton = document.querySelector('.submit-button');
-    editButton.style.display = "none";
-    cancelButton.style.display = "inline";
-    submitButton.style.display = "inline";
-    var inputFields = document.querySelectorAll('input');
-    inputFields.forEach(field => {  
-            field.removeAttribute('readonly');
-    });
-    document.getElementById('specialization').removeAttribute('disabled'); // Remove the disabled attribute
-}
+            isEditable = true;
+            var editButton = document.querySelector('.edit-button');
+            var cancelButton = document.querySelector('.cancel-button');
+            var submitButton = document.querySelector('.submit-button');
+            editButton.style.display = "none";
+            cancelButton.style.display = "inline";
+            submitButton.style.display = "inline";
+            var inputFields = document.querySelectorAll('input');
+            inputFields.forEach(field => {
+                field.removeAttribute('readonly');
+            });
+            document.getElementById('specialization').removeAttribute('disabled'); // Remove the disabled attribute
+        }
 
 
         // Function to cancel editing and revert changes
@@ -424,7 +434,7 @@ function submitForm() {
             }
         }
 
-        
+
     </script>
 
 </body>

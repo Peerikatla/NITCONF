@@ -64,7 +64,7 @@ public class SecurityConfig {
                             // Store userid in session
                             request.getSession().setAttribute("userid", userId);
                             System.out.println("Userid: " + userId);
-                            response.sendRedirect("/Home");
+                            response.sendRedirect("/Home?userId=" + userId);
                         }))
                 .logout(logout -> logout
                         .permitAll())

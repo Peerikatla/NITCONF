@@ -329,12 +329,23 @@
             reviewPopup.style.display = "none";
         }
 
+        function updateLinks(userId) {
+            const linksToUpdate = document.querySelectorAll('a[href^="/"]');
+
+            linksToUpdate.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                link.setAttribute('href', `${currentHref}?userId=${userId}`);
+            });
+        }
+
         window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
             const paperId = urlParams.get('paperId');
+            const userId = urlParams.get('userId');
             console.log(paperId);
             getDetails(paperId);
             getallsubmissions(paperId);
+            updateLinks(userId);
         };
     </script>
 </body>

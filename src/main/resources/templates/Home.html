@@ -133,6 +133,25 @@
         </div>
     </div>
 
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+
+        console.log(userId);
+
+        function updateLinks() {
+            const linksToUpdate = document.querySelectorAll('a[href^="/"]');
+
+            linksToUpdate.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                link.setAttribute('href', `${currentHref}?userId=${userId}`);
+            });
+        }
+
+        // Call the function to update links
+        updateLinks();
+    </script>
+
 </body>
 
 </html>

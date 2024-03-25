@@ -34,7 +34,11 @@ public class HistoryController {
     @ResponseBody
     public ResponseEntity<List<Map<String, Object>>> getAllHistoryPapers(@RequestParam("userId") Integer userId) {
         List<Map<String, Object>> historyPapers = historyService.getAllHistory(userId);
+        if (historyPapers.isEmpty() || historyPapers == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(historyPapers, HttpStatus.OK);
     }
     
+   
 }

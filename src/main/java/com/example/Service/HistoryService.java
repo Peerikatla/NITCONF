@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Repository.PaperRepository;
+import com.example.Repository.SubmissionRepository;
 import com.example.model.Paper;
 import com.example.model.Submission;
 
@@ -24,6 +25,9 @@ import com.example.model.Submission;
 public class HistoryService {
     @Autowired
     private PaperRepository paperRepository;
+    
+    @Autowired
+    private SubmissionRepository submissionRepository;
 
     // private List<Paper> papers;
 
@@ -49,13 +53,22 @@ public class HistoryService {
 
         for (Paper paper : papers) {
             boolean needsReview = paper.getApprovestatus() != null && getDeadline(paper).isBefore(currentTime);
+            Integer submissionId = 0;
+            for (Submission submission : paper.getSubmissions()) {
+            	LocalDate deadline = submission.getDeadline();
+            	 submissionId= submission.getSubmissionId();
+            }
+            
             if (needsReview) {
+            	 Submission submission = submissionRepository.findBysubmissionId(submissionId);
                 Map<String, Object> paperMap = new HashMap<>();
+                
                 paperMap.put("title", paper.getTitle());
                 paperMap.put("status", paper.getApprovestatus());
                 paperMap.put("revisionStatus", paper.getRevisionStatus());
-                paperMap.put("deadline", getDeadline(paper));
+                paperMap.put("deadline", submission.getDeadline());
                 paperMap.put("paperId", paper.getPaperId());
+                paperMap.put("submissionId", submission.getSubmissionId());
                 result.add(paperMap);
             }
         }

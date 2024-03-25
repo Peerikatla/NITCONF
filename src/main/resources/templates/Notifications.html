@@ -103,22 +103,37 @@
     </div>
 
     <script>
-        function getNotifications(){
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+
+        function getNotifications() {
             // Fetch notifications from the server
             fetch('/api/notifications')
-            .then(response => response.json())
-            .then(data => {
-                // Display notifications
-                data.forEach(notification => {
-                    const notificationElement = document.createElement('div');
-                    notificationElement.classList.add('notification');
-                    notificationElement.innerHTML = `<p>${notification.message}</p>`;
-                    document.querySelector('.container').appendChild(notificationElement);
+                .then(response => response.json())
+                .then(data => {
+                    // Display notifications
+                    data.forEach(notification => {
+                        const notificationElement = document.createElement('div');
+                        notificationElement.classList.add('notification');
+                        notificationElement.innerHTML = `<p>${notification.message}</p>`;
+                        document.querySelector('.container').appendChild(notificationElement);
+                    });
                 });
+        }
+
+        function updateLinks() {
+            const linksToUpdate = document.querySelectorAll('a[href^="/"]');
+
+            linksToUpdate.forEach(link => {
+                const currentHref = link.getAttribute('href');
+                link.setAttribute('href', `${currentHref}?userId=${userId}`);
             });
         }
 
-        window.onload = getNotifications;
+        window.onload = function () {
+            updateLinks();
+        }
     </script>
 </body>
 

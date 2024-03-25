@@ -51,8 +51,9 @@ public class UserController {
      *         HttpStatus.NOT_FOUND if the user is not found
      */
     @PatchMapping("/profiles")
-    public HttpStatus updateProfileFields(@RequestBody Map<String, Object> updatedUser) {
-        Integer userId = (Integer) updatedUser.get("userId");
+    public HttpStatus updateProfileFields(@RequestParam("userId") Integer userId, @RequestBody Map<String, Object> updatedUser) {
+        System.out.println(updatedUser);
+        // Integer userId = (Integer) updatedUser.get("userId");
         String fullName = (String) updatedUser.get("fullName");
         String username = (String) updatedUser.get("username");
         String number = (String) updatedUser.get("number");
@@ -70,5 +71,4 @@ public class UserController {
             return HttpStatus.NOT_FOUND;
         }
     }
-
 }

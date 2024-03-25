@@ -70,43 +70,40 @@ public class ReviewedController {
     @PatchMapping("/reviewed/papers/submissions/comment")
     public ResponseEntity<Void> saveComment(@RequestBody Map<String, Object> requestBody) {
         try {
-        	String paperIdStr = (String) requestBody.get("paperId");
-        	Integer paperId = Integer.parseInt(paperIdStr);
-        	
-        	String submissionIdStr = (String) requestBody.get("submissionId");
-        	Integer submissionId = Integer.parseInt(submissionIdStr);
-        	 String comment = (String) requestBody.get("comment");
+            // Extract data from the request body
+            Integer paperId = Integer.parseInt((String) requestBody.get("paperId"));
+            Integer submissionId = Integer.parseInt((String) requestBody.get("submissionId"));
+            String comment = (String) requestBody.get("comment");
 
-        	String originalityStr = (String) requestBody.get("originality");
-        	Integer originality = Integer.parseInt(originalityStr);
+            // Extract ratings from the request body
+            Integer originality = Integer.parseInt((String) requestBody.get("originality"));
+            Integer relevance = Integer.parseInt((String) requestBody.get("relevance"));
+            Integer quality = Integer.parseInt((String) requestBody.get("quality"));
+            Integer technicalContentAndAccuracy = Integer.parseInt((String) requestBody.get("TCA"));
+            Integer significanceOfWork = Integer.parseInt((String) requestBody.get("significanceOfWork"));
+            Integer appropriateForSAC = Integer.parseInt((String) requestBody.get("appropriateForSAC"));
 
-        	String relevanceStr = (String) requestBody.get("relevance");
-        	Integer relevance = Integer.parseInt(relevanceStr);
+            // Check if any of the ratings are invalid (e.g., out of range)
+            if (originality < 0 || originality > 5 ||
+                relevance < 0 || relevance > 5 ||
+                quality < 0 || quality > 5 ||
+                technicalContentAndAccuracy < 0 || technicalContentAndAccuracy > 5 ||
+                significanceOfWork < 0 || significanceOfWork > 5 ||
+                appropriateForSAC < 0 || appropriateForSAC > 5) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
 
-        	String qualityStr = (String) requestBody.get("quality");
-        	Integer quality = Integer.parseInt(qualityStr);
-
-        	String technicalContentAndAccuracyStr = (String) requestBody.get("TCA");
-        	Integer technicalContentAndAccuracy = Integer.parseInt(technicalContentAndAccuracyStr);
-
-        	String significanceOfWorkStr = (String) requestBody.get("significanceOfWork");
-        	Integer significanceOfWork = Integer.parseInt(significanceOfWorkStr);
-
-        	String appropriateForSACStr = (String) requestBody.get("appropriateForSAC");
-        	Integer appropriateForSAC = Integer.parseInt(appropriateForSACStr);
-
-
-            // Check if any of the required parameters are null
-            if (paperId == null || submissionId == null || comment == null || originality == null || relevance == null
-                    || quality == null || technicalContentAndAccuracy == null || significanceOfWork == null
-                    || appropriateForSAC == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Return bad request status if any parameter is missing
+            // Check if the comment is empty
+            if (comment == null || comment.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             // Call the service method to save the comment
             reviewedservice.updatecomment(paperId, submissionId, comment, originality, relevance, quality,
                     technicalContentAndAccuracy, significanceOfWork, appropriateForSAC);
             return new ResponseEntity<>(HttpStatus.OK); // Return success status
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Return bad request status if any rating is not a valid number
         } catch (Exception e) {
             e.printStackTrace(); // Log any exceptions for debugging
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // Return internal server error status

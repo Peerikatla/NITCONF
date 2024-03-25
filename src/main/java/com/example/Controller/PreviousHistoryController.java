@@ -35,12 +35,18 @@ public class PreviousHistoryController {
     @GetMapping("/outdatedpapers/paper/allsubmissions")
     public ResponseEntity<List<Map<String, Object>>> getAllHistoryPapers(@RequestParam("paperId") Integer paperId) {
         List<Map<String, Object>> historyPapers = historyService.getAllHistory(paperId);
+        if( historyPapers == null || historyPapers.isEmpty() ) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(historyPapers, HttpStatus.OK);
     }
 
     @GetMapping("/outdatedpapers/paper/submission")
-    public ResponseEntity<Map<String, Object>> getMethodName(@RequestParam("submissionId") Integer submissionId) {
+    public ResponseEntity<Map<String, Object>> getSubmissionDetails(@RequestParam("submissionId") Integer submissionId) {
         Map<String, Object> submissionDetails = historyService.getsubmissiondetails(submissionId);
+        if(submissionDetails == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(submissionDetails, HttpStatus.OK);
     }
     
@@ -52,7 +58,7 @@ public class PreviousHistoryController {
      * @return a ResponseEntity containing the details of the history paper as a Map object
      */
     @GetMapping("/outdatedpapers/paper/details")
-    public ResponseEntity<Map<String, Object>> getSubmissionDetails(@RequestParam("paperId") Integer paperId) {
+    public ResponseEntity<Map<String, Object>> getPaperDetails(@RequestParam("paperId") Integer paperId) {
         Map<String, Object> historyPapers = historyService.getpaperdetails(paperId);
         return new ResponseEntity<>(historyPapers, HttpStatus.OK);
     }

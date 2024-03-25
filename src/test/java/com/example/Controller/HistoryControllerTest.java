@@ -1,84 +1,123 @@
 /*
  * package com.example.Controller;
  * 
- * import com.example.Service.HistoryService;
+ * import static org.junit.jupiter.api.Assertions.assertEquals; import static
+ * org.junit.jupiter.api.Assertions.assertTrue; import static
+ * org.mockito.ArgumentMatchers.anyInt;
  * 
- * import com.example.model.Paper; import org.junit.jupiter.api.BeforeEach;
- * import org.junit.jupiter.api.Test; import org.mockito.InjectMocks; import
- * org.mockito.Mock; import org.mockito.MockitoAnnotations; import
- * org.springframework.beans.factory.annotation.Autowired; import
+ * import java.time.LocalDate; import java.time.Month; import
+ * java.util.ArrayList; import java.util.HashMap; import java.util.List; import
+ * java.util.Map;
+ * 
+ * import org.junit.jupiter.api.BeforeEach; import org.junit.jupiter.api.Test;
+ * import org.mockito.InjectMocks; import org.mockito.Mock; import
+ * org.mockito.MockitoAnnotations; import
  * org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
  * import org.springframework.boot.test.context.SpringBootTest; import
- * org.springframework.http.MediaType; import
- * org.springframework.test.web.servlet.MockMvc; import
- * org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+ * org.springframework.http.HttpStatus; import
+ * org.springframework.http.ResponseEntity;
  * 
- * import java.util.Collections; import java.util.HashMap; import
- * java.util.List; import java.util.Map;
+ * import com.example.Repository.PaperRepository; import
+ * com.example.Repository.SubmissionRepository; import
+ * com.example.Repository.UserRepository; import
+ * com.example.Service.HistoryService; import com.example.model.Paper; import
+ * com.example.model.Submission; import com.example.model.User;
  * 
- * import static org.mockito.Mockito.verify; import static
- * org.mockito.Mockito.when; import static org.mockito.Mockito.times; import
- * static org.mockito.Mockito.never; import static
- * org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+ * import static org.mockito.Mockito.when;
+ * 
  * 
  * @SpringBootTest
  * 
  * @AutoConfigureMockMvc public class HistoryControllerTest {
  * 
- * @Autowired private MockMvc mockMvc;
+ *//**
+	 * This class contains unit tests for the HistoryController class.
+	 */
+/*
  * 
  * @Mock private HistoryService historyService;
  * 
- * @InjectMocks private HistoryController historyController;
+ * @Mock private UserRepository userRepository;
  * 
- * @SuppressWarnings("deprecation")
+ * @Mock private SubmissionRepository submissionRepository;
  * 
- * @BeforeEach public void setup() { MockitoAnnotations.initMocks(this); }
+ * @Mock private PaperRepository paperRepository;
  * 
- * @SuppressWarnings("null")
+ * @InjectMocks private HistoryController HistoryController;
  * 
- * @Test public void testGetAllHistory() throws Exception { // Mock data int
- * userId = 1; //List<Map<String, Object>> history =
- * Collections.singletonList(createPaperMap("Paper Title", "Approved",
- * "Under Review"));
+ * private User user; private Paper paper; private Submission submission1,
+ * submission2;
  * 
- * List<Map<String, Object>> history =
- * Collections.singletonList(Collections.emptyMap()); // Mock service behavior
- * when(historyService.getAllHistory(userId)).thenReturn(Collections.
- * singletonList(Collections.emptyMap()));
+ * @BeforeEach void setUp() { MockitoAnnotations.openMocks(this); // Initialize
+ * mocks
  * 
- * // Perform GET request to API endpoint
- * mockMvc.perform(MockMvcRequestBuilders.get("/api/outdatedpapers", userId))
- * .andExpect(status().isOk())
- * .andExpect(content().contentType(MediaType.APPLICATION_JSON))
- * .andExpect(jsonPath("$[0].title").value("Paper Title"))
- * .andExpect(jsonPath("$[0].status").value("Approved"))
- * .andExpect(jsonPath("$[0].revisionStatus").value("Under Review"));
+ * // Set up the user user = new User(); user.setUserid(1);
+ * user.setEmail("gayatripeerikatla@gmil.com"); user.setFullName("Gayatri P");
+ * user.setUsername("gayatri"); user.setNumber("8688469868");
+ * user.setPassword("me@1"); user.setPaperlimit(15L);
+ * user.setSpecialization("Machine learning");
+ * user.setDateOfBirth(LocalDate.of(2003, Month.SEPTEMBER, 8)); // Set date of
+ * birth
  * 
- * // Verify service method is called verify(historyService,
- * times(1)).getAllHistory(userId); }
+ * // Set up the paper paper = new Paper(); paper.setPaperId(8);
+ * paper.setTitle("svm"); paper.setRevisionStatus(0);
+ * paper.setApprovestatus("Approved"); paper.setTag("machine learning"); //
+ * Assuming a tag for the paper paper.setUser(user); // Set the user for the
+ * paper
  * 
- * @SuppressWarnings("null")
+ * // Set up the submission submission1 = new Submission();
+ * submission1.setSubmissionId(27); submission1.setDeadline(LocalDate.of(2024,
+ * Month.MARCH, 01)); // Set deadline submission1.setStatus("reviewed");
+ * submission1.setLink("src/main/resources/Static/ml.pdf");
+ * submission1.setComment("Test Comment"); submission1.setOriginality(3);
+ * submission1.setRelevance(4); submission1.setQuality(3);
+ * submission1.setTCA(3); submission1.setSignificanceOfWork(3);
+ * submission1.setAppropriateForSAC(3); submission1.setPaper(paper);
  * 
- * @Test public void testGetAllHistoryNoData() throws Exception { // Mock data
- * int userId = 1; // Mock service behavior
- * when(historyService.getAllHistory(userId)).thenReturn(Collections.emptyList()
- * );
+ * submission2 = new Submission(); submission2.setSubmissionId(27);
+ * submission2.setDeadline(LocalDate.of(2024, Month.MARCH, 20)); // Set deadline
+ * submission2.setStatus("reviewed");
+ * submission2.setLink("src/main/resources/Static/ml.pdf");
+ * submission2.setComment("Test Comment"); submission2.setOriginality(5);
+ * submission2.setRelevance(4); submission2.setQuality(3);
+ * submission2.setTCA(4); submission2.setSignificanceOfWork(2);
+ * submission2.setAppropriateForSAC(4); submission2.setPaper(paper); }
  * 
- * // Perform GET request to API endpoint
- * mockMvc.perform(MockMvcRequestBuilders.get("/api/outdatedpapers"))
- * .andExpect(status().isOk())
- * .andExpect(content().contentType(MediaType.APPLICATION_JSON))
- * .andExpect(jsonPath("$").isArray()) .andExpect(jsonPath("$").isEmpty()); //
- * Expecting an empty array
+ *//**
+	 * Test case for the getAllHistoryPapers method.
+	 * 
+	 * @throws Exception if an error occurs during the test.
+	 */
+/*
+ * @Test public void testGetAllHistory() throws Exception { List<Map<String,
+ * Object>> historyPapers = new ArrayList<>(); Map<String, Object> paperMap =
+ * new HashMap<>(); paperMap.put("title", paper.getTitle());
+ * paperMap.put("status", paper.getApprovestatus());
+ * paperMap.put("revisionStatus", paper.getRevisionStatus());
+ * paperMap.put("deadline", submission1.getDeadline()); paperMap.put("paperId",
+ * paper.getPaperId()); historyPapers.add(paperMap);
  * 
- * // Verify service method is called verify(historyService,
- * times(1)).getAllHistory(userId); }
+ * when(historyService.getAllHistory(anyInt())).thenReturn(historyPapers);
  * 
- * // Helper method to create a paper map for testing private Map<String,
- * Object> createPaperMap(String title, String status, String revisionStatus) {
- * Map<String, Object> paperMap = new HashMap<>(); paperMap.put("title", title);
- * paperMap.put("status", status); paperMap.put("revisionStatus",
- * revisionStatus); // Assuming deadline is not needed for this test case return
- * paperMap; } }
- */
+ * // Test ResponseEntity<List<Map<String, Object>>> response =
+ * HistoryController.getAllHistoryPapers(1);
+ * 
+ * assertEquals(HttpStatus.OK, response.getStatusCode());
+ * assertTrue(response.hasBody()); }
+ * 
+ *//**
+	 * Test case for the getAllHistoryPapers method when there is no data.
+	 * 
+	 * @throws Exception if an error occurs during the test.
+	 *//*
+		 * @Test public void testGetAllHistoryNoData() throws Exception {
+		 * List<Map<String, Object>> historyPapers = new ArrayList<>();
+		 * when(historyService.getAllHistory(anyInt())).thenReturn(historyPapers);
+		 * 
+		 * // Test ResponseEntity<List<Map<String, Object>>> response =
+		 * HistoryController.getAllHistoryPapers(1);
+		 * 
+		 * assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode()); }
+		 * 
+		 * }
+		 */

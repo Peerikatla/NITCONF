@@ -75,21 +75,37 @@
         }
 
         .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border: 2px solid #333;
-            border-radius: 10px;
-            z-index: 1000;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            max-width: 400px;
-            width: 80%;
-            text-align: center;
-        }
+    width: 1000px; /* Increase width */
+    height: 100%; /* Increase height */
+    /*max-width: 400px;*/
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+           .popup-content label,
+           .popup-content input,
+           .popup-content textarea {
+            margin-bottom: 20px; /* Add space between each input field */
+}
+
+.popup-content input[type="number"] {
+    width: 30%; /* Make the input fields take up the full width */
+}
+
+.popup-content textarea {
+    width: 100%;
+    height: 200px; /* Adjust the height according to your preference */
+}
 
         .overlay {
             display: none;
@@ -329,6 +345,31 @@
 
         // Function to submit form changes
         function saveComment() {
+			
+			 // Retrieve form data
+            const comment = document.getElementById("comment").value;
+            const originality = document.getElementById("originality").value;
+            const relevance = document.getElementById("relevance").value;
+            const quality = document.getElementById("quality").value;
+            const TCA = document.getElementById("TCA").value;
+            const significanceOfWork = document.getElementById("significanceOfWork").value;
+            const appropriateForSAC = document.getElementById("appropriateForSAC").value;
+
+    // Check if any of the fields are empty
+    if (!comment || !originality || !relevance || !quality || !TCA || !significanceOfWork || !appropriateForSAC) {
+        alert("Please fill all the fields to save.");
+        return; // Exit the function early if any field is empty
+    }
+			
+			// Check if ratings are between 0 and 5
+    const ratings = [originality, relevance, quality, TCA, significanceOfWork, appropriateForSAC];
+    for (let i = 0; i < ratings.length; i++) {
+        if (ratings[i] < 0 || ratings[i] > 5) {
+            alert("Ratings must be between 0 and 5.");
+            return; // Exit the function if any rating is out of range
+        }
+    }
+    
             // const userId = 1; 
             const formData = {
                 paperId: document.getElementById("paperId").value,

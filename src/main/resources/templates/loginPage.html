@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"> 
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
@@ -36,7 +36,7 @@
 
         form { 
             background-color: white; 
-            padding: 40px; 
+            padding: 30px; 
             border-radius: 8px; 
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
             width: 290px; 
@@ -97,42 +97,43 @@
     <h2>Login</h2>
     <form th:action="@{/login}" th:object="${user}" method="post"> 
         <label for="username">Username:</label> 
-        <input type="text" id="username" name="username" required> 
+        <input type="text" id="username" name="username" placeholder="Enter your username" required> 
 
         <label for="password">Password:</label> 
-        <input type="password" id="password" name="password" required> 
+        <input type="password" id="password" name="password" placeholder="Enter your password" required style="margin-bottom: 24px;"> 
         
-        <div class="forgot-password"> 
-            <a href="/forgot-password">Forgot Password?</a> 
-        </div><br> 
+        
 
         <button type="submit">Login</button> 
     </form>
 
  
-    <script> 
+   <!-- <script> 
+       function login() { 
+            // Fetch username and password from the form 
+            var username = document.getElementById('username').value; 
+            var password = document.getElementById('password').value; 
+ 
+            // Authentication process 
+            if (username === 'username' && password === 'password') { 
+                alert('Login successful!'); 
+                // Redirect to the reviewer dashboard or perform other actions 
+            } 
+            /* else { 
+               alert('Login failed. @@Please check your username and password.'); 
+            } */
+        }
+ 
+     
+ 
         function forgotPassword() { 
-            var email = prompt('Please enter your registered email address:');
-            if (email) {
-                var formData = new FormData();
-                formData.append('email', email);
-
-                fetch('/api/forgot-password/sendOTP', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('A password reset email has been sent to ' + email);
-                    } else {
-                        alert('Failed to send OTP. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            }
+            var email = prompt('Please enter your email address:'); 
+            if (email) { 
+                alert('A password reset email has been sent to ' + email); 
+                //Notifications will be sent to reviewers email regarding password reset 
+            } 
         } 
-    </script> 
+         
+    </script> -->
 </body> 
 </html>
